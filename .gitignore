@@ -1,0 +1,57 @@
+# ======================
+# SISTEMA / OS
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# IDE / EDITORES
+# ======================
+.vscode/
+.idea/
+*.code-workspace
+
+# ======================
+# ARCHIVOS TEMPORALES
+# ======================
+*.log
+*.tmp
+*.swp
+*.swo
+
+# ======================
+# CONFIGURACIÓN LOCAL (IMPORTANTE)
+# ======================
+backend/config/config.php
+backend/config/database.php
+
+# ======================
+# VARIABLES DE ENTORNO
+# ======================
+.env
+
+# ======================
+# SUBIDAS / ARCHIVOS GENERADOS
+# ======================
+uploads/
+tmp/
+cache/
+
+# ======================
+# DEPENDENCIAS (por si en el futuro usas Composer)
+# ======================
+vendor/
+composer.lock
+
+# ======================
+# NODE (por si añades frontend tooling)
+# ======================
+node_modules/
+package-lock.json
+
+# ======================
+# OTROS
+# ======================
+*.zip
+*.tar
+*.tar.gz
