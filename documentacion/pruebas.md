@@ -23,6 +23,25 @@
 - Resultado obtenido: OK
 - Estado: OK
 
+### Caso 2: Conexión a base de datos (PDO)
+
+- Entrada: ejecución del archivo de conexión  
+
+- Precondiciones:  
+  - Base de datos creada  
+  - Credenciales correctas en config/database.php  
+- Pasos:
+  1. Incluir el archivo connection.php  
+  2. Ejecutar una consulta simple (SELECT 1)  
+  3. Verificar que no se producen errores  
+- Resultado esperado:  
+  conexión establecida correctamente y consulta ejecutada sin errores  
+- Resultado obtenido:  
+  conexión realizada correctamente y consulta ejecutada  
+- Estado: OK  
+- Observaciones:  
+  la conexión PDO funciona correctamente y puede reutilizarse en el resto del sistema  
+
 ---
 
 ## CU02 – Login
