@@ -2,7 +2,7 @@
 
 Scripts utilizados durante el desarrollo para validar funcionalidades del sistema.
 
-## Base de datos
+## Técnicos
 
 - test_connection.php → verifica conexión PDO
 - test_schema.php → valida estructura de tablas

@@ -4,9 +4,9 @@
   $config = require __DIR__ . '/../config/database.php';
 
   // Construir DSN para conexión PDO
-  $dsn = "mysql:host = {$config['host']};
-          dbname     = {$config['dbname']};
-          charset    = {$config['charset']};"
+  $dsn = "mysql:host={$config['host']};
+          dbname={$config['dbname']};
+          charset={$config['charset']};"
   ;
 
   try {
