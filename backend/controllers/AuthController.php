@@ -28,13 +28,21 @@
       $authService = new AuthService();
       $user        = $authService->getUserByEmail($pdo, $email);
 
-      // comprobar datos de AuthService.php
-      if ($user) {
-        echo "usuario existe";
-      } else {
+      // comprobar datos de AuthService.php - usuario inexistente
+      if (!$user) {
         echo "usuario no existe";
+        return;
+      }
+      
+      // verificar password
+      if (!password_verify($password, $user['password'])) {
+        echo "password incorrecto";
+        return;
       }
 
+      // login correcto
+      echo "Usuario autenticado";
+      
     }
 
   }
