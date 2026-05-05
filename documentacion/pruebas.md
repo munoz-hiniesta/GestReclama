@@ -68,6 +68,45 @@
 - Resultado obtenido: mensaje mostrado
 - Estado: OK
 
+### Caso 3: Usuario no existente
+
+- Entrada: email no registrado + cualquier contraseña
+- Pasos:
+  1. Introducir credenciales
+  2. Enviar formulario
+- Resultado esperado: mensaje "usuario no existe"
+- Resultado obtenido: mensaje mostrado
+- Estado: OK
+
+### Caso 4: Campos vacíos
+
+- Entrada: email vacío y/o contraseña vacía
+- Pasos:
+  1. Dejar campos vacíos
+  2. Enviar formulario
+- Resultado esperado: mensaje "Todos los campos son obligatorios"
+- Resultado obtenido: mensaje mostrado
+- Estado: OK
+
+### Caso 5: Sesión creada correctamente
+
+- Entrada: credenciales válidas
+- Precondiciones: usuario registrado
+- Pasos:
+  1. Iniciar sesión
+- Resultado esperado: variables de sesión creadas
+- Resultado obtenido: sesión creada correctamente
+- Estado: OK
+
+### Caso 6: Acceso sin POST
+
+- Entrada: acceso directo sin enviar formulario
+- Pasos:
+  1. Acceder a la ruta sin POST
+- Resultado esperado: no se ejecuta login
+- Resultado obtenido: no ocurre ninguna acción
+- Estado: OK
+
 ---
 
 ## CU03 – Registro de reclamación

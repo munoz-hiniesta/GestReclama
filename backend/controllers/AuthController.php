@@ -41,8 +41,21 @@
       }
 
       // login correcto
-      echo "Usuario autenticado";
+      echo "Usuario autenticado\n";
       
+      // guardar datos en sesión
+      $_SESSION['id'] = $user['id'];
+      $_SESSION['nombre'] = $user['nombre'];
+      $_SESSION['rol_id'] = $user['rol_id'];
+
+      // validar sesión
+      if (
+        isset($_SESSION['id']) &&
+        isset($_SESSION['nombre']) &&
+        isset ($_SESSION['rol_id'])
+      ) {
+        echo "Sesión creada correctamente";
+      }
     }
 
   }
