@@ -10,7 +10,7 @@
       if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         return;
       }
-      
+     
       // limpiar datos
       $email    = trim($_POST['email'] ?? '');
       $password = trim($_POST['password'] ?? '');
@@ -41,7 +41,7 @@
       }
 
       // login correcto
-      echo "Usuario autenticado\n";
+      echo "Usuario autenticado<br>";
       
       // guardar datos en sesión
       $_SESSION['id'] = $user['id'];
