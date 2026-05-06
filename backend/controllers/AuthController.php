@@ -6,9 +6,16 @@
     
     public function login () {  
 
+
+      $mensaje = '';
+      $email = '';
+
       // comprobar método de envío del formulario
       if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        return;
+        return [
+          'mensaje' => $mensaje,
+          'email' => $email
+        ];
       }
      
       // limpiar datos
@@ -17,8 +24,11 @@
 
       // comprobar que ningún dato esté vacío
       if ($email === '' || $password === '') {
-        echo "Todos los campos son obligatorios";
-        return;
+        $mensaje = "Todos los campos son obligatorios";
+        return [
+          'mensaje' => $mensaje,
+          'email' => $email
+        ];
       }
 
       // cargar conexión PDO
@@ -26,36 +36,34 @@
 
       // llamar a AuthService.php (crear instancia, llamar método)
       $authService = new AuthService();
-      $user        = $authService->getUserByEmail($pdo, $email);
+      $user = $authService->getUserByEmail($pdo, $email);
 
       // comprobar datos de AuthService.php - usuario inexistente
       if (!$user) {
-        echo "usuario no existe";
-        return;
+        $mensaje = "usuario no existe";
+        return [
+          'mensaje' => $mensaje,
+          'email' => $email
+        ];
       }
       
       // verificar password
       if (!password_verify($password, $user['password'])) {
-        echo "password incorrecto";
-        return;
+        $mensaje = "password incorrecto";
+        return [
+          'mensaje' => $mensaje,
+          'email' => $email
+        ];
       }
-
-      // login correcto
-      echo "Usuario autenticado<br>";
       
       // guardar datos en sesión
       $_SESSION['id'] = $user['id'];
       $_SESSION['nombre'] = $user['nombre'];
       $_SESSION['rol_id'] = $user['rol_id'];
 
-      // validar sesión
-      if (
-        isset($_SESSION['id']) &&
-        isset($_SESSION['nombre']) &&
-        isset ($_SESSION['rol_id'])
-      ) {
-        echo "Sesión creada correctamente";
-      }
+      // redirigir a index.php
+      header ('Location: index.php');
+      exit;
     }
 
   }

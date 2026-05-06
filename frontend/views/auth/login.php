@@ -2,8 +2,6 @@
 
   $pageTitle = "Login";
 
-  $email = '';
-
 ?>
 
 <div>
@@ -11,7 +9,12 @@
   <h2>GestReclama</h2>
   <p>Acceso al sistema</p>
 
-  <form name="form_login" method="POST" action="/index.php">
+  <!-- mensaje cargado del controller - index -->
+  <?php if (isset($mensaje) && $mensaje !== '') : ?>
+    <p><?= htmlspecialchars($mensaje) ?></p>
+  <?php endif; ?>
+
+  <form name="form_login" method="POST" action="index.php">
     
     <div>
 

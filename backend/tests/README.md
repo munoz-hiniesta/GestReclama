@@ -1,4 +1,4 @@
-# Tests manuales
+# Scripts de validación técnica
 
 Scripts utilizados para validar funcionalidades de forma aislada durante el desarrollo.
 
@@ -17,6 +17,7 @@ Permiten comprobar componentes individuales sin pasar por el flujo completo de l
 
 - test_login.php → prueba login (usuario existente / no existente)
 - test_password.php → validación de contraseña (correcta / incorrecta)
+- test_session.php → validación de sesión de usuario
 
 ---
 
@@ -34,6 +35,7 @@ Los scripts técnicos sirven como soporte para validar los casos definidos en `p
 - CU02 – Login:
   - test_login.php
   - test_password.php
+  - test_session.php
 
 ---
 
@@ -42,3 +44,5 @@ Los scripts técnicos sirven como soporte para validar los casos definidos en `p
 Estos scripts son independientes y pueden ejecutarse de forma aislada.
 
 No forman parte del sistema en producción.
+
+No deben exponerse públicamente en entornos productivos.

@@ -8,15 +8,17 @@
     // carga controlador
     require_once  __DIR__ . '/../../backend/controllers/AuthController.php';
 
-    // crea nuevo objeto de la clase AuthController y llama al método login()
+    // crea nuevo objeto de la clase AuthController,
+    // llama al método login() y
+    // guarda respuesta devuelta por el controller
     $controller = new AuthController();
-    $controller->login();
-
-    exit;
+    $respuesta = $controller->login();
+    $email = $respuesta['email'] ?? '';
+    $mensaje = $respuesta['mensaje']?? '';
 
   }
 
-  // si método de formulario no POST
+  // cargar vista login (login.php)
   require_once __DIR__ . '/../views/auth/login.php';
 
 ?>
