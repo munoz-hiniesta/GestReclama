@@ -98,13 +98,13 @@ Se han diferenciado dos tipos de pruebas:
 - Resultado obtenido: sesión iniciada y redirección ejecutada
 - Estado: OK
 
-#### Caso 6: Acceso sin POST
+#### Caso 6: Carga inicial del login mediante GET
 
-- Entrada: acceso directo sin enviar formulario
+- Entrada: acceso inicial a la aplicación
 - Pasos:
-  1. Acceder a la ruta sin enviar formulario
-- Resultado esperado: no se ejecuta el proceso de login
-- Resultado obtenido: no ocurre ninguna acción
+  1. Acceder a `http://gestreclama.local`
+- Resultado esperado: carga correcta del formulario de login
+- Resultado obtenido: login cargado correctamente desde `index.php`
 - Estado: OK
 
 #### Caso 7: Persistencia de email tras error
@@ -116,4 +116,13 @@ Se han diferenciado dos tipos de pruebas:
   3. Enviar formulario
 - Resultado esperado: el email permanece en el formulario
 - Resultado obtenido: email persistido correctamente
+- Estado: OK
+
+#### Caso 8: Acción inválida
+
+- Entrada: petición POST con acción no permitida
+- Pasos:
+  1. Enviar formulario con una acción distinta de `login`
+- Resultado esperado: mensaje "Acción no permitida"
+- Resultado obtenido: mensaje mostrado correctamente
 - Estado: OK

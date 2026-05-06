@@ -41,7 +41,7 @@
 
     <div>
 
-      <button type="submit">Iniciar sesión</button>
+      <button type="submit" name="action" value="login">Iniciar sesión</button>
 
     </div>
 

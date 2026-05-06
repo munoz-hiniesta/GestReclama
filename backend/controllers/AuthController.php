@@ -6,17 +6,8 @@
     
     public function login () {  
 
-
       $mensaje = '';
       $email = '';
-
-      // comprobar método de envío del formulario
-      if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        return [
-          'mensaje' => $mensaje,
-          'email' => $email
-        ];
-      }
      
       // limpiar datos
       $email    = trim($_POST['email'] ?? '');

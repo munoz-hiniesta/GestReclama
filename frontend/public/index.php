@@ -2,19 +2,31 @@
 
   session_start();
 
-  // si método de formulario POST
+  $action = $_POST['action'] ?? '';
+
+  // si método de formulario POST y la acción es login
   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    // carga controlador
-    require_once  __DIR__ . '/../../backend/controllers/AuthController.php';
+    switch ($action) {
+      case 'login': 
+        // carga controlador
+        require_once  __DIR__ . '/../../backend/controllers/AuthController.php';
 
-    // crea nuevo objeto de la clase AuthController,
-    // llama al método login() y
-    // guarda respuesta devuelta por el controller
-    $controller = new AuthController();
-    $respuesta = $controller->login();
-    $email = $respuesta['email'] ?? '';
-    $mensaje = $respuesta['mensaje']?? '';
+        // crea nuevo objeto de la clase AuthController,
+        // llama al método login() y
+        // guarda respuesta devuelta por el controller
+        $controller = new AuthController();
+        $respuesta = $controller->login();
+        $email = $respuesta['email'] ?? '';
+        $mensaje = $respuesta['mensaje']?? '';
+        
+      break;
+
+      default:
+        $mensaje = "Acción no permitida";
+      break;
+
+    }
 
   }
 
