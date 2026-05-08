@@ -1,50 +1,48 @@
-<?php
+<div class="login-container">
 
-  $pageTitle = "Login";
+  <div class="login-card">>
 
-?>
+    <h2 class="login-title">GestReclama</h2>
+    <p class="login-subtitle">Acceso al sistema</p>
 
-<div>
+    <!-- mensaje cargado del controller - index -->
+    <?php if (isset($mensaje) && $mensaje !== '') : ?>
+      <p class="login-message"><?= htmlspecialchars($mensaje) ?></p>
+    <?php endif; ?>
 
-  <h2>GestReclama</h2>
-  <p>Acceso al sistema</p>
+    <form class="login-form" name="form_login" method="POST" action="index.php">
+      
+      <div class="login-fields">
 
-  <!-- mensaje cargado del controller - index -->
-  <?php if (isset($mensaje) && $mensaje !== '') : ?>
-    <p><?= htmlspecialchars($mensaje) ?></p>
-  <?php endif; ?>
+        <label for="email">Email: </label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          value="<?= htmlspecialchars($email ?? '') ?>"
+          placeholder="micorreo@gestreclama.es"
+          required
+        >
 
-  <form name="form_login" method="POST" action="index.php">
-    
-    <div>
+        <label for="password">Contraseña: </label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="********"
+          required
+        >
 
-      <label for="email">Email: </label>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        value="<?= htmlspecialchars($email ?? '') ?>"
-        placeholder="micorreo@gestreclama.es"
-        required
-      >
+      </div>
 
-      <label for="password">Contraseña: </label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="********"
-        required
-      >
+      <div class="login-actions">
 
-    </div>
+        <button class="login-button" type="submit" name="action" value="login">Iniciar sesión</button>
 
-    <div>
+      </div>
 
-      <button type="submit" name="action" value="login">Iniciar sesión</button>
+    </form>
 
-    </div>
-
-  </form>
+  </div>
 
 </div>

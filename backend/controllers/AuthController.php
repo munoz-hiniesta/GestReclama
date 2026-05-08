@@ -57,6 +57,17 @@
       exit;
     }
 
+    public function logout () {
+
+      // vaciar y cerrar sesión
+      $_SESSION = [];
+      session_destroy();
+
+      // redirigir a index.php
+      header ('Location: index.php');
+      exit;
+    }
+
   }
 
 ?>

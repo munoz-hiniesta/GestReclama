@@ -1,0 +1,38 @@
+/* ========= RESET / UNIVERSAL ========= */
+
+/* ========= ETIQUETAS GLOBALES ========= */
+
+/* ========= LAYOUT ========= */
+
+/* ========= LOGIN ========= */
+
+.login-container { /* alto pantalla- centrado -fondo - alineación */
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card { /* ancho - padding - borde - sombra - color - fondo - separación interna */
+
+}
+
+.login-title {}
+
+.login-subtitle {}
+
+.login-form { /* estructura interna formulario */
+
+}
+
+.login-fields {}
+
+.login-actions {}
+
+.login-button {}
+
+/* ========= MENSAJES ========= */
+
+.login-message {}
+
+/* ========= RESPONSIVE ========= */
