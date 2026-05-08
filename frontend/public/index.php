@@ -1,7 +1,5 @@
 <?php
 
-  session_start();
-
   // variables necesarias para otros archivos
   $action = $_POST['action'] ?? '';
   $pageTitle = "login";

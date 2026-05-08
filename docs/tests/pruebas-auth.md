@@ -163,3 +163,47 @@
 - Resultado obtenido:
   - redirect ejecutado correctamente
 - Estado: OK
+
+---
+
+## Middleware autenticado
+
+### Caso 1: Acceso permitido con sesión válida
+
+- Entrada: acceso a `panel.php`
+- Precondiciones:
+  - sesión autenticada activa
+- Pasos:
+  1. Iniciar sesión correctamente
+  2. Acceder a `panel.php`
+- Resultado esperado:
+  - acceso permitido
+  - panel renderizado correctamente
+- Resultado obtenido:
+  - acceso permitido correctamente
+- Estado: OK
+
+### Caso 2: Acceso bloqueado sin sesión
+
+- Entrada: acceso manual a `panel.php`
+- Precondiciones:
+  - sesión inexistente
+- Pasos:
+  1. Acceder directamente a `panel.php`
+- Resultado esperado:
+  - redirección automática a login
+- Resultado obtenido:
+  - acceso bloqueado correctamente
+- Estado: OK
+
+### Caso 3: Middleware reutilizable en rutas protegidas
+
+- Entrada: inclusión de `backend/middleware/auth.php`
+- Pasos:
+  1. Incluir middleware desde ruta protegida
+  2. Verificar validación automática
+- Resultado esperado:
+  - protección ejecutada correctamente
+- Resultado obtenido:
+  - middleware funcionando correctamente
+- Estado: OK
