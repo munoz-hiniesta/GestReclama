@@ -40,6 +40,15 @@ CREATE TABLE franquicias (
 ) ENGINE=InnoDB;
 
 -- ============================================
+-- TABLA: tipos
+-- ============================================
+CREATE TABLE tipos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL UNIQUE,
+  activo BOOLEAN DEFAULT TRUE
+) ENGINE=InnoDB;
+
+-- ============================================
 -- TABLA: usuarios
 -- ============================================
 CREATE TABLE usuarios (
@@ -86,16 +95,21 @@ CREATE TABLE reclamaciones (
   usuario_responsable_id INT DEFAULT NULL,
 
   descripcion TEXT NOT NULL,
-  tipo VARCHAR(100) NOT NULL DEFAULT 'Servicio',
-
+  
+  tipo_id INT NOT NULL DEFAULT 1,
   estado_id INT NOT NULL DEFAULT 1,
-  franquicia_id INT NOT NULL,
+  franquicia_id INT NOT NULL DEFAULT 1,
 
   activo BOOLEAN DEFAULT TRUE,
-  fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  fecha_actualizacion TIMESTAMP NULL DEFAULT NULL,
 
   FOREIGN KEY (usuario_creador_id)
     REFERENCES usuarios(id)
+    ON DELETE RESTRICT,
+
+  FOREIGN KEY (tipo_id)
+    REFERENCES tipos(id)
     ON DELETE RESTRICT,
 
   FOREIGN KEY (usuario_responsable_id)
@@ -109,6 +123,12 @@ CREATE TABLE reclamaciones (
   FOREIGN KEY (franquicia_id)
     REFERENCES franquicias(id)
     ON DELETE RESTRICT
+
+  INDEX idx_recl_estado (estado_id),
+  INDEX idx_recl_franquicia (franquicia_id),
+  INDEX idx_recl_responsable (usuario_responsable_id),
+  INDEX idx_recl_creador (usuario_creador_id),
+  INDEX idx_recl_tipo (tipo_id),
 ) ENGINE=InnoDB;
 
 -- ============================================
@@ -138,7 +158,7 @@ CREATE TABLE acciones_reclamacion (
 ) ENGINE=InnoDB;
 
 -- ============================================
--- DATOS INICIALES (RECOMENDADO)
+-- DATOS INICIALES
 -- ============================================
 
 -- Roles básicos
