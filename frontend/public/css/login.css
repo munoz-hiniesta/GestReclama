@@ -1,38 +1,133 @@
+/* ========= REGISTRO DE FUENTES ========= */
+  @font-face {
+      font-family: 'Inter';
+      src: url('../assets/fonts/inter/inter-Regular.woff2') format('woff2');
+      font-weight: 400;
+  }
+
+  @font-face {
+      font-family: 'Inter';
+      src: url('../assets/fonts/inter/inter-Medium.woff2') format('woff2');
+      font-weight: 500;
+  }
+
+  @font-face {
+      font-family: 'Inter';
+      src: url('../assets/fonts/inter/inter-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+  }
+
+
 /* ========= RESET / UNIVERSAL ========= */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
 
 /* ========= ETIQUETAS GLOBALES ========= */
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+
 
 /* ========= LAYOUT ========= */
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 1rm;
+    background-color: #EDF2F7;
+  }
+
 
 /* ========= LOGIN ========= */
+  .login-card {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    padding: 2rem;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    background-color: #FDFDFD;
+  }
 
-.login-container { /* alto pantalla- centrado -fondo - alineación */
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 13px;
+    padding: 1rem;
+  }
 
-.login-card { /* ancho - padding - borde - sombra - color - fondo - separación interna */
+  .login-header {
+    text-align: center;
+    letter-spacing: 0.7px;
+  }
 
-}
+  .login-title {
+    font-size: 30px;
+    font-weight: 600;
+  }
 
-.login-title {}
+  .login-subtitle {
+    padding: 7px;
+    font-size: 17px;
+    font-weight: 600;
+  }
 
-.login-subtitle {}
+  .login-fields {
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+  }
 
-.login-form { /* estructura interna formulario */
+  .login-fields label {
+    font-weight: 500;
+    letter-spacing: 0.7px;
+  }
 
-}
+  .login-fields input {
+    height: 1.8rem;
+    margin: 3px 0 7px 0;
+    padding: 8px;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    font-weight: 400;
+  }
 
-.login-fields {}
+  .login-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    margin-top: 20px;
+  }
 
-.login-actions {}
+  .login-button {
+    width: 120px;
+    height: 2rem;
+    border: 1px solid #1C4293;
+    border-radius: 5px;
+    background: #1C4293;
+    color: #FDFDFD;
+  }
 
-.login-button {}
+  .login-button:hover {
+    background-color: #163574;
+    font-weight: 500;
+  }
+
 
 /* ========= MENSAJES ========= */
+  .login-message {
+    height: 0.1rem;
+    text-align: center;
+    color: #DC6B6B;
+  }
 
-.login-message {}
 
 /* ========= RESPONSIVE ========= */

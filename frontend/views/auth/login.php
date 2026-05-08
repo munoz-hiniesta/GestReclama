@@ -1,14 +1,18 @@
 <div class="login-container">
 
-  <div class="login-card">>
+  <div class="login-card">
 
-    <h2 class="login-title">GestReclama</h2>
-    <p class="login-subtitle">Acceso al sistema</p>
+    <div class="login-header">  
+      <h2 class="login-title">GestReclama</h2>
+      <p class="login-subtitle">Acceso al sistema</p>
+    </div>
 
-    <!-- mensaje cargado del controller - index -->
-    <?php if (isset($mensaje) && $mensaje !== '') : ?>
-      <p class="login-message"><?= htmlspecialchars($mensaje) ?></p>
-    <?php endif; ?>
+    <div class="login-message">
+      <!-- mensaje cargado del controller - index -->
+      <?php if (isset($mensaje) && $mensaje !== '') : ?>
+        <p><?= htmlspecialchars($mensaje) ?></p>
+      <?php endif; ?>
+    </div>  
 
     <form class="login-form" name="form_login" method="POST" action="index.php">
       
