@@ -18,6 +18,7 @@ Estos scripts sirven como apoyo técnico durante el desarrollo y complementan la
 ## Autenticación
 
 - `test_login.php` → simulación técnica de login
+- `test_logout.php` → validación técnica de cierre de sesión
 - `test_password.php` → validación de hash y `password_verify`
 - `test_session.php` → validación de sesión de usuario
 
@@ -34,14 +35,19 @@ Estos scripts sirven como apoyo técnico durante el desarrollo y complementan la
 
 Los scripts técnicos complementan las pruebas funcionales documentadas en `docs/tests`.
 
-Ejemplo:
-
 ### CU02 – Login
 
 Scripts relacionados:
 
 - `test_login.php`
 - `test_password.php`
+- `test_session.php`
+
+### CU07 – Logout
+
+Scripts relacionados:
+
+- `test_logout.php`
 - `test_session.php`
 
 ---

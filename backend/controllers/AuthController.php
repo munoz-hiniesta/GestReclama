@@ -8,7 +8,7 @@
 
       $mensaje = '';
       $email = '';
-     
+      
       // limpiar datos
       $email    = trim($_POST['email'] ?? '');
       $password = trim($_POST['password'] ?? '');
@@ -52,8 +52,8 @@
       $_SESSION['nombre'] = $user['nombre'];
       $_SESSION['rol_id'] = $user['rol_id'];
 
-      // redirigir a index.php
-      header ('Location: index.php');
+      // redirijo
+      header ('Location: panel.php'); 
       exit;
     }
 
@@ -63,7 +63,7 @@
       $_SESSION = [];
       session_destroy();
 
-      // redirigir a index.php
+      // // redirigir creando nueva petición (no guarda POST)
       header ('Location: index.php');
       exit;
     }

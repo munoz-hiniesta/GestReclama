@@ -86,3 +86,80 @@
 - Resultado esperado: mensaje "Acción no permitida"
 - Resultado obtenido: mensaje mostrado correctamente
 - Estado: OK
+
+---
+
+## CU07 – Logout
+
+### Caso 1: Logout correcto
+
+- Entrada: usuario autenticado
+- Precondiciones:
+  - sesión iniciada correctamente
+- Pasos:
+  1. Acceder al panel autenticado
+  2. Pulsar "Cerrar sesión"
+- Resultado esperado:
+  - sesión destruida correctamente
+  - redirección a login
+- Resultado obtenido:
+  - logout ejecutado correctamente
+  - redirección realizada
+- Estado: OK
+
+### Caso 2: Variables de sesión eliminadas
+
+- Entrada: logout ejecutado
+- Precondiciones:
+  - usuario autenticado previamente
+- Pasos:
+  1. Iniciar sesión
+  2. Ejecutar logout
+  3. Intentar acceder a variables de sesión
+- Resultado esperado:
+  - variables de sesión inexistentes
+- Resultado obtenido:
+  - sesión eliminada correctamente
+- Estado: OK
+
+### Caso 3: Acceso bloqueado tras logout
+
+- Entrada: acceso manual a `panel.php` tras cerrar sesión
+- Precondiciones:
+  - logout ejecutado previamente
+- Pasos:
+  1. Cerrar sesión
+  2. Intentar acceder manualmente a `panel.php`
+- Resultado esperado:
+  - redirección automática a login
+- Resultado obtenido:
+  - acceso bloqueado correctamente
+- Estado: OK
+
+### Caso 4: Acción logout procesada desde index.php
+
+- Entrada: envío POST con `action=logout`
+- Precondiciones:
+  - sesión iniciada
+- Pasos:
+  1. Pulsar botón logout
+- Resultado esperado:
+  - `index.php` detecta acción logout
+  - `AuthController::logout()` ejecutado
+- Resultado obtenido:
+  - acción procesada correctamente
+- Estado: OK
+
+### Caso 5: Logout mediante nueva petición GET
+
+- Entrada: cierre de sesión correcto
+- Precondiciones:
+  - usuario autenticado
+- Pasos:
+  1. Ejecutar logout
+- Resultado esperado:
+  - nueva petición GET a `index.php`
+  - login renderizado correctamente
+- Resultado obtenido:
+  - redirect ejecutado correctamente
+- Estado: OK
