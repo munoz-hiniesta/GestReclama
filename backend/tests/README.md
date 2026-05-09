@@ -28,6 +28,7 @@ Estos scripts sirven como apoyo técnico durante el desarrollo y complementan la
 
 - `test_insert_reclamacion.php` → inserción básica de reclamación
 - `test_estado.php` → validación de cambio de estado
+- `test_consulta.php` → validación de consulta y obtención de reclamaciones
 
 ---
 

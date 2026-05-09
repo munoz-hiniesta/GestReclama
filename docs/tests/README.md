@@ -61,7 +61,8 @@ docs/tests/
 │
 ├── README.md
 ├── pruebas-auth.md
-└── pruebas-frontend.md
+├── pruebas-frontend.md
+└── pruebas-reclamaciones.md
 ```
 
 ### README.md
@@ -95,6 +96,18 @@ Incluye:
 - carga dinámica de vistas
 - carga de estilos CSS
 - acceso de variables a vistas
+
+### pruebas-reclamaciones.md
+
+Contiene pruebas relacionadas con el módulo de reclamaciones.
+
+Incluye:
+
+- registro de reclamaciones
+- guardado de borradores
+- consultas de reclamaciones
+- validación de estados
+- acceso autenticado al módulo
 
 ---
 
