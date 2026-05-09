@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS usuarios;
 DROP TABLE IF EXISTS franquicias;
 DROP TABLE IF EXISTS estados;
 DROP TABLE IF EXISTS roles;
+DROP TABLE IF EXISTS tipos;
 
 -- ============================================
 -- TABLA: roles
@@ -26,6 +27,7 @@ CREATE TABLE roles (
 CREATE TABLE estados (
   id INT AUTO_INCREMENT PRIMARY KEY,
   nombre VARCHAR(100) NOT NULL UNIQUE,
+  descripcion VARCHAR(100) NOT NULL DEFAULT "Aún no registrada definitivamente",
   activo BOOLEAN DEFAULT TRUE
 ) ENGINE=InnoDB;
 
@@ -122,13 +124,13 @@ CREATE TABLE reclamaciones (
 
   FOREIGN KEY (franquicia_id)
     REFERENCES franquicias(id)
-    ON DELETE RESTRICT
+    ON DELETE RESTRICT,
 
   INDEX idx_recl_estado (estado_id),
   INDEX idx_recl_franquicia (franquicia_id),
   INDEX idx_recl_responsable (usuario_responsable_id),
   INDEX idx_recl_creador (usuario_creador_id),
-  INDEX idx_recl_tipo (tipo_id),
+  INDEX idx_recl_tipo (tipo_id)
 ) ENGINE=InnoDB;
 
 -- ============================================
@@ -170,8 +172,14 @@ INSERT INTO roles (nombre) VALUES
 ('Empleado');
 
 -- Estados básicos
-INSERT INTO estados (nombre) VALUES
-('Borrador'),
-('Pendiente'),
-('En trámite'),
-('Resuelta');
+INSERT INTO estados (nombre, descripcion) VALUES
+("Borrador", "Aún no registrada definitivamente"),
+("Pendiente", "Registrada pero sin gestión activa"),
+("En trámite", "Asignada o siendo gestionada"),
+("Resuelta", "Proceso finalizado");
+
+-- Tipos básicos
+INSERT INTO tipos (nombre) VALUES
+('Servicio'),
+('Producto'),
+('Atención al cliente');
