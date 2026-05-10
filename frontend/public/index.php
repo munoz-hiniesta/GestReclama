@@ -8,7 +8,8 @@
 
    /** $vista: decide qué vista renderizar dentro de la misma petición*/
 
-  // carga controlador
+  // cargar archivos necesarios
+  $pdo = require_once  __DIR__ . '/../../backend/database/connection.php';
   require_once  __DIR__ . '/../../backend/controllers/AuthController.php';
 
   // si método de formulario POST y la acción es login
@@ -40,6 +41,6 @@
   }
 
   // cargar layout.php (es quien decide qué vista debe cargar)
-  require_once __DIR__ . '/../views/layouts/layout.php';
+  require_once __DIR__ . '/../views/layouts/auth.layout.php';
 
 ?>

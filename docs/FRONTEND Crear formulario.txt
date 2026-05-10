@@ -1,0 +1,205 @@
+[FRONTEND] Crear formulario borrador reclamación
+Descripción
+Objetivo
+
+Crear el formulario frontend inicial para el registro de reclamaciones en estado borrador utilizando una estructura clara, reutilizable y compatible con el flujo del sistema.
+
+Contexto
+
+El formulario constituye el punto de entrada principal del CU03 y permitirá al trabajador introducir los datos iniciales de una reclamación antes de su validación definitiva por parte del encargado.
+
+La vista debe integrarse correctamente con el layout autenticado del módulo y preparar la interacción futura con:
+
+validaciones backend
+mensajes de error
+persistencia de datos
+guardado de borradores
+Dependencias
+Layout módulo reclamaciones operativo
+Sistema de vistas autenticadas funcional
+Routing actual operativo
+Estados iniciales disponibles en BD
+Técnico
+Mantener separación entre HTML y lógica backend
+Utilizar estructura HTML semántica
+Mantener compatibilidad con layout global
+Preparar formulario para futuras validaciones backend
+Mantener estructura reutilizable para futuras ampliaciones
+Utilizar nombres de campos coherentes con la BD
+Mantener formulario desacoplado de lógica de persistencia
+Implementación
+Crear formulario principal de reclamación
+Crear campo descripción de reclamación
+Crear selector de franquicia
+Crear selector de tipo de reclamación
+Crear botón guardar borrador
+Definir estructura visual del formulario
+Organizar campos mediante estructura clara
+Preparar contenedor para mensajes de error
+Integrar formulario dentro del layout del módulo
+Configurar envío mediante método POST
+Preparar atributo action del formulario
+DoD
+Formulario renderiza correctamente
+Campos visibles y accesibles correctamente
+Estructura HTML semántica funcional
+Formulario integrado correctamente en layout
+Método POST configurado correctamente
+Inputs preparados para futuras validaciones
+Compatibilidad con routing mantenida
+Diseño visual estable
+Probado manualmente
+Añadido a pruebas-frontend.md (si aplica)
+Commit realizado
+Push realizado
+
+
+[FRONTEND] Mostrar errores formulario reclamación
+Descripción
+Objetivo
+
+Mostrar mensajes de error en el formulario de reclamaciones cuando las validaciones backend detecten datos inválidos o incompletos.
+
+Contexto
+
+Tras implementar el formulario de registro y las validaciones backend, es necesario informar visualmente al usuario de los errores detectados para facilitar la corrección de los datos introducidos.
+
+La vista debe ser capaz de mostrar mensajes claros sin romper la estructura visual del formulario ni el flujo de trabajo del usuario.
+
+Dependencias
+Formulario borrador reclamación operativo
+Validaciones backend funcionales
+Variables compartidas accesibles desde vistas
+Sistema de renderizado frontend operativo
+Técnico
+Mantener separación entre lógica backend y renderizado visual
+Mostrar errores únicamente si existen
+Mantener compatibilidad con layout actual
+Utilizar estructura HTML semántica
+Mantener mensajes desacoplados de estilos específicos
+Preparar estructura reutilizable para futuros formularios
+Implementación
+Preparar contenedor visual de errores
+Mostrar mensaje general de validación
+Mostrar errores procedentes del backend
+Verificar acceso a variable de errores desde vista
+Integrar mensajes dentro del formulario
+Mantener estructura visual estable tras errores
+Preparar estilos base de mensajes de error
+Verificar renderizado condicional de errores
+DoD
+Mensajes de error visibles correctamente
+Errores renderizados únicamente cuando existen
+Formulario mantiene estructura visual estable
+Variables accesibles correctamente desde vista
+Compatibilidad con layout mantenida
+HTML mantiene estructura semántica clara
+Mensajes integrados correctamente en formulario
+Probado manualmente
+Añadido a pruebas-frontend.md (si aplica)
+Commit realizado
+Push realizado
+
+
+
+[FRONTEND] Mantener datos tras error
+Descripción
+Objetivo
+
+Mantener los datos introducidos en el formulario de reclamaciones cuando se produzca un error de validación, evitando que el usuario tenga que volver a completar todos los campos.
+
+Contexto
+
+Tras implementar la visualización de errores en el formulario, es necesario mejorar la experiencia de usuario persistiendo temporalmente los datos válidos enviados previamente.
+
+La persistencia debe integrarse correctamente con:
+
+validaciones backend
+mensajes de error
+renderizado dinámico de vistas
+Dependencias
+Formulario borrador reclamación operativo
+Sistema de errores frontend funcional
+Validaciones backend implementadas
+Variables compartidas accesibles desde vistas
+Técnico
+Mantener separación entre lógica backend y renderizado visual
+Persistir únicamente datos necesarios del formulario
+Evitar persistencia de información sensible
+Mantener compatibilidad con layout actual
+Utilizar renderizado dinámico seguro
+Mantener estructura reutilizable para futuros formularios
+Implementación
+Recuperar valores enviados previamente
+Reinyectar valores en inputs del formulario
+Mantener contenido del textarea descripción
+Mantener selección de franquicia
+Mantener selección de tipo de reclamación
+Verificar acceso a variables persistidas
+Integrar persistencia con renderizado actual
+Verificar persistencia tras validación fallida
+DoD
+Datos permanecen visibles tras error
+Textarea mantiene contenido correctamente
+Selectores mantienen valor seleccionado
+Persistencia funciona correctamente tras validación fallida
+No se persisten datos sensibles innecesarios
+Compatibilidad con layout mantenida
+Renderizado dinámico funcionando correctamente
+Probado manualmente
+Añadido a pruebas-frontend.md (si aplica)
+Commit realizado
+Push realizado
+
+
+[FRONTEND] Mostrar mensajes sistema reclamaciones
+Descripción
+Objetivo
+
+Mostrar mensajes informativos del sistema relacionados con las operaciones del módulo de reclamaciones, incluyendo confirmaciones, avisos y resultados de acciones realizadas por el usuario.
+
+Contexto
+
+Tras implementar formularios, validaciones y persistencia de datos, es necesario proporcionar feedback visual claro sobre el resultado de las operaciones ejecutadas en el módulo de reclamaciones.
+
+Los mensajes permitirán mejorar la experiencia de usuario durante:
+
+guardado de borradores
+validaciones
+registros correctos
+errores operativos
+futuras acciones del workflow
+Dependencias
+Formulario reclamaciones operativo
+Validaciones backend funcionales
+Sistema de renderizado frontend operativo
+Variables compartidas accesibles desde vistas
+Técnico
+Mantener separación entre lógica backend y renderizado visual
+Mostrar mensajes únicamente cuando existan
+Mantener compatibilidad con layout actual
+Utilizar estructura HTML semántica
+Mantener mensajes desacoplados de lógica de negocio
+Preparar estructura reutilizable para futuros módulos
+Implementación
+Crear contenedor visual de mensajes del sistema
+Preparar renderizado condicional de mensajes
+Mostrar mensajes de confirmación
+Mostrar mensajes informativos
+Mostrar mensajes de error operativo
+Integrar mensajes dentro del layout actual
+Preparar estilos base para mensajes del sistema
+Verificar acceso a variables de mensajes desde vistas
+DoD
+Mensajes renderizan correctamente
+Mensajes visibles únicamente cuando existen
+Confirmaciones visibles correctamente
+Errores operativos visibles correctamente
+Layout mantiene estructura visual estable
+Variables accesibles correctamente desde vistas
+Compatibilidad con frontend actual mantenida
+Probado manualmente
+Añadido a pruebas-frontend.md (si aplica)
+Commit realizado
+Push realizado
+
