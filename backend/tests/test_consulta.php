@@ -1,8 +1,8 @@
 <?php
 
-  $pdo = require_once __DIR__ . '/../database/connection.php';
+  $pdo = require_once DATABASE_PATH . '/connection.php';
 
-  require_once __DIR__ . '/../models/Reclamacion.php';
+  require_once MODELS_PATH . '/Reclamacion.php';
 
   // llamar a AuthService.php (crear instancia, llamar método)
   $objeto = new Reclamacion($pdo);

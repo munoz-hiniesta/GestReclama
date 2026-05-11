@@ -7,7 +7,7 @@
   $_POST['action'] = 'login';
 
   // conecto con index.php  
-  require_once __DIR__ . '/../../frontend/public/index.php';
+  require_once PUBLIC_PATH . '/index.php';
 
   // muestro resultados del test
   echo "=== TEST LOGIN ===\n";

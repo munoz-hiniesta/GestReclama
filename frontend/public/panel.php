@@ -1,6 +1,7 @@
 <?php
 
-  require_once __DIR__ . '/../../backend/middleware/auth.php';
+  require_once '../../backend/bootstrap/bootstrap.php';
+  require_once MIDDLEWARE_PATH . '/auth.php';
 
   // recuperar datos de sesión (se mantiene activa hasta que se cierra con logout)  
   $id = $_SESSION['id'];
@@ -12,6 +13,6 @@
   $css = '/css/panel.css';
 
   // renderizar
-  require __DIR__ . '/../views/layouts/layout.php';
+  require LAYOUTS_PATH . '/auth.layout.php';
 
 ?>

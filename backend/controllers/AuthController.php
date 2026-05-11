@@ -1,9 +1,16 @@
 <?php
 
-  require_once __DIR__ . '/../services/AuthService.php';
+  require_once SERVICES_PATH .'/AuthService.php';
 
   class AuthController {
     
+    private PDO $pdo;
+
+    // integrar conexión PDO en la clase (viene de backend/database/connection.php - frontend/index.php)
+    public function __construct(PDO $pdo) {
+      $this->pdo = $pdo;
+    }
+  
     public function login () {  
 
       $mensaje = '';
@@ -22,12 +29,10 @@
         ];
       }
 
-      // cargar conexión PDO
-      $pdo = require __DIR__ . '/../database/connection.php';
-
       // llamar a AuthService.php (crear instancia, llamar método)
+
       $authService = new AuthService();
-      $user = $authService->getUserByEmail($pdo, $email);
+      $user = $authService->getUserByEmail($this->pdo, $email);
 
       // comprobar datos de AuthService.php - usuario inexistente
       if (!$user) {

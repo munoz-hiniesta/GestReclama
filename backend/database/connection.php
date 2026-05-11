@@ -1,7 +1,7 @@
 <?php
 
   // Cargar configuración de base de datos
-  $config = require __DIR__ . '/../config/database.php';
+  $config = require CONFIG_PATH . '/database.php';
 
   // Construir DSN para conexión PDO
   $dsn = "mysql:host={$config['host']};

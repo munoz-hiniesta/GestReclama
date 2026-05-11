@@ -1,7 +1,7 @@
 <?php
 
   // cargar conexión
-  $pdo = require __DIR__ . '/../database/connection.php';
+  $pdo = require DATABASE_PATH . '/connection.php';
 
   try {
     // ejecutar consulta sin prepare

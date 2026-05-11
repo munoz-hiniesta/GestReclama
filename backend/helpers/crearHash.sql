@@ -1,5 +1,5 @@
 <?php
-$password = "001";
+$password = "003";
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
 

@@ -2,10 +2,9 @@
 
   class AuthService {
 
-
     public function getUserByEmail($pdo, $email) {
-          
-      // preparar stmt (PDO)
+
+    // preparar stmt (PDO)
       $stmt = $pdo->prepare(
       "SELECT *
        FROM usuarios

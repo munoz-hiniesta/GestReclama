@@ -8,6 +8,6 @@
   $_SERVER['REQUEST_METHOD'] = 'POST';
 
   // llamar a index.php
-  require_once __DIR__ . '/../../frontend/public/index.php';
+  require_once PUBLIC_PATH . '/index.php';
 
 ?>

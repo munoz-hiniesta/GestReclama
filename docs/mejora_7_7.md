@@ -1,0 +1,1 @@
+• Durante el desarrollo backend se detectó la necesidad de centralizar progresivamente la carga de dependencias y las rutas base del sistema, con el objetivo de reducir acoplamientos entre módulos y facilitar futuras ampliaciones de la arquitectura.

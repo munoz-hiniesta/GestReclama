@@ -17,7 +17,7 @@
 -- ============================================
   CREATE TABLE roles (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    clave VARCHAR(100) UNIQUE NOT NULL,
+    clave VARCHAR(100) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL UNIQUE,
     activo BOOLEAN DEFAULT TRUE
   ) ENGINE=InnoDB;
@@ -27,7 +27,7 @@
 -- ============================================
   CREATE TABLE estados (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    clave VARCHAR(100) UNIQUE NOT NULL,
+    clave VARCHAR(100) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL UNIQUE,
     descripcion VARCHAR(100) NOT NULL DEFAULT "Aún no registrada definitivamente",
     activo BOOLEAN DEFAULT TRUE
@@ -38,7 +38,7 @@
 -- ============================================
   CREATE TABLE franquicias (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    clave VARCHAR(100) UNIQUE NOT NULL,
+    clave VARCHAR(100) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL,
     ubicacion VARCHAR(150) NOT NULL,
     activo BOOLEAN DEFAULT TRUE
@@ -49,7 +49,7 @@
 -- ============================================
   CREATE TABLE tipos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    clave VARCHAR(100) UNIQUE NOT NULL,
+    clave VARCHAR(100) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL UNIQUE,
     activo BOOLEAN DEFAULT TRUE
   ) ENGINE=InnoDB;
@@ -168,22 +168,47 @@
 -- ============================================
 
   -- Roles básicos
-    INSERT INTO roles (nombre) VALUES
-    ('Administrador'),
-    ('Responsable General'),
-    ('Responsable Tramitación'),
-    ('Encargado'),
-    ('Empleado');
+    INSERT INTO roles (clave, nombre) VALUES
+      ("ADMINISTRADOR", "Administrador"),
+      ("RESPONSABLE_GENERAL", "Responsable General"),
+      ("RESPONSABLE_TRAMITACION", "Responsable Tramitación"),
+      ("ENCARGADO", "Encargado"),
+      ("EMPLEADO", "Empleado")
+    ;
 
   -- Estados básicos
-    INSERT INTO estados (nombre, descripcion) VALUES
-    ("BORRADOR", "Borrador", "Aún no registrada definitivamente"),
-    ("PENDIENTE", "Pendiente", "Registrada pero sin gestión activa"),
-    ("EN_TRAMITE", "En trámite", "Asignada o siendo gestionada"),
-    ("RESUELTA", "Resuelta", "Proceso finalizado");
+    INSERT INTO estados (clave, nombre, descripcion) VALUES
+      ("BORRADOR", "Borrador", "Aún no registrada definitivamente"),
+      ("PENDIENTE", "Pendiente", "Registrada pero sin gestión activa"),
+      ("EN_TRAMITE", "En trámite", "Asignada o siendo gestionada"),
+      ("RESUELTA", "Resuelta", "Proceso finalizado")
+    ;
 
   -- Tipos básicos
-    INSERT INTO tipos (nombre) VALUES
-    ('Servicio'),
-    ('Producto'),
-    ('Atención al cliente');
+    INSERT INTO tipos (clave, nombre) VALUES
+      ("SERVICIO", "Servicio"),
+      ("PRODUCTO", "Producto"),
+      ("ATENCION_AL_CLIENTE", "Atención al cliente")
+    ;
+
+  -- Usuarios básicos
+    INSERT INTO usuarios (nombre, email, password, rol_Id) VALUES
+      ("nombre_001", "email_001@gestreclama.com", "$2y$10$DJAMSFPlG9ahlHfMAGEzCeXKkluXA3gaNtLjCqj90W0AKLYXGeePe", 1),
+      ("nombre_002", "email_002@gestreclama.com", "$2y$10$Rqji33gzVVRocPUrgC1EROaJLLBgbzkMtVu.JpuAfsDNkicG3/YmW", 2),
+      ("nombre_003", "email_003@gestreclama.com", "$2y$10$qB3XivQs7U37.tCPMRLel.Q3G27tT8/P3J0XoIJn3Rev.LeeLbxFW", 3)
+    ;
+
+  -- Franquicias básicas
+    INSERT INTO franquicias (clave, nombre, ubicacion) VALUES 
+      ("FRANQUICIA_001", "franquicia_001", "ubicacion franquicia_001"),
+      ("FRANQUICIA_002", "franquicia_002", "ubicacion franquicia_002"),
+      ("FRANQUICIA_003", "franquicia_003", "ubicacion franquicia_003")
+    ;
+
+  
+  -- Reclamaciones básicas
+    INSERT INTO reclamaciones (usuario_creador_id, usuario_responsable_id, descripcion) VALUES
+      (1, 1, "descripción reclamación 001"),
+      (1, 2, "descripción reclamación 002"),
+      (2, 3, "descripción reclamación 003")
+    ;
