@@ -11,6 +11,7 @@
   DROP TABLE IF EXISTS estados;
   DROP TABLE IF EXISTS roles;
   DROP TABLE IF EXISTS tipos;
+  DROP TABLE IF EXISTS prioridades;
 
 -- ============================================
 -- TABLA: roles
@@ -29,7 +30,7 @@
     id INT AUTO_INCREMENT PRIMARY KEY,
     clave VARCHAR(100) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL UNIQUE,
-    descripcion VARCHAR(100) NOT NULL DEFAULT "Aún no registrada definitivamente",
+    descripcion VARCHAR(100) NOT NULL,
     activo BOOLEAN DEFAULT TRUE
   ) ENGINE=InnoDB;
 
@@ -48,6 +49,16 @@
 -- TABLA: tipos
 -- ============================================
   CREATE TABLE tipos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    clave VARCHAR(100) NOT NULL UNIQUE,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    activo BOOLEAN DEFAULT TRUE
+  ) ENGINE=InnoDB;
+
+-- ============================================
+-- TABLA: prioridades
+-- ============================================
+  CREATE TABLE prioridades (
     id INT AUTO_INCREMENT PRIMARY KEY,
     clave VARCHAR(100) NOT NULL UNIQUE,
     nombre VARCHAR(100) NOT NULL UNIQUE,
@@ -101,14 +112,21 @@
     usuario_responsable_id INT DEFAULT NULL,
 
     descripcion TEXT NOT NULL,
-    
-    tipo_id INT NOT NULL DEFAULT 1,
-    estado_id INT NOT NULL DEFAULT 1,
-    franquicia_id INT NOT NULL DEFAULT 1,
+    tipo_id INT NOT NULL,
+    prioridad_id INT NOT NULL,
+    estado_id INT NOT NULL,
+    franquicia_id INT NOT NULL,
+
+    adjunto VARCHAR(255) NOT NULL,
 
     activo BOOLEAN DEFAULT TRUE,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP NULL DEFAULT NULL,
+
+    telefono VARCHAR(20),
+    email VARCHAR(100),
+    importe DECIMAL(10,2),
+    otros_datos TEXT,
 
     FOREIGN KEY (usuario_creador_id)
       REFERENCES usuarios(id)
@@ -191,6 +209,13 @@
       ("ATENCION_AL_CLIENTE", "Atención al cliente")
     ;
 
+  -- Prioridades básicas
+    INSERT INTO prioridades (clave, nombre) VALUES
+      ("BAJA", "Baja"),
+      ("MEDIA", "Media"),
+      ("ALTA", "Alta")
+    ;
+
   -- Usuarios básicos
     INSERT INTO usuarios (nombre, email, password, rol_Id) VALUES
       ("nombre_001", "email_001@gestreclama.com", "$2y$10$DJAMSFPlG9ahlHfMAGEzCeXKkluXA3gaNtLjCqj90W0AKLYXGeePe", 1),
@@ -207,8 +232,8 @@
 
   
   -- Reclamaciones básicas
-    INSERT INTO reclamaciones (usuario_creador_id, usuario_responsable_id, descripcion) VALUES
-      (1, 1, "descripción reclamación 001"),
-      (1, 2, "descripción reclamación 002"),
-      (2, 3, "descripción reclamación 003")
+    INSERT INTO reclamaciones (usuario_creador_id, usuario_responsable_id, descripcion, tipo_id, prioridad_id, estado_id, franquicia_id, adjunto) VALUES
+      (1, 1, "descripción reclamación 001", 1, 2, 1, 1, "Adjunto_001"),
+      (1, 2, "descripción reclamación 002", 1, 2, 1, 2, "Adjunto_002"),
+      (2, 3, "descripción reclamación 003", 2, 1, 1, 1, "Adjunto_003")
     ;
