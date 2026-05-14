@@ -1,6 +1,6 @@
 <?php
 
-  require_once SERVICES_PATH .'/AuthService.php';
+  require_once SERVICES_PATH . '/AuthService.php';
 
   class AuthController {
     

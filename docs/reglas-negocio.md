@@ -205,6 +205,3 @@ Una reclamación puede pasar a estado RESUELTA cuando finaliza su gestión.
   - gestión operativa
   - cierre
 - para mantener trazabilidad y control del proceso.
-
-
-
