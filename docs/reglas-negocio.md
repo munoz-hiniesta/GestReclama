@@ -1,5 +1,13 @@
 # GestReclama · Reglas de negocio
 
+<!-- TOC  -->
+- [GestReclama · Reglas de negocio](#gestreclama--reglas-de-negocio)
+  - [Workflow principal de reclamaciones](#workflow-principal-de-reclamaciones)
+  - [Estados funcionales](#estados-funcionales)
+  - [Reglas de negocio](#reglas-de-negocio)
+  - [Restricciones funcionales generales](#restricciones-funcionales-generales)
+<!--/TOC  -->
+
 ## Workflow principal de reclamaciones
 
 El flujo principal de estados de una reclamación es:
