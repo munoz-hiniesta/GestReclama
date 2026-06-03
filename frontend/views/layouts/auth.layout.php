@@ -11,7 +11,13 @@
 
   <body>
 
-    <?php require_once __DIR__ . $vista; ?>
+    <?php 
+      if (file_exists($vista)) {
+        require_once $vista;
+      } else {
+        require_once __DIR__ . $vista;
+      }
+    ?>
 
   </body>
 

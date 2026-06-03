@@ -46,7 +46,7 @@
       } catch (Exception $e) {
         return [
           'success' => false,
-          'mensaje' => 'Error al guardar reclamación'
+          'mensaje' => 'Error al guardar reclamación: ' . $e->getMessage()
         ];
       }
     }

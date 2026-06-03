@@ -10,6 +10,12 @@
 
   switch ($action) {
     
+    case '':
+      $pageTitle = "login";
+      $vista = '/../auth/login.php'; 
+      $css = '/assets/css/login.css';
+    break;
+
     case 'login':
       // crea nuevo objeto de la clase AuthController,
       // llama al método login() y
@@ -48,6 +54,10 @@
       $reclamacionService = new ReclamacionService($pdo);
       $controller = new ReclamacionController($pdo, $reclamacionService);
       $respuesta = $controller->create();
+      // mostrar la misma vista de creación con el resultado (mensaje)
+      $vista = VIEWS_PATH . '/reclamaciones/create.php';
+      $pageTitle = 'Crear reclamación';
+      $css = CSS_PATH . '/reclamacion.create.css';
     break;
 
     default:
