@@ -65,6 +65,32 @@
         return [];
       }
     }
+
+    public function obtenerReclamacionPorId(int $id) {
+      try {
+        $sql = "SELECT id,
+                       descripcion,
+                       tipo_id,
+                       prioridad_id,
+                       estado_id,
+                       franquicia_id,
+                       adjunto,
+                       usuario_creador_id,
+                       fecha_creacion
+                  FROM reclamaciones
+                 WHERE id = :id
+                 LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        $reclamacion = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $reclamacion ?: null;
+      } catch (Exception $e) {
+        return null;
+      }
+    }
   }
 
 ?>

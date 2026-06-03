@@ -11,6 +11,7 @@
   // proteger rutas privadas mediante sesión PHP
   $protectedActions = [
     'reclamaciones.index',
+    'reclamaciones.show',
     'reclamaciones.create.view',
     'reclamaciones.create'
   ];
@@ -53,6 +54,17 @@
       $vista = $respuesta['vista'];
       $pageTitle = $respuesta['pageTitle'];
       $css = $respuesta['css'];
+    break;
+
+    case 'reclamaciones.show':
+      $reclamacionService = new ReclamacionService($pdo);
+      $controller = new ReclamacionController($pdo, $reclamacionService);
+      $respuesta = $controller->show();
+      $vista = $respuesta['vista'];
+      $pageTitle = $respuesta['pageTitle'];
+      $css = $respuesta['css'];
+      $reclamacion = $respuesta['reclamacion'] ?? null;
+      $error = $respuesta['error'] ?? null;
     break;
 
     case 'reclamaciones.create.view':

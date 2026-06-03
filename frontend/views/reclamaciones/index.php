@@ -17,6 +17,7 @@
             <th>Descripción</th>
             <th>Estado ID</th>
             <th>Fecha creación</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -26,6 +27,9 @@
               <td><?php echo htmlspecialchars($reclamacion['descripcion']); ?></td>
               <td><?php echo htmlspecialchars($reclamacion['estado_id']); ?></td>
               <td><?php echo htmlspecialchars($reclamacion['fecha_creacion']); ?></td>
+              <td>
+                <a href="index.php?action=reclamaciones.show&id=<?php echo urlencode($reclamacion['id']); ?>" class="btn-secondary">Ver</a>
+              </td>
             </tr>
           <?php endforeach; ?>
         </tbody>

@@ -86,7 +86,34 @@
 
     // mostrar una reclamación concreta (todos sus datos)
     public function show() {
+      $id = intval($_GET['id'] ?? 0);
 
+      if ($id <= 0) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/show.php',
+          'pageTitle' => 'Reclamación no encontrada',
+          'css' => CSS_PATH . '/reclamacion.index.css',
+          'error' => 'ID de reclamación no válido.'
+        ];
+      }
+
+      $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+
+      if (!$reclamacion) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/show.php',
+          'pageTitle' => 'Reclamación no encontrada',
+          'css' => CSS_PATH . '/reclamacion.index.css',
+          'error' => 'La reclamación solicitada no existe.'
+        ];
+      }
+
+      return [
+        'vista' => VIEWS_PATH . '/reclamaciones/show.php',
+        'pageTitle' => 'Ver reclamación #' . $id,
+        'css' => CSS_PATH . '/reclamacion.index.css',
+        'reclamacion' => $reclamacion
+      ];
     }
 
   }
