@@ -25,6 +25,17 @@
       $prioridad_id = intval($_POST['prioridad_id'] ?? 0);
       $telefono = trim($_POST['telefono'] ?? '');
       $email = trim($_POST['email'] ?? '');
+      $nombre_apellidos = trim($_POST['nombre_apellidos'] ?? '');
+      $fecha_incidente = trim($_POST['fecha_incidente'] ?? '');
+      $canal_entrada = trim($_POST['canal_entrada'] ?? '');
+      $solicitud_cliente = trim($_POST['solicitud_cliente'] ?? '');
+      $dni = trim($_POST['dni'] ?? '');
+      $direccion = trim($_POST['direccion'] ?? '');
+      $codigo_postal = trim($_POST['codigo_postal'] ?? '');
+      $ciudad = trim($_POST['ciudad'] ?? '');
+      $provincia = trim($_POST['provincia'] ?? '');
+      $observaciones_internas = trim($_POST['observaciones_internas'] ?? '');
+      $informacion_seguimiento = trim($_POST['informacion_seguimiento'] ?? '');
       $importe = trim($_POST['importe'] ?? '');
       $otros_datos = trim($_POST['otros_datos'] ?? '');
       $franquicia_id = intval($_POST['franquicia_id'] ?? 0) ?: 1;
@@ -66,6 +77,17 @@
         'prioridad_id' => $prioridad_id,
         'telefono' => $telefono !== '' ? $telefono : null,
         'email' => $email !== '' ? $email : null,
+        'nombre_apellidos' => $nombre_apellidos !== '' ? $nombre_apellidos : null,
+        'fecha_incidente' => $fecha_incidente !== '' ? $fecha_incidente : null,
+        'canal_entrada' => $canal_entrada !== '' ? $canal_entrada : null,
+        'solicitud_cliente' => $solicitud_cliente !== '' ? $solicitud_cliente : null,
+        'dni' => $dni !== '' ? $dni : null,
+        'direccion' => $direccion !== '' ? $direccion : null,
+        'codigo_postal' => $codigo_postal !== '' ? $codigo_postal : null,
+        'ciudad' => $ciudad !== '' ? $ciudad : null,
+        'provincia' => $provincia !== '' ? $provincia : null,
+        'observaciones_internas' => $observaciones_internas !== '' ? $observaciones_internas : null,
+        'informacion_seguimiento' => $informacion_seguimiento !== '' ? $informacion_seguimiento : null,
         'importe' => $importe !== '' ? $importe : null,
         'otros_datos' => $otros_datos !== '' ? $otros_datos : null,
         'estado_id' => 1,
@@ -161,6 +183,17 @@
         $prioridad_id = intval($_POST['prioridad_id'] ?? 0);
         $telefono = trim($_POST['telefono'] ?? '');
         $email = trim($_POST['email'] ?? '');
+        $nombre_apellidos = trim($_POST['nombre_apellidos'] ?? '');
+        $fecha_incidente = trim($_POST['fecha_incidente'] ?? '');
+        $canal_entrada = trim($_POST['canal_entrada'] ?? '');
+        $solicitud_cliente = trim($_POST['solicitud_cliente'] ?? '');
+        $dni = trim($_POST['dni'] ?? '');
+        $direccion = trim($_POST['direccion'] ?? '');
+        $codigo_postal = trim($_POST['codigo_postal'] ?? '');
+        $ciudad = trim($_POST['ciudad'] ?? '');
+        $provincia = trim($_POST['provincia'] ?? '');
+        $observaciones_internas = trim($_POST['observaciones_internas'] ?? '');
+        $informacion_seguimiento = trim($_POST['informacion_seguimiento'] ?? '');
         $importe = trim($_POST['importe'] ?? '');
         $otros_datos = trim($_POST['otros_datos'] ?? '');
 
@@ -183,6 +216,17 @@
           'prioridad_id' => $prioridad_id,
           'telefono' => $telefono !== '' ? $telefono : null,
           'email' => $email !== '' ? $email : null,
+          'nombre_apellidos' => $nombre_apellidos !== '' ? $nombre_apellidos : null,
+          'fecha_incidente' => $fecha_incidente !== '' ? $fecha_incidente : null,
+          'canal_entrada' => $canal_entrada !== '' ? $canal_entrada : null,
+          'solicitud_cliente' => $solicitud_cliente !== '' ? $solicitud_cliente : null,
+          'dni' => $dni !== '' ? $dni : null,
+          'direccion' => $direccion !== '' ? $direccion : null,
+          'codigo_postal' => $codigo_postal !== '' ? $codigo_postal : null,
+          'ciudad' => $ciudad !== '' ? $ciudad : null,
+          'provincia' => $provincia !== '' ? $provincia : null,
+          'observaciones_internas' => $observaciones_internas !== '' ? $observaciones_internas : null,
+          'informacion_seguimiento' => $informacion_seguimiento !== '' ? $informacion_seguimiento : null,
           'importe' => $importe !== '' ? $importe : null,
           'otros_datos' => $otros_datos !== '' ? $otros_datos : null
         ]);

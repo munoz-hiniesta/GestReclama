@@ -43,6 +43,50 @@
             <td><?php echo htmlspecialchars($reclamacion['telefono'] ?? '—'); ?></td>
           </tr>
           <tr>
+            <th>Nombre y apellidos</th>
+            <td><?php echo htmlspecialchars($reclamacion['nombre_apellidos'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Fecha incidente</th>
+            <td><?php echo htmlspecialchars($reclamacion['fecha_incidente'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Canal entrada</th>
+            <td><?php echo htmlspecialchars($reclamacion['canal_entrada'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Solicitud cliente</th>
+            <td><?php echo htmlspecialchars($reclamacion['solicitud_cliente'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>DNI</th>
+            <td><?php echo htmlspecialchars($reclamacion['dni'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Dirección</th>
+            <td><?php echo nl2br(htmlspecialchars($reclamacion['direccion'] ?? '—')); ?></td>
+          </tr>
+          <tr>
+            <th>Código postal</th>
+            <td><?php echo htmlspecialchars($reclamacion['codigo_postal'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Ciudad</th>
+            <td><?php echo htmlspecialchars($reclamacion['ciudad'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Provincia</th>
+            <td><?php echo htmlspecialchars($reclamacion['provincia'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Observaciones internas</th>
+            <td><?php echo nl2br(htmlspecialchars($reclamacion['observaciones_internas'] ?? '—')); ?></td>
+          </tr>
+          <tr>
+            <th>Información seguimiento</th>
+            <td><?php echo nl2br(htmlspecialchars($reclamacion['informacion_seguimiento'] ?? '—')); ?></td>
+          </tr>
+          <tr>
             <th>Email</th>
             <td><?php echo htmlspecialchars($reclamacion['email'] ?? '—'); ?></td>
           </tr>

@@ -52,6 +52,75 @@
       </div>
 
       <div class="form-group">
+        <label for="nombre_apellidos">Nombre y apellidos (opcional):</label>
+        <input type="text" id="nombre_apellidos" name="nombre_apellidos" value="<?php echo htmlspecialchars($reclamacion['nombre_apellidos'] ?? ''); ?>">
+      </div>
+
+      <div class="form-group">
+        <label for="fecha_incidente">Fecha del incidente (opcional):</label>
+        <input type="date" id="fecha_incidente" name="fecha_incidente" value="<?php echo htmlspecialchars($reclamacion['fecha_incidente'] ?? ''); ?>">
+      </div>
+
+      <div class="form-group">
+        <label for="canal_entrada">Canal de entrada (opcional):</label>
+        <select id="canal_entrada" name="canal_entrada">
+          <option value="">-- Seleccionar canal --</option>
+          <option value="presencial" <?php echo ($reclamacion['canal_entrada'] ?? '') == 'presencial' ? 'selected' : ''; ?>>Presencial</option>
+          <option value="telefono" <?php echo ($reclamacion['canal_entrada'] ?? '') == 'telefono' ? 'selected' : ''; ?>>Teléfono</option>
+          <option value="email" <?php echo ($reclamacion['canal_entrada'] ?? '') == 'email' ? 'selected' : ''; ?>>Email</option>
+          <option value="web" <?php echo ($reclamacion['canal_entrada'] ?? '') == 'web' ? 'selected' : ''; ?>>Web</option>
+          <option value="app" <?php echo ($reclamacion['canal_entrada'] ?? '') == 'app' ? 'selected' : ''; ?>>App</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="solicitud_cliente">Solicitud del cliente (opcional):</label>
+        <select id="solicitud_cliente" name="solicitud_cliente">
+          <option value="">-- Seleccionar solicitud --</option>
+          <option value="devolucion" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'devolucion' ? 'selected' : ''; ?>>Devolución</option>
+          <option value="reparacion" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'reparacion' ? 'selected' : ''; ?>>Reparación</option>
+          <option value="compensacion" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'compensacion' ? 'selected' : ''; ?>>Compensación</option>
+          <option value="informacion" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'informacion' ? 'selected' : ''; ?>>Informacion</option>
+          <option value="otra" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'otra' ? 'selected' : ''; ?>>Otra</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="dni">DNI (opcional):</label>
+        <input type="text" id="dni" name="dni" value="<?php echo htmlspecialchars($reclamacion['dni'] ?? ''); ?>">
+      </div>
+
+      <div class="form-group">
+        <label for="direccion">Dirección (opcional):</label>
+        <input type="text" id="direccion" name="direccion" value="<?php echo htmlspecialchars($reclamacion['direccion'] ?? ''); ?>">
+      </div>
+
+      <div class="form-group">
+        <label for="codigo_postal">Código postal (opcional):</label>
+        <input type="text" id="codigo_postal" name="codigo_postal" value="<?php echo htmlspecialchars($reclamacion['codigo_postal'] ?? ''); ?>">
+      </div>
+
+      <div class="form-group">
+        <label for="ciudad">Ciudad (opcional):</label>
+        <input type="text" id="ciudad" name="ciudad" value="<?php echo htmlspecialchars($reclamacion['ciudad'] ?? ''); ?>">
+      </div>
+
+      <div class="form-group">
+        <label for="provincia">Provincia (opcional):</label>
+        <input type="text" id="provincia" name="provincia" value="<?php echo htmlspecialchars($reclamacion['provincia'] ?? ''); ?>">
+      </div>
+
+      <div class="form-group">
+        <label for="observaciones_internas">Observaciones internas (opcional):</label>
+        <textarea id="observaciones_internas" name="observaciones_internas"><?php echo htmlspecialchars($reclamacion['observaciones_internas'] ?? ''); ?></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="informacion_seguimiento">Información de seguimiento (opcional):</label>
+        <textarea id="informacion_seguimiento" name="informacion_seguimiento"><?php echo htmlspecialchars($reclamacion['informacion_seguimiento'] ?? ''); ?></textarea>
+      </div>
+
+      <div class="form-group">
         <label for="email">Email (opcional):</label>
         <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($reclamacion['email'] ?? ''); ?>" placeholder="ejemplo@dominio.com">
       </div>

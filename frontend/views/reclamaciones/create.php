@@ -48,6 +48,75 @@
     </div>
 
     <div class="form-group">
+      <label for="nombre_apellidos">Nombre y apellidos (opcional):</label>
+      <input type="text" id="nombre_apellidos" name="nombre_apellidos" placeholder="Nombre Apellidos">
+    </div>
+
+    <div class="form-group">
+      <label for="fecha_incidente">Fecha del incidente (opcional):</label>
+      <input type="date" id="fecha_incidente" name="fecha_incidente">
+    </div>
+
+    <div class="form-group">
+      <label for="canal_entrada">Canal de entrada (opcional):</label>
+      <select id="canal_entrada" name="canal_entrada">
+        <option value="">-- Seleccionar canal --</option>
+        <option value="presencial">Presencial</option>
+        <option value="telefono">Teléfono</option>
+        <option value="email">Email</option>
+        <option value="web">Web</option>
+        <option value="app">App</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="solicitud_cliente">Solicitud del cliente (opcional):</label>
+      <select id="solicitud_cliente" name="solicitud_cliente">
+        <option value="">-- Seleccionar solicitud --</option>
+        <option value="devolucion">Devolución</option>
+        <option value="reparacion">Reparación</option>
+        <option value="compensacion">Compensación</option>
+        <option value="informacion">Informacion</option>
+        <option value="otra">Otra</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="dni">DNI (opcional):</label>
+      <input type="text" id="dni" name="dni">
+    </div>
+
+    <div class="form-group">
+      <label for="direccion">Dirección (opcional):</label>
+      <input type="text" id="direccion" name="direccion">
+    </div>
+
+    <div class="form-group">
+      <label for="codigo_postal">Código postal (opcional):</label>
+      <input type="text" id="codigo_postal" name="codigo_postal">
+    </div>
+
+    <div class="form-group">
+      <label for="ciudad">Ciudad (opcional):</label>
+      <input type="text" id="ciudad" name="ciudad">
+    </div>
+
+    <div class="form-group">
+      <label for="provincia">Provincia (opcional):</label>
+      <input type="text" id="provincia" name="provincia">
+    </div>
+
+    <div class="form-group">
+      <label for="observaciones_internas">Observaciones internas (opcional):</label>
+      <textarea id="observaciones_internas" name="observaciones_internas"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="informacion_seguimiento">Información de seguimiento (opcional):</label>
+      <textarea id="informacion_seguimiento" name="informacion_seguimiento"></textarea>
+    </div>
+
+    <div class="form-group">
       <label for="email">Email (opcional):</label>
       <input type="email" id="email" name="email" placeholder="ejemplo@dominio.com">
     </div>

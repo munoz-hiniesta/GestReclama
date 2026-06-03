@@ -119,6 +119,19 @@
 
     adjunto VARCHAR(255) NOT NULL,
 
+    -- Campos añadidos para soporte de validación según RN-016
+    nombre_apellidos VARCHAR(150),
+    fecha_incidente DATE,
+    canal_entrada VARCHAR(50),
+    solicitud_cliente VARCHAR(50),
+    dni VARCHAR(20),
+    direccion VARCHAR(255),
+    codigo_postal VARCHAR(20),
+    ciudad VARCHAR(100),
+    provincia VARCHAR(100),
+    observaciones_internas TEXT,
+    informacion_seguimiento TEXT,
+
     activo BOOLEAN DEFAULT TRUE,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP NULL DEFAULT NULL,
