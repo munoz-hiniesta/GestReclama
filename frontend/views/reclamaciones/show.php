@@ -39,6 +39,22 @@
             <td><?php echo htmlspecialchars($reclamacion['franquicia_id']); ?></td>
           </tr>
           <tr>
+            <th>Teléfono</th>
+            <td><?php echo htmlspecialchars($reclamacion['telefono'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Email</th>
+            <td><?php echo htmlspecialchars($reclamacion['email'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Importe</th>
+            <td><?php echo htmlspecialchars($reclamacion['importe'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Otros datos</th>
+            <td><?php echo nl2br(htmlspecialchars($reclamacion['otros_datos'] ?? '—')); ?></td>
+          </tr>
+          <tr>
             <th>Adjunto</th>
             <td><?php echo htmlspecialchars($reclamacion['adjunto'] ?? '—'); ?></td>
           </tr>

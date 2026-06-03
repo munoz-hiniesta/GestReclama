@@ -29,6 +29,9 @@
               <td><?php echo htmlspecialchars($reclamacion['fecha_creacion']); ?></td>
               <td>
                 <a href="index.php?action=reclamaciones.show&id=<?php echo urlencode($reclamacion['id']); ?>" class="btn-secondary">Ver</a>
+                <?php if (intval($reclamacion['estado_id']) === 1): ?>
+                  <a href="index.php?action=reclamaciones.edit&id=<?php echo urlencode($reclamacion['id']); ?>" class="btn-secondary">Editar</a>
+                <?php endif; ?>
               </td>
             </tr>
           <?php endforeach; ?>

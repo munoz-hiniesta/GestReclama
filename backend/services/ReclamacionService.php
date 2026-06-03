@@ -14,6 +14,10 @@
           INTO reclamaciones (descripcion,
                               tipo_id,
                               prioridad_id,
+                              telefono,
+                              email,
+                              importe,
+                              otros_datos,
                               estado_id,
                               franquicia_id,
                               adjunto,
@@ -22,6 +26,10 @@
           VALUES (:descripcion,
                   :tipo_id,
                   :prioridad_id,
+                  :telefono,
+                  :email,
+                  :importe,
+                  :otros_datos,
                   :estado_id,
                   :franquicia_id,
                   :adjunto,
@@ -33,6 +41,10 @@
           ':descripcion' => $datos['descripcion'],
           ':tipo_id' => $datos['tipo_id'],
           ':prioridad_id' => $datos['prioridad_id'],
+          ':telefono' => $datos['telefono'],
+          ':email' => $datos['email'],
+          ':importe' => $datos['importe'],
+          ':otros_datos' => $datos['otros_datos'],
           ':estado_id' => $datos['estado_id'],
           ':franquicia_id' => $datos['franquicia_id'],
           ':adjunto' => $datos['adjunto'],
@@ -74,6 +86,10 @@
                        prioridad_id,
                        estado_id,
                        franquicia_id,
+                       telefono,
+                       email,
+                       importe,
+                       otros_datos,
                        adjunto,
                        usuario_creador_id,
                        fecha_creacion
@@ -89,6 +105,50 @@
         return $reclamacion ?: null;
       } catch (Exception $e) {
         return null;
+      }
+    }
+
+    public function actualizarBorrador(int $id, array $datos) {
+      try {
+        $sql = "UPDATE reclamaciones
+                   SET descripcion = :descripcion,
+                       tipo_id = :tipo_id,
+                       prioridad_id = :prioridad_id,
+                       telefono = :telefono,
+                       email = :email,
+                       importe = :importe,
+                       otros_datos = :otros_datos
+                 WHERE id = :id
+                   AND estado_id = 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+          ':descripcion' => $datos['descripcion'],
+          ':tipo_id' => $datos['tipo_id'],
+          ':prioridad_id' => $datos['prioridad_id'],
+          ':telefono' => $datos['telefono'],
+          ':email' => $datos['email'],
+          ':importe' => $datos['importe'],
+          ':otros_datos' => $datos['otros_datos'],
+          ':id' => $id
+        ]);
+
+        if ($stmt->rowCount() === 0) {
+          return [
+            'success' => false,
+            'mensaje' => 'No se pudo actualizar la reclamación. Asegúrese de que está en estado borrador.'
+          ];
+        }
+
+        return [
+          'success' => true,
+          'mensaje' => 'Reclamación actualizada correctamente.'
+        ];
+      } catch (Exception $e) {
+        return [
+          'success' => false,
+          'mensaje' => 'Error al actualizar reclamación: ' . $e->getMessage()
+        ];
       }
     }
   }

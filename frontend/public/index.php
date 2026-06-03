@@ -12,6 +12,7 @@
   $protectedActions = [
     'reclamaciones.index',
     'reclamaciones.show',
+    'reclamaciones.edit',
     'reclamaciones.create.view',
     'reclamaciones.create'
   ];
@@ -65,6 +66,18 @@
       $css = $respuesta['css'];
       $reclamacion = $respuesta['reclamacion'] ?? null;
       $error = $respuesta['error'] ?? null;
+    break;
+
+    case 'reclamaciones.edit':
+      $reclamacionService = new ReclamacionService($pdo);
+      $controller = new ReclamacionController($pdo, $reclamacionService);
+      $respuesta = $controller->edit();
+      $vista = $respuesta['vista'];
+      $pageTitle = $respuesta['pageTitle'];
+      $css = $respuesta['css'];
+      $reclamacion = $respuesta['reclamacion'] ?? null;
+      $error = $respuesta['error'] ?? null;
+      $respuesta = $respuesta['respuesta'] ?? [];
     break;
 
     case 'reclamaciones.create.view':

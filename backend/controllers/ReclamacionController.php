@@ -23,7 +23,15 @@
       $descripcion = trim($_POST['descripcion'] ?? '');
       $tipo_id = intval($_POST['tipo_id'] ?? 0);
       $prioridad_id = intval($_POST['prioridad_id'] ?? 0);
+      $telefono = trim($_POST['telefono'] ?? '');
+      $email = trim($_POST['email'] ?? '');
+      $importe = trim($_POST['importe'] ?? '');
+      $otros_datos = trim($_POST['otros_datos'] ?? '');
       $franquicia_id = intval($_POST['franquicia_id'] ?? 0) ?: 1;
+
+      if ($telefono !== '' && !preg_match('/^[0-9+\s()\-]{6,20}$/', $telefono)) {
+        return ['success' => false, 'mensaje' => 'Teléfono no tiene un formato válido.'];
+      }
 
       // usuario creador desde sesión si está disponible
       $usuario_creador_id = $_SESSION['usuario_id'] ?? 1;
@@ -56,6 +64,10 @@
         'descripcion' => $descripcion,
         'tipo_id' => $tipo_id,
         'prioridad_id' => $prioridad_id,
+        'telefono' => $telefono !== '' ? $telefono : null,
+        'email' => $email !== '' ? $email : null,
+        'importe' => $importe !== '' ? $importe : null,
+        'otros_datos' => $otros_datos !== '' ? $otros_datos : null,
         'estado_id' => 1,
         'franquicia_id' => $franquicia_id,
         'adjunto' => $adjunto_nombre,
@@ -65,11 +77,6 @@
       $resultado = $this->reclamacionService->guardarBorrador($datos);
 
       return $resultado;
-    }
-
-    // editar borrador reclamación (más adelante, editar pre-validación)
-    public function edit() {
-
     }
 
     // mostrar reclamaciones en estado borrador (más adelante filtros)
@@ -112,6 +119,91 @@
         'vista' => VIEWS_PATH . '/reclamaciones/show.php',
         'pageTitle' => 'Ver reclamación #' . $id,
         'css' => CSS_PATH . '/reclamacion.index.css',
+        'reclamacion' => $reclamacion
+      ];
+    }
+
+    public function edit() {
+      $id = intval($_REQUEST['id'] ?? 0);
+
+      if ($id <= 0) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
+          'pageTitle' => 'Editar reclamación',
+          'css' => CSS_PATH . '/reclamacion.create.css',
+          'error' => 'ID de reclamación no válido.'
+        ];
+      }
+
+      $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+
+      if (!$reclamacion) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
+          'pageTitle' => 'Editar reclamación',
+          'css' => CSS_PATH . '/reclamacion.create.css',
+          'error' => 'La reclamación no existe.'
+        ];
+      }
+
+      if ($reclamacion['estado_id'] !== '1' && $reclamacion['estado_id'] !== 1) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
+          'pageTitle' => 'Editar reclamación',
+          'css' => CSS_PATH . '/reclamacion.create.css',
+          'error' => 'Solo se pueden editar reclamaciones en borrador.'
+        ];
+      }
+
+      if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $descripcion = trim($_POST['descripcion'] ?? '');
+        $tipo_id = intval($_POST['tipo_id'] ?? 0);
+        $prioridad_id = intval($_POST['prioridad_id'] ?? 0);
+        $telefono = trim($_POST['telefono'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $importe = trim($_POST['importe'] ?? '');
+        $otros_datos = trim($_POST['otros_datos'] ?? '');
+
+        if ($telefono !== '' && !preg_match('/^[0-9+\s()\-]{6,20}$/', $telefono)) {
+          return [
+            'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
+            'pageTitle' => 'Editar reclamación',
+            'css' => CSS_PATH . '/reclamacion.create.css',
+            'reclamacion' => $reclamacion,
+            'respuesta' => [
+              'success' => false,
+              'mensaje' => 'Teléfono no tiene un formato válido.'
+            ]
+          ];
+        }
+
+        $resultado = $this->reclamacionService->actualizarBorrador($id, [
+          'descripcion' => $descripcion,
+          'tipo_id' => $tipo_id,
+          'prioridad_id' => $prioridad_id,
+          'telefono' => $telefono !== '' ? $telefono : null,
+          'email' => $email !== '' ? $email : null,
+          'importe' => $importe !== '' ? $importe : null,
+          'otros_datos' => $otros_datos !== '' ? $otros_datos : null
+        ]);
+
+        if ($resultado['success']) {
+          $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+        }
+
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
+          'pageTitle' => 'Editar reclamación',
+          'css' => CSS_PATH . '/reclamacion.create.css',
+          'reclamacion' => $reclamacion,
+          'respuesta' => $resultado
+        ];
+      }
+
+      return [
+        'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
+        'pageTitle' => 'Editar reclamación',
+        'css' => CSS_PATH . '/reclamacion.create.css',
         'reclamacion' => $reclamacion
       ];
     }

@@ -43,6 +43,26 @@
     </div>
 
     <div class="form-group">
+      <label for="telefono">Teléfono (opcional):</label>
+      <input type="text" id="telefono" name="telefono" placeholder="Ej. 600123456">
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email (opcional):</label>
+      <input type="email" id="email" name="email" placeholder="ejemplo@dominio.com">
+    </div>
+
+    <div class="form-group">
+      <label for="importe">Importe (opcional):</label>
+      <input type="text" id="importe" name="importe" placeholder="0.00">
+    </div>
+
+    <div class="form-group">
+      <label for="otros_datos">Otros datos complementarios (opcional):</label>
+      <textarea id="otros_datos" name="otros_datos"></textarea>
+    </div>
+
+    <div class="form-group">
       <label for="adjunto">Archivo adjunto:</label>
       <input type="file" id="adjunto" name="adjunto">
     </div>
