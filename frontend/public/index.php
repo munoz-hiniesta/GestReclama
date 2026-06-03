@@ -30,12 +30,24 @@
     break;
       
     case 'reclamaciones.index':
-      $reclamacionService = new ReclamacionService();
+      $reclamacionService = new ReclamacionService($pdo);
       $controller = new ReclamacionController($pdo, $reclamacionService); 
       $respuesta = $controller->index();
       $vista = $respuesta['vista'];
       $pageTitle = $respuesta['pageTitle'];
       $css = $respuesta['css'];
+    break;
+
+    case 'reclamaciones.create.view':
+      $vista = VIEWS_PATH . '/reclamaciones/create.php';
+      $pageTitle = 'Crear reclamación';
+      $css = CSS_PATH . '/reclamacion.create.css';
+    break;
+
+    case 'reclamaciones.create':
+      $reclamacionService = new ReclamacionService($pdo);
+      $controller = new ReclamacionController($pdo, $reclamacionService);
+      $respuesta = $controller->create();
     break;
 
     default:

@@ -19,7 +19,19 @@
 
     // crear borrador reclamación (más adelante, validar)
     public function create() {
+      $datos = [
+        'descripcion' => $_POST['descripcion'] ?? '',
+        'tipo_id' => $_POST['tipo_id'] ?? 0,
+        'prioridad_id' => $_POST['prioridad_id'] ?? 0,
+        'estado_id' => 1,
+        'franquicia_id' => 1,
+        'adjunto' => $_POST['adjunto'] ?? null,
+        'usuario_creador_id' => 1
+      ];
 
+      $resultado = $this->reclamacionService->guardarBorrador($datos);
+
+      return $resultado;
     }
 
     // editar borrador reclamación (más adelante, editar pre-validación)
