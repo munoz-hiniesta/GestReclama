@@ -8,6 +8,17 @@
   require_once CONTROLLERS_PATH . '/AuthController.php';
   require_once CONTROLLERS_PATH . '/ReclamacionController.php';
 
+  // proteger rutas privadas mediante sesión PHP
+  $protectedActions = [
+    'reclamaciones.index',
+    'reclamaciones.create.view',
+    'reclamaciones.create'
+  ];
+
+  if (in_array($action, $protectedActions, true)) {
+    require_once MIDDLEWARE_PATH . '/auth.php';
+  }
+
   switch ($action) {
     
     case '':
