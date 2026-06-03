@@ -14,7 +14,8 @@
     'reclamaciones.show',
     'reclamaciones.edit',
     'reclamaciones.create.view',
-    'reclamaciones.create'
+    'reclamaciones.create',
+    'reclamaciones.validar'
   ];
 
   if (in_array($action, $protectedActions, true)) {
@@ -66,12 +67,25 @@
       $css = $respuesta['css'];
       $reclamacion = $respuesta['reclamacion'] ?? null;
       $error = $respuesta['error'] ?? null;
+      $respuesta = $respuesta['respuesta'] ?? [];
     break;
 
     case 'reclamaciones.edit':
       $reclamacionService = new ReclamacionService($pdo);
       $controller = new ReclamacionController($pdo, $reclamacionService);
       $respuesta = $controller->edit();
+      $vista = $respuesta['vista'];
+      $pageTitle = $respuesta['pageTitle'];
+      $css = $respuesta['css'];
+      $reclamacion = $respuesta['reclamacion'] ?? null;
+      $error = $respuesta['error'] ?? null;
+      $respuesta = $respuesta['respuesta'] ?? [];
+    break;
+
+    case 'reclamaciones.validar':
+      $reclamacionService = new ReclamacionService($pdo);
+      $controller = new ReclamacionController($pdo, $reclamacionService);
+      $respuesta = $controller->validar();
       $vista = $respuesta['vista'];
       $pageTitle = $respuesta['pageTitle'];
       $css = $respuesta['css'];

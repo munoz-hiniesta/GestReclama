@@ -44,6 +44,10 @@
         return ['success' => false, 'mensaje' => 'Teléfono no tiene un formato válido.'];
       }
 
+      if ($fecha_incidente !== '' && $fecha_incidente > date('Y-m-d')) {
+        return ['success' => false, 'mensaje' => 'La fecha del incidente no puede ser posterior a la fecha actual.'];
+      }
+
       // usuario creador desde sesión si está disponible
       $usuario_creador_id = $_SESSION['usuario_id'] ?? 1;
 
@@ -249,6 +253,47 @@
         'pageTitle' => 'Editar reclamación',
         'css' => CSS_PATH . '/reclamacion.create.css',
         'reclamacion' => $reclamacion
+      ];
+    }
+
+    public function validar() {
+      $id = intval($_GET['id'] ?? 0);
+
+      if ($id <= 0) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/show.php',
+          'pageTitle' => 'Reclamación no encontrada',
+          'css' => CSS_PATH . '/reclamacion.index.css',
+          'error' => 'ID de reclamación no válido.'
+        ];
+      }
+
+      // obtener la reclamación antes de validar
+      $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+
+      if (!$reclamacion) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/show.php',
+          'pageTitle' => 'Reclamación no encontrada',
+          'css' => CSS_PATH . '/reclamacion.index.css',
+          'error' => 'La reclamación solicitada no existe.'
+        ];
+      }
+
+      // validar la reclamación
+      $resultado = $this->reclamacionService->validarReclamacion($id);
+
+      // si la validación fue exitosa, obtener los datos actualizados
+      if ($resultado['success']) {
+        $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+      }
+
+      return [
+        'vista' => VIEWS_PATH . '/reclamaciones/show.php',
+        'pageTitle' => 'Ver reclamación #' . $id,
+        'css' => CSS_PATH . '/reclamacion.index.css',
+        'reclamacion' => $reclamacion,
+        'respuesta' => $resultado
       ];
     }
 

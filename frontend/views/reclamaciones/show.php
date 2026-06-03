@@ -9,6 +9,15 @@
   <?php if (!empty($error)): ?>
     <div class="mensaje error"><?php echo htmlspecialchars($error); ?></div>
   <?php else: ?>
+    
+    <?php if (!empty($respuesta) && is_array($respuesta) && array_key_exists('success', $respuesta)): ?>
+      <?php 
+        $clase = $respuesta['success'] ? 'exito' : 'error';
+        $mensaje = $respuesta['mensaje'] ?? '';
+      ?>
+      <div class="mensaje <?php echo htmlspecialchars($clase); ?>"><?php echo htmlspecialchars($mensaje); ?></div>
+    <?php endif; ?>
+    
     <h1>Reclamación #<?php echo htmlspecialchars($reclamacion['id']); ?></h1>
 
     <div class="detalle-reclamacion">
@@ -114,6 +123,10 @@
       </table>
   
       <div class="acciones-index">
+        <?php if ($reclamacion['estado_id'] == 1): ?>
+          <a href="index.php?action=reclamaciones.validar&id=<?php echo htmlspecialchars($reclamacion['id']); ?>" class="btn-primary">Validar reclamación</a>
+          <a href="index.php?action=reclamaciones.edit&id=<?php echo htmlspecialchars($reclamacion['id']); ?>" class="btn-secondary">Editar</a>
+        <?php endif; ?>
         <a href="index.php?action=reclamaciones.index" class="btn-secondary">Volver al listado</a>
         <a href="panel.php" class="btn-secondary">Volver al panel</a>
       </div>

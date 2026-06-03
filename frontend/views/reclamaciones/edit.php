@@ -58,7 +58,7 @@
 
       <div class="form-group">
         <label for="fecha_incidente">Fecha del incidente (opcional):</label>
-        <input type="date" id="fecha_incidente" name="fecha_incidente" value="<?php echo htmlspecialchars($reclamacion['fecha_incidente'] ?? ''); ?>">
+        <input type="date" id="fecha_incidente" name="fecha_incidente" value="<?php echo htmlspecialchars($reclamacion['fecha_incidente'] ?? ''); ?>" max="<?php echo date('Y-m-d'); ?>">
       </div>
 
       <div class="form-group">
@@ -139,6 +139,9 @@
     </form>
 
     <div class="acciones-crear">
+      <?php if (($reclamacion['estado_id'] ?? '') == 1): ?>
+        <a href="index.php?action=reclamaciones.validar&id=<?php echo htmlspecialchars($reclamacion['id']); ?>" class="btn-primary">Validar reclamación</a>
+      <?php endif; ?>
       <a href="index.php?action=reclamaciones.index" class="btn-secondary">Volver al listado</a>
     </div>
 

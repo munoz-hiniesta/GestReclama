@@ -54,7 +54,7 @@
 
     <div class="form-group">
       <label for="fecha_incidente">Fecha del incidente (opcional):</label>
-      <input type="date" id="fecha_incidente" name="fecha_incidente">
+      <input type="date" id="fecha_incidente" name="fecha_incidente" max="<?php echo date('Y-m-d'); ?>">
     </div>
 
     <div class="form-group">

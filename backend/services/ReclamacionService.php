@@ -217,6 +217,98 @@
         ];
       }
     }
+
+    public function validarReclamacion(int $id) {
+      try {
+        // obtener la reclamación
+        $reclamacion = $this->obtenerReclamacionPorId($id);
+        
+        if (!$reclamacion) {
+          return [
+            'success' => false,
+            'mensaje' => 'La reclamación no existe.'
+          ];
+        }
+
+        // verificar que está en estado BORRADOR (1)
+        if ($reclamacion['estado_id'] != 1) {
+          return [
+            'success' => false,
+            'mensaje' => 'Solo se pueden validar reclamaciones en estado BORRADOR.'
+          ];
+        }
+
+        // validar datos obligatorios según RN-016
+        $errores = [];
+
+        // validar nombre_apellidos
+        if (empty($reclamacion['nombre_apellidos'])) {
+          $errores[] = 'Nombre y apellidos es obligatorio.';
+        }
+
+        // validar al menos una vía de contacto (teléfono o email)
+        if (empty($reclamacion['telefono']) && empty($reclamacion['email'])) {
+          $errores[] = 'Debe indicar al menos un teléfono o correo electrónico.';
+        }
+
+        // validar fecha_incidente
+        if (empty($reclamacion['fecha_incidente'])) {
+          $errores[] = 'Fecha del incidente es obligatoria.';
+        } elseif ($reclamacion['fecha_incidente'] > date('Y-m-d')) {
+          $errores[] = 'La fecha del incidente no puede ser posterior a la fecha actual.';
+        }
+
+        // validar canal_entrada
+        if (empty($reclamacion['canal_entrada'])) {
+          $errores[] = 'Canal de entrada es obligatorio.';
+        }
+
+        // validar solicitud_cliente
+        if (empty($reclamacion['solicitud_cliente'])) {
+          $errores[] = 'Solicitud del cliente es obligatoria.';
+        }
+
+        // validar documento adjunto
+        if (empty($reclamacion['adjunto'])) {
+          $errores[] = 'Documento adjunto es obligatorio.';
+        }
+
+        // si hay errores, devolverlos sin cambiar estado
+        if (!empty($errores)) {
+          return [
+            'success' => false,
+            'mensaje' => 'Validación fallida. Errores encontrados: ' . implode(' ', $errores)
+          ];
+        }
+
+        // si todas las validaciones son correctas, cambiar estado a PENDIENTE (2)
+        $sql = "UPDATE reclamaciones
+                   SET estado_id = 2,
+                       fecha_actualizacion = NOW()
+                 WHERE id = :id
+                   AND estado_id = 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        if ($stmt->rowCount() === 0) {
+          return [
+            'success' => false,
+            'mensaje' => 'No se pudo actualizar el estado de la reclamación.'
+          ];
+        }
+
+        return [
+          'success' => true,
+          'mensaje' => 'Reclamación validada correctamente. Estado actualizado a PENDIENTE.'
+        ];
+      } catch (Exception $e) {
+        return [
+          'success' => false,
+          'mensaje' => 'Error al validar reclamación: ' . $e->getMessage()
+        ];
+      }
+    }
   }
 
 ?>
