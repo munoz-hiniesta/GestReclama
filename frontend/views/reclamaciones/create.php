@@ -51,4 +51,10 @@
 
   </form>
 
+  <div class="acciones-crear">
+    <form method="GET" action="panel.php">
+      <button type="submit" class="btn-secondary">Volver al panel</button>
+    </form>
+  </div>
+
 </div>

@@ -74,10 +74,13 @@
 
     // mostrar reclamaciones en estado borrador (más adelante filtros)
     public function index() {
+      $reclamaciones = $this->reclamacionService->obtenerReclamaciones();
+
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/index.php',
         'pageTitle' => 'Índice de reclamaciones',
-        'css' => CSS_PATH . '/reclamacion.index.css'
+        'css' => CSS_PATH . '/reclamacion.index.css',
+        'reclamaciones' => $reclamaciones
       ];
     }
 

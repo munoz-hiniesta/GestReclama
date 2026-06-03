@@ -1,0 +1,71 @@
+.container-index-reclamacion {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.container-index-reclamacion h1 {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.tabla-reclamaciones {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.tabla-reclamaciones th,
+.tabla-reclamaciones td {
+  border: 1px solid #d8d8d8;
+  padding: 0.75rem 0.85rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.tabla-reclamaciones th {
+  background: #f2f2f2;
+  font-weight: 600;
+}
+
+.tabla-reclamaciones tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.mensaje.info {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #bdd7f4;
+  background: #eef6ff;
+  color: #174a80;
+  border-radius: 6px;
+}
+
+.acciones-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: #3f4b59;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #2f3740;
+}
