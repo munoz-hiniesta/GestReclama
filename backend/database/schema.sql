@@ -233,7 +233,9 @@
     INSERT INTO usuarios (nombre, email, password, rol_Id) VALUES
       ("nombre_001", "email_001@gestreclama.com", "$2y$10$DJAMSFPlG9ahlHfMAGEzCeXKkluXA3gaNtLjCqj90W0AKLYXGeePe", 1),
       ("nombre_002", "email_002@gestreclama.com", "$2y$10$Rqji33gzVVRocPUrgC1EROaJLLBgbzkMtVu.JpuAfsDNkicG3/YmW", 2),
-      ("nombre_003", "email_003@gestreclama.com", "$2y$10$qB3XivQs7U37.tCPMRLel.Q3G27tT8/P3J0XoIJn3Rev.LeeLbxFW", 3)
+      ("nombre_003", "email_003@gestreclama.com", "$2y$10$qB3XivQs7U37.tCPMRLel.Q3G27tT8/P3J0XoIJn3Rev.LeeLbxFW", 3), 
+      ("nombre_004", "email_004@gestreclama.com", "$2y$10$QER7CY06gl8b.DiYdspSYOWy.JJ0ng5dYUGa4IHDDbq/ATkwM3lMy", 4),
+      ("nombre_005", "email_005@gestreclama.com", "$2y$10$a3nOYe7UUyosYuwhiYgc1e8IEs6.bZKU1AN09m0frSudazQBCo1GC", 5)
     ;
 
   -- Franquicias básicas

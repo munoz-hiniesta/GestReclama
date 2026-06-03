@@ -139,7 +139,7 @@
     </form>
 
     <div class="acciones-crear">
-      <?php if (($reclamacion['estado_id'] ?? '') == 1): ?>
+      <?php if (($reclamacion['estado_id'] ?? '') == 1 && ($_SESSION['rol'] ?? 'trabajador') === 'encargado'): ?>
         <a href="index.php?action=reclamaciones.validar&id=<?php echo htmlspecialchars($reclamacion['id']); ?>" class="btn-primary">Validar reclamación</a>
       <?php endif; ?>
       <a href="index.php?action=reclamaciones.index" class="btn-secondary">Volver al listado</a>

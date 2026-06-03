@@ -4,11 +4,12 @@
 
     public function getUserByEmail($pdo, $email) {
 
-    // preparar stmt (PDO)
+      // preparar stmt (PDO)
       $stmt = $pdo->prepare(
-      "SELECT *
-       FROM usuarios
-       WHERE email = :email
+      "SELECT u.*, r.clave AS rol_clave
+       FROM usuarios u
+       LEFT JOIN roles r ON r.id = u.rol_id
+       WHERE u.email = :email
        LIMIT 1"
       );
     

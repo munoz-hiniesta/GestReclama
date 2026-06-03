@@ -56,6 +56,9 @@
       $_SESSION['id'] = $user['id'];
       $_SESSION['nombre'] = $user['nombre'];
       $_SESSION['rol_id'] = $user['rol_id'];
+      // rol funcional mínimo para el workflow actual:
+      // encargado puede validar, trabajador no.
+      $_SESSION['rol'] = ($user['rol_clave'] === 'ENCARGADO') ? 'encargado' : 'trabajador';
 
       // redirijo
       header ('Location: panel.php'); 

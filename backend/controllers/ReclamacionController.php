@@ -280,6 +280,20 @@
         ];
       }
 
+      // restringir la validación a encargados funcionales
+      if (($_SESSION['rol'] ?? 'trabajador') !== 'encargado') {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/show.php',
+          'pageTitle' => 'Ver reclamación #' . $id,
+          'css' => CSS_PATH . '/reclamacion.index.css',
+          'reclamacion' => $reclamacion,
+          'respuesta' => [
+            'success' => false,
+            'mensaje' => 'Solo el encargado puede validar reclamaciones.'
+          ]
+        ];
+      }
+
       // validar la reclamación
       $resultado = $this->reclamacionService->validarReclamacion($id);
 
