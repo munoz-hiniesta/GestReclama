@@ -32,20 +32,20 @@
             <td><?php echo nl2br(htmlspecialchars($reclamacion['descripcion'])); ?></td>
           </tr>
           <tr>
-            <th>Tipo ID</th>
-            <td><?php echo htmlspecialchars($reclamacion['tipo_id']); ?></td>
+            <th>Tipo</th>
+            <td><?php echo htmlspecialchars($reclamacion['tipo_nombre'] ?? $reclamacion['tipo_id']); ?></td>
           </tr>
           <tr>
-            <th>Prioridad ID</th>
-            <td><?php echo htmlspecialchars($reclamacion['prioridad_id']); ?></td>
+            <th>Prioridad</th>
+            <td><?php echo htmlspecialchars($reclamacion['prioridad_nombre'] ?? $reclamacion['prioridad_id']); ?></td>
           </tr>
           <tr>
-            <th>Estado ID</th>
-            <td><?php echo htmlspecialchars($reclamacion['estado_id']); ?></td>
+            <th>Estado</th>
+            <td><?php echo htmlspecialchars($reclamacion['estado_nombre'] ?? $reclamacion['estado_id']); ?></td>
           </tr>
           <tr>
-            <th>Franquicia ID</th>
-            <td><?php echo htmlspecialchars($reclamacion['franquicia_id']); ?></td>
+            <th>Franquicia</th>
+            <td><?php echo htmlspecialchars($reclamacion['franquicia_nombre'] ?? $reclamacion['franquicia_id'] ?? '—'); ?></td>
           </tr>
           <tr>
             <th>Teléfono</th>
@@ -112,8 +112,12 @@
             <td><?php echo htmlspecialchars($reclamacion['adjunto'] ?? '—'); ?></td>
           </tr>
           <tr>
-            <th>Usuario creador ID</th>
-            <td><?php echo htmlspecialchars($reclamacion['usuario_creador_id']); ?></td>
+            <th>Usuario creador</th>
+            <td><?php echo htmlspecialchars($reclamacion['usuario_creador_nombre'] ?? $reclamacion['usuario_creador_id'] ?? '—'); ?></td>
+          </tr>
+          <tr>
+            <th>Responsable</th>
+            <td><?php echo htmlspecialchars($reclamacion['responsable_nombre'] ?? '—'); ?></td>
           </tr>
           <tr>
             <th>Fecha creación</th>

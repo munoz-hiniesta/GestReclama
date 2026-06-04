@@ -13,19 +13,23 @@
       <table class="tabla-reclamaciones">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Descripción</th>
-            <th>Estado ID</th>
-            <th>Fecha creación</th>
-            <th>Acciones</th>
-          </tr>
+              <th>ID</th>
+              <th>Descripción</th>
+              <th>Tipo</th>
+              <th>Prioridad</th>
+              <th>Estado</th>
+              <th>Fecha creación</th>
+              <th>Acciones</th>
+            </tr>
         </thead>
         <tbody>
           <?php foreach ($respuesta['reclamaciones'] as $reclamacion): ?>
             <tr>
               <td><?php echo htmlspecialchars($reclamacion['id']); ?></td>
               <td><?php echo htmlspecialchars($reclamacion['descripcion']); ?></td>
-              <td><?php echo htmlspecialchars($reclamacion['estado_id']); ?></td>
+              <td><?php echo htmlspecialchars($reclamacion['tipo_nombre'] ?? $reclamacion['tipo_id']); ?></td>
+              <td><?php echo htmlspecialchars($reclamacion['prioridad_nombre'] ?? $reclamacion['prioridad_id']); ?></td>
+              <td><?php echo htmlspecialchars($reclamacion['estado_nombre'] ?? $reclamacion['estado_id']); ?></td>
               <td><?php echo htmlspecialchars($reclamacion['fecha_creacion']); ?></td>
               <td>
                 <a href="index.php?action=reclamaciones.show&id=<?php echo urlencode($reclamacion['id']); ?>" class="btn-secondary">Ver</a>
@@ -46,6 +50,11 @@
     <form method="GET" action="index.php">
       <input type="hidden" name="action" value="reclamaciones.create.view">
       <button type="submit" class="btn-secondary">Crear reclamación</button>
+    </form>
+
+    <form method="GET" action="index.php">
+      <input type="hidden" name="action" value="reclamaciones.pendientes_asignacion">
+      <button type="submit" class="btn-secondary">Reclamaciones pendientes de asignación</button>
     </form>
 
     <a href="panel.php" class="btn-secondary">Volver al panel</a>

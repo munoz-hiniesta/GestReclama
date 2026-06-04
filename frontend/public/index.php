@@ -13,6 +13,8 @@
     'reclamaciones.index',
     'reclamaciones.show',
     'reclamaciones.edit',
+    'reclamaciones.pendientes_asignacion',
+    'reclamaciones.asignar',
     'reclamaciones.create.view',
     'reclamaciones.create',
     'reclamaciones.validar'
@@ -56,6 +58,29 @@
       $vista = $respuesta['vista'];
       $pageTitle = $respuesta['pageTitle'];
       $css = $respuesta['css'];
+    break;
+
+    case 'reclamaciones.pendientes_asignacion':
+      $reclamacionService = new ReclamacionService($pdo);
+      $controller = new ReclamacionController($pdo, $reclamacionService);
+      $respuesta = $controller->pendientesAsignacion();
+      $vista = $respuesta['vista'];
+      $pageTitle = $respuesta['pageTitle'];
+      $css = $respuesta['css'];
+      $reclamaciones = $respuesta['reclamaciones'] ?? [];
+    break;
+
+    case 'reclamaciones.asignar':
+      $reclamacionService = new ReclamacionService($pdo);
+      $controller = new ReclamacionController($pdo, $reclamacionService);
+      $respuesta = $controller->asignar();
+      $vista = $respuesta['vista'];
+      $pageTitle = $respuesta['pageTitle'];
+      $css = $respuesta['css'];
+      $reclamacion = $respuesta['reclamacion'] ?? null;
+      $responsables = $respuesta['responsables'] ?? [];
+      $error = $respuesta['error'] ?? null;
+      $respuesta = $respuesta['respuesta'] ?? [];
     break;
 
     case 'reclamaciones.show':

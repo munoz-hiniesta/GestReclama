@@ -5,6 +5,7 @@
   */
 
   require_once SERVICES_PATH . '/ReclamacionService.php';
+  require_once SERVICES_PATH . '/AuthService.php';
 
   class ReclamacionController {
 
@@ -114,6 +115,89 @@
         'pageTitle' => 'Índice de reclamaciones',
         'css' => CSS_PATH . '/reclamacion.index.css',
         'reclamaciones' => $reclamaciones
+      ];
+    }
+
+    public function pendientesAsignacion() {
+      $reclamaciones = $this->reclamacionService->obtenerReclamacionesPendientesAsignacion();
+
+      return [
+        'vista' => VIEWS_PATH . '/reclamaciones/pendientes_asignacion.php',
+        'pageTitle' => 'Reclamaciones pendientes de asignación',
+        'css' => CSS_PATH . '/reclamacion.index.css',
+        'reclamaciones' => $reclamaciones
+      ];
+    }
+
+    public function asignar() {
+      $id = intval($_GET['id'] ?? $_POST['id'] ?? 0);
+      $reclamacion = null;
+      $respuesta = [];
+      $error = null;
+
+      if ($id <= 0) {
+        $error = 'ID de reclamación no válido.';
+      } else {
+        $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+        if (!$reclamacion) {
+          $error = 'La reclamación solicitada no existe.';
+        }
+      }
+
+      $authService = new AuthService();
+      $responsables = $authService->obtenerResponsablesTramitacion($this->pdo);
+
+      if ($_SERVER['REQUEST_METHOD'] === 'POST' && $reclamacion && empty($error)) {
+        $usuarioResponsableId = intval($_POST['usuario_responsable_id'] ?? 0);
+
+        if ($usuarioResponsableId <= 0) {
+          $respuesta = [
+            'success' => false,
+            'mensaje' => 'Debes seleccionar un responsable de tramitación.'
+          ];
+        } elseif (($reclamacion['estado_clave'] ?? '') !== 'PENDIENTE') {
+          $respuesta = [
+            'success' => false,
+            'mensaje' => 'La reclamación no está en estado PENDIENTE.'
+          ];
+        } elseif (!empty($reclamacion['usuario_responsable_id'])) {
+          $respuesta = [
+            'success' => false,
+            'mensaje' => 'La reclamación ya tiene un responsable asignado.'
+          ];
+        } else {
+          $selected = null;
+          foreach ($responsables as $responsable) {
+            if (intval($responsable['id']) === $usuarioResponsableId) {
+              $selected = $responsable;
+              break;
+            }
+          }
+
+          if (!$selected) {
+            $respuesta = [
+              'success' => false,
+              'mensaje' => 'Responsable de tramitación no válido.'
+            ];
+          } else {
+            $resultado = $this->reclamacionService->asignarResponsable($id, $usuarioResponsableId);
+            $respuesta = $resultado;
+
+            if ($resultado['success']) {
+              $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+            }
+          }
+        }
+      }
+
+      return [
+        'vista' => VIEWS_PATH . '/reclamaciones/asignar.php',
+        'pageTitle' => 'Asignar responsable de tramitación',
+        'css' => CSS_PATH . '/reclamacion.index.css',
+        'reclamacion' => $reclamacion,
+        'responsables' => $responsables,
+        'respuesta' => $respuesta,
+        'error' => $error
       ];
     }
 
@@ -239,20 +323,30 @@
           $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
         }
 
+        $tipos = $this->reclamacionService->obtenerTipos();
+        $prioridades = $this->reclamacionService->obtenerPrioridades();
+
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
           'pageTitle' => 'Editar reclamación',
           'css' => CSS_PATH . '/reclamacion.create.css',
           'reclamacion' => $reclamacion,
-          'respuesta' => $resultado
+          'respuesta' => $resultado,
+          'tipos' => $tipos,
+          'prioridades' => $prioridades
         ];
       }
+
+      $tipos = $this->reclamacionService->obtenerTipos();
+      $prioridades = $this->reclamacionService->obtenerPrioridades();
 
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
         'pageTitle' => 'Editar reclamación',
         'css' => CSS_PATH . '/reclamacion.create.css',
-        'reclamacion' => $reclamacion
+        'reclamacion' => $reclamacion,
+        'tipos' => $tipos,
+        'prioridades' => $prioridades
       ];
     }
 

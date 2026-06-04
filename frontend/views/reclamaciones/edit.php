@@ -18,6 +18,11 @@
 
     <h1>Editar reclamación #<?php echo htmlspecialchars($reclamacion['id']); ?></h1>
 
+    <div class="meta-reclamacion">
+      <p><strong>Franquicia:</strong> <?php echo htmlspecialchars($reclamacion['franquicia_nombre'] ?? $reclamacion['franquicia_id'] ?? '—'); ?></p>
+      <p><strong>Usuario creador:</strong> <?php echo htmlspecialchars($reclamacion['usuario_creador_nombre'] ?? $reclamacion['usuario_creador_id'] ?? '—'); ?></p>
+    </div>
+
     <form method="POST" action="index.php">
       <input type="hidden" name="action" value="reclamaciones.edit">
       <input type="hidden" name="id" value="<?php echo htmlspecialchars($reclamacion['id']); ?>">
@@ -31,8 +36,9 @@
         <label for="tipo_id">Tipo:</label>
         <select id="tipo_id" name="tipo_id" required>
           <option value="">-- Seleccionar tipo --</option>
-          <option value="1" <?php echo $reclamacion['tipo_id'] == 1 ? 'selected' : ''; ?>>Tipo 1</option>
-          <option value="2" <?php echo $reclamacion['tipo_id'] == 2 ? 'selected' : ''; ?>>Tipo 2</option>
+          <?php foreach (($tipos ?? []) as $tipo): ?>
+            <option value="<?php echo htmlspecialchars($tipo['id']); ?>" <?php echo ($reclamacion['tipo_id'] == $tipo['id']) ? 'selected' : ''; ?>><?php echo htmlspecialchars($tipo['nombre']); ?></option>
+          <?php endforeach; ?>
         </select>
       </div>
 
@@ -40,9 +46,9 @@
         <label for="prioridad_id">Prioridad:</label>
         <select id="prioridad_id" name="prioridad_id" required>
           <option value="">-- Seleccionar prioridad --</option>
-          <option value="1" <?php echo $reclamacion['prioridad_id'] == 1 ? 'selected' : ''; ?>>Baja</option>
-          <option value="2" <?php echo $reclamacion['prioridad_id'] == 2 ? 'selected' : ''; ?>>Media</option>
-          <option value="3" <?php echo $reclamacion['prioridad_id'] == 3 ? 'selected' : ''; ?>>Alta</option>
+          <?php foreach (($prioridades ?? []) as $prioridad): ?>
+            <option value="<?php echo htmlspecialchars($prioridad['id']); ?>" <?php echo ($reclamacion['prioridad_id'] == $prioridad['id']) ? 'selected' : ''; ?>><?php echo htmlspecialchars($prioridad['nombre']); ?></option>
+          <?php endforeach; ?>
         </select>
       </div>
 

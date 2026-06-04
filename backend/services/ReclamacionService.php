@@ -98,9 +98,21 @@
 
     public function obtenerReclamaciones() {
       try {
-        $sql = "SELECT id, descripcion, estado_id, fecha_creacion
-                  FROM reclamaciones
-                 ORDER BY id DESC";
+        $sql = "SELECT r.id,
+                       r.descripcion,
+                       r.fecha_creacion,
+                       r.tipo_id,
+                       t.nombre AS tipo_nombre,
+                       r.prioridad_id,
+                       p.nombre AS prioridad_nombre,
+                       r.estado_id,
+                       e.clave AS estado_clave,
+                       e.nombre AS estado_nombre
+                  FROM reclamaciones r
+                  LEFT JOIN tipos t ON r.tipo_id = t.id
+                  LEFT JOIN prioridades p ON r.prioridad_id = p.id
+                  LEFT JOIN estados e ON r.estado_id = e.id
+                 ORDER BY r.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
@@ -111,34 +123,151 @@
       }
     }
 
+    public function obtenerReclamacionesPendientesAsignacion() {
+      try {
+        $sql = "SELECT r.id,
+                       r.descripcion,
+                       r.tipo_id,
+                       t.nombre AS tipo_nombre,
+                       r.prioridad_id,
+                       p.nombre AS prioridad_nombre,
+                       r.estado_id,
+                       e.nombre AS estado_nombre,
+                       r.franquicia_id,
+                       r.telefono,
+                       r.email,
+                       r.nombre_apellidos,
+                       r.fecha_incidente,
+                       r.canal_entrada,
+                       r.solicitud_cliente,
+                       r.dni,
+                       r.direccion,
+                       r.codigo_postal,
+                       r.ciudad,
+                       r.provincia,
+                       r.observaciones_internas,
+                       r.informacion_seguimiento,
+                       r.importe,
+                       r.otros_datos,
+                       r.adjunto,
+                       r.usuario_creador_id,
+                       r.usuario_responsable_id,
+                       r.fecha_creacion
+                  FROM reclamaciones r
+                  LEFT JOIN tipos t ON r.tipo_id = t.id
+                  LEFT JOIN prioridades p ON r.prioridad_id = p.id
+                  JOIN estados e ON r.estado_id = e.id
+                 WHERE e.clave = 'PENDIENTE'
+                   AND r.usuario_responsable_id IS NULL
+                 ORDER BY r.id DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      } catch (Exception $e) {
+        return [];
+      }
+    }
+
+    public function obtenerTipos() {
+      try {
+        $stmt = $this->pdo->prepare("SELECT id, nombre FROM tipos ORDER BY nombre ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      } catch (Exception $e) {
+        return [];
+      }
+    }
+
+    public function obtenerPrioridades() {
+      try {
+        $stmt = $this->pdo->prepare("SELECT id, nombre FROM prioridades ORDER BY id ASC");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      } catch (Exception $e) {
+        return [];
+      }
+    }
+
+    public function asignarResponsable(int $id, int $usuarioResponsableId) {
+      try {
+        $sql = "UPDATE reclamaciones
+                   SET usuario_responsable_id = :usuario_responsable_id,
+                       estado_id = (SELECT id FROM estados WHERE clave = 'EN_TRAMITE' LIMIT 1),
+                       fecha_actualizacion = NOW()
+                 WHERE id = :id
+                   AND estado_id = (SELECT id FROM estados WHERE clave = 'PENDIENTE' LIMIT 1)
+                   AND usuario_responsable_id IS NULL";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+          ':usuario_responsable_id' => $usuarioResponsableId,
+          ':id' => $id
+        ]);
+
+        if ($stmt->rowCount() === 0) {
+          return [
+            'success' => false,
+            'mensaje' => 'No se pudo asignar la reclamación. Asegúrese de que está pendiente y sin responsable asignado.'
+          ];
+        }
+
+        return [
+          'success' => true,
+          'mensaje' => 'Responsable asignado correctamente y estado cambiado a EN TRÁMITE.'
+        ];
+      } catch (Exception $e) {
+        return [
+          'success' => false,
+          'mensaje' => 'Error al asignar la reclamación: ' . $e->getMessage()
+        ];
+      }
+    }
+
     public function obtenerReclamacionPorId(int $id) {
       try {
-        $sql = "SELECT id,
-                       descripcion,
-                       tipo_id,
-                       prioridad_id,
-                       estado_id,
-                       franquicia_id,
-                       telefono,
-                       email,
-                       nombre_apellidos,
-                       fecha_incidente,
-                       canal_entrada,
-                       solicitud_cliente,
-                       dni,
-                       direccion,
-                       codigo_postal,
-                       ciudad,
-                       provincia,
-                       observaciones_internas,
-                       informacion_seguimiento,
-                       importe,
-                       otros_datos,
-                       adjunto,
-                       usuario_creador_id,
-                       fecha_creacion
-                  FROM reclamaciones
-                 WHERE id = :id
+        $sql = "SELECT r.id,
+                 r.descripcion,
+                 r.tipo_id,
+                 t.nombre AS tipo_nombre,
+                 r.prioridad_id,
+                 p.nombre AS prioridad_nombre,
+                 r.estado_id,
+            ur.nombre AS responsable_nombre,
+                 e.clave AS estado_clave,
+                 e.nombre AS estado_nombre,
+                 r.franquicia_id,
+                 f.nombre AS franquicia_nombre,
+                 r.usuario_creador_id,
+                 uc.nombre AS usuario_creador_nombre,
+                       r.telefono,
+                       r.email,
+                       r.nombre_apellidos,
+                       r.fecha_incidente,
+                       r.canal_entrada,
+                       r.solicitud_cliente,
+                       r.dni,
+                       r.direccion,
+                       r.codigo_postal,
+                       r.ciudad,
+                       r.provincia,
+                       r.observaciones_internas,
+                       r.informacion_seguimiento,
+                       r.importe,
+                       r.otros_datos,
+                       r.adjunto,
+                       r.usuario_creador_id,
+                       r.usuario_responsable_id,
+                       r.fecha_creacion
+                  FROM reclamaciones r
+                  LEFT JOIN tipos t ON r.tipo_id = t.id
+                  LEFT JOIN prioridades p ON r.prioridad_id = p.id
+                  LEFT JOIN estados e ON r.estado_id = e.id
+                   LEFT JOIN usuarios ur ON r.usuario_responsable_id = ur.id
+                   LEFT JOIN franquicias f ON r.franquicia_id = f.id
+                   LEFT JOIN usuarios uc ON r.usuario_creador_id = uc.id
+                 WHERE r.id = :id
                  LIMIT 1";
 
         $stmt = $this->pdo->prepare($sql);
