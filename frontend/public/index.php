@@ -91,6 +91,7 @@
       $pageTitle = $respuesta['pageTitle'];
       $css = $respuesta['css'];
       $reclamacion = $respuesta['reclamacion'] ?? null;
+      $acciones_reclamacion = $respuesta['acciones_reclamacion'] ?? [];
       $error = $respuesta['error'] ?? null;
       $respuesta = $respuesta['respuesta'] ?? [];
     break;

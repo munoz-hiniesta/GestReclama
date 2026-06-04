@@ -10,14 +10,6 @@
     <div class="mensaje error"><?php echo htmlspecialchars($error); ?></div>
   <?php else: ?>
     
-    <?php if (!empty($respuesta) && is_array($respuesta) && array_key_exists('success', $respuesta)): ?>
-      <?php 
-        $clase = $respuesta['success'] ? 'exito' : 'error';
-        $mensaje = $respuesta['mensaje'] ?? '';
-      ?>
-      <div class="mensaje <?php echo htmlspecialchars($clase); ?>"><?php echo htmlspecialchars($mensaje); ?></div>
-    <?php endif; ?>
-    
     <h1>Reclamación #<?php echo htmlspecialchars($reclamacion['id']); ?></h1>
 
     <div class="detalle-reclamacion">
@@ -137,6 +129,51 @@
         <a href="panel.php" class="btn-secondary">Volver al panel</a>
       </div>
     </div>
+    
+    <div class="historial-seguimiento">
+      <h2>Histórico de acciones</h2>
+      <?php $acciones = $acciones_reclamacion ?? []; ?>
+      <?php if (empty($acciones)): ?>
+        <p>No hay acciones registradas para esta reclamación.</p>
+      <?php else: ?>
+        <table class="tabla-acciones">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Usuario</th>
+              <th>Estado</th>
+              <th>Comentario</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($acciones as $accion): ?>
+              <tr>
+                <td><?php echo htmlspecialchars($accion['fecha'] ?? ''); ?></td>
+                <td><?php echo htmlspecialchars($accion['usuario_nombre'] ?? ($accion['usuario_id'] ?? '—')); ?></td>
+                <td><?php echo htmlspecialchars($accion['estado_nombre'] ?? ($accion['estado_id'] ?? '—')); ?></td>
+                <td><?php echo nl2br(htmlspecialchars($accion['comentario'] ?? '')); ?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      <?php endif; ?>
+      </div>
+
+      <div class="registrar-accion">
+        <h3>Registrar nueva acción</h3>
+        <?php if (!empty($respuesta) && is_array($respuesta) && array_key_exists('success', $respuesta)): ?>
+          <div class="mensaje <?php echo $respuesta['success'] ? 'exito' : 'error'; ?>"><?php echo htmlspecialchars($respuesta['mensaje'] ?? ''); ?></div>
+        <?php endif; ?>
+        <form method="POST" action="index.php">
+          <input type="hidden" name="action" value="reclamaciones.show">
+          <input type="hidden" name="id" value="<?php echo htmlspecialchars($reclamacion['id']); ?>">
+          <div class="form-group">
+            <label for="nuevo_comentario">Comentario:</label>
+            <textarea id="nuevo_comentario" name="nuevo_comentario" required></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Registrar acción</button>
+        </form>
+      </div>
   <?php endif; ?>
 
 </div>

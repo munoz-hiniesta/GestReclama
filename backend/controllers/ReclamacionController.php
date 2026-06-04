@@ -6,6 +6,7 @@
 
   require_once SERVICES_PATH . '/ReclamacionService.php';
   require_once SERVICES_PATH . '/AuthService.php';
+  require_once SERVICES_PATH . '/AccionesReclamacionService.php';
 
   class ReclamacionController {
 
@@ -50,7 +51,7 @@
       }
 
       // usuario creador desde sesión si está disponible
-      $usuario_creador_id = $_SESSION['usuario_id'] ?? 1;
+      $usuario_creador_id = $_SESSION['id'] ?? 1;
 
       // procesar archivo adjunto (viene en $_FILES)
       $adjunto_nombre = null;
@@ -138,57 +139,91 @@
       if ($id <= 0) {
         $error = 'ID de reclamación no válido.';
       } else {
-        $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
-        if (!$reclamacion) {
-          $error = 'La reclamación solicitada no existe.';
-        }
+          $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+          if (!$reclamacion) {
+            $error = 'La reclamación solicitada no existe.';
+          }
       }
 
       $authService = new AuthService();
       $responsables = $authService->obtenerResponsablesTramitacion($this->pdo);
 
-      if ($_SERVER['REQUEST_METHOD'] === 'POST' && $reclamacion && empty($error)) {
-        $usuarioResponsableId = intval($_POST['usuario_responsable_id'] ?? 0);
+        $respuesta = [];
 
-        if ($usuarioResponsableId <= 0) {
-          $respuesta = [
-            'success' => false,
-            'mensaje' => 'Debes seleccionar un responsable de tramitación.'
-          ];
-        } elseif (($reclamacion['estado_clave'] ?? '') !== 'PENDIENTE') {
-          $respuesta = [
-            'success' => false,
-            'mensaje' => 'La reclamación no está en estado PENDIENTE.'
-          ];
-        } elseif (!empty($reclamacion['usuario_responsable_id'])) {
-          $respuesta = [
-            'success' => false,
-            'mensaje' => 'La reclamación ya tiene un responsable asignado.'
-          ];
-        } else {
-          $selected = null;
-          foreach ($responsables as $responsable) {
-            if (intval($responsable['id']) === $usuarioResponsableId) {
-              $selected = $responsable;
-              break;
+        // Si se envía un POST para registrar una nueva acción
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
+          $nuevoComentario = trim($_POST['nuevo_comentario'] ?? '');
+
+          if (empty($nuevoComentario)) {
+            $respuesta = ['success' => false, 'mensaje' => 'El comentario no puede estar vacío.'];
+          } else {
+            $usuarioId = intval($_SESSION['id'] ?? 0);
+            if ($usuarioId <= 0) {
+              $respuesta = ['success' => false, 'mensaje' => 'Usuario no autenticado.'];
+            } else {
+              $estadoId = intval($reclamacion['estado_id'] ?? 0);
+              $accionesService = new AccionesReclamacionService($this->pdo);
+              $resultadoCrear = $accionesService->crearAccion($id, $usuarioId, $estadoId, $nuevoComentario);
+
+              $respuesta = $resultadoCrear;
+
+              // si se creó, recargar la reclamación y las acciones para mostrarlas
+              if (!empty($resultadoCrear['success'])) {
+                $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+              }
             }
           }
+        }
 
-          if (!$selected) {
+      if ($_SERVER['REQUEST_METHOD'] === 'POST' && $reclamacion && empty($error)) {
+        // POST para asignar responsable sigue funcionando (si existe el campo enviado)
+        if (isset($_POST['usuario_responsable_id'])) {
+          $usuarioResponsableId = intval($_POST['usuario_responsable_id'] ?? 0);
+
+          if ($usuarioResponsableId <= 0) {
             $respuesta = [
               'success' => false,
-              'mensaje' => 'Responsable de tramitación no válido.'
+              'mensaje' => 'Debes seleccionar un responsable de tramitación.'
+            ];
+          } elseif (($reclamacion['estado_clave'] ?? '') !== 'PENDIENTE') {
+            $respuesta = [
+              'success' => false,
+              'mensaje' => 'La reclamación no está en estado PENDIENTE.'
+            ];
+          } elseif (!empty($reclamacion['usuario_responsable_id'])) {
+            $respuesta = [
+              'success' => false,
+              'mensaje' => 'La reclamación ya tiene un responsable asignado.'
             ];
           } else {
-            $resultado = $this->reclamacionService->asignarResponsable($id, $usuarioResponsableId);
-            $respuesta = $resultado;
+            $selected = null;
+            foreach ($responsables as $responsable) {
+              if (intval($responsable['id']) === $usuarioResponsableId) {
+                $selected = $responsable;
+                break;
+              }
+            }
 
-            if ($resultado['success']) {
-              $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+            if (!$selected) {
+              $respuesta = [
+                'success' => false,
+                'mensaje' => 'Responsable de tramitación no válido.'
+              ];
+            } else {
+              $resultado = $this->reclamacionService->asignarResponsable($id, $usuarioResponsableId);
+              $respuesta = $resultado;
+
+              if ($resultado['success']) {
+                $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+              }
             }
           }
         }
       }
+
+      // obtener la lista actualizada de acciones para mostrar en la vista
+      $accionesService = new AccionesReclamacionService($this->pdo);
+      $acciones = $accionesService->obtenerAccionesPorReclamacion($id);
 
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/asignar.php',
@@ -197,13 +232,14 @@
         'reclamacion' => $reclamacion,
         'responsables' => $responsables,
         'respuesta' => $respuesta,
-        'error' => $error
+        'error' => $error,
+        'acciones_reclamacion' => $acciones
       ];
     }
 
     // mostrar una reclamación concreta (todos sus datos)
     public function show() {
-      $id = intval($_GET['id'] ?? 0);
+      $id = intval($_GET['id'] ?? $_POST['id'] ?? 0);
 
       if ($id <= 0) {
         return [
@@ -225,11 +261,40 @@
         ];
       }
 
+      $respuesta = [];
+      if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $nuevoComentario = trim($_POST['nuevo_comentario'] ?? '');
+
+        if ($nuevoComentario === '') {
+          $respuesta = ['success' => false, 'mensaje' => 'El comentario no puede estar vacío.'];
+        } else {
+          $usuarioId = intval($_SESSION['id'] ?? 0);
+          if ($usuarioId <= 0) {
+            $respuesta = ['success' => false, 'mensaje' => 'Usuario no autenticado.'];
+          } else {
+            $estadoId = intval($reclamacion['estado_id'] ?? 0);
+            $accionesService = new AccionesReclamacionService($this->pdo);
+            $resultadoCrear = $accionesService->crearAccion($id, $usuarioId, $estadoId, $nuevoComentario);
+            $respuesta = $resultadoCrear;
+
+            if (!empty($resultadoCrear['success'])) {
+              $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+            }
+          }
+        }
+      }
+
+      // obtener histórico de acciones para la vista (fase 1: sólo lectura)
+      $accionesService = new AccionesReclamacionService($this->pdo);
+      $acciones = $accionesService->obtenerAccionesPorReclamacion($id);
+
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/show.php',
         'pageTitle' => 'Ver reclamación #' . $id,
         'css' => CSS_PATH . '/reclamacion.index.css',
-        'reclamacion' => $reclamacion
+        'reclamacion' => $reclamacion,
+        'acciones_reclamacion' => $acciones,
+        'respuesta' => $respuesta
       ];
     }
 
