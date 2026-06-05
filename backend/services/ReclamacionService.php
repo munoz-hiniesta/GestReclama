@@ -123,6 +123,112 @@
       }
     }
 
+    public function obtenerOpcionesEstadoResolucion(string $estadoClave, int $estadoId) {
+      try {
+        if ($estadoClave === 'EN_TRAMITE') {
+          $sql = "SELECT id, clave, nombre
+                    FROM estados
+                   WHERE activo = TRUE
+                     AND clave IN ('EN_TRAMITE', 'RESUELTA')
+                   ORDER BY FIELD(clave, 'EN_TRAMITE', 'RESUELTA')";
+
+          $stmt = $this->pdo->prepare($sql);
+          $stmt->execute();
+          return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        if ($estadoClave === 'RESUELTA') {
+          $sql = "SELECT id, clave, nombre
+                    FROM estados
+                   WHERE activo = TRUE
+                     AND clave = 'RESUELTA'
+                   LIMIT 1";
+
+          $stmt = $this->pdo->prepare($sql);
+          $stmt->execute();
+          $estado = $stmt->fetch(PDO::FETCH_ASSOC);
+          return $estado ? [$estado] : [];
+        }
+
+        $sql = "SELECT id, clave, nombre
+                  FROM estados
+                 WHERE activo = TRUE
+                   AND id = :id
+                 LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':id' => $estadoId]);
+        $estado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $estado ? [$estado] : [];
+      } catch (Exception $e) {
+        return [];
+      }
+    }
+
+    public function resolverReclamacion(int $id, int $usuarioId, string $comentario) {
+      try {
+        // Obtener reclamación actual
+        $reclamacion = $this->obtenerReclamacionPorId($id);
+        
+        if (!$reclamacion) {
+          return ['success' => false, 'mensaje' => 'La reclamación no existe.'];
+        }
+
+        // Validar que esté en EN_TRAMITE
+        $estadoActual = $reclamacion['estado_clave'] ?? '';
+        if ($estadoActual !== 'EN_TRAMITE') {
+          return ['success' => false, 'mensaje' => 'Solo se pueden resolver reclamaciones en estado EN_TRÁMITE.'];
+        }
+
+        // Obtener ID de estado RESUELTA
+        $sql = "SELECT id FROM estados WHERE clave = 'RESUELTA' AND activo = TRUE LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        $estadoResuelta = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$estadoResuelta) {
+          return ['success' => false, 'mensaje' => 'Estado RESUELTA no encontrado.'];
+        }
+
+        $estadoResueltaId = intval($estadoResuelta['id']);
+
+        // Actualizar estado y fecha de actualización
+        $sql = "UPDATE reclamaciones
+                   SET estado_id = :estado_id,
+                       fecha_actualizacion = NOW()
+                 WHERE id = :id";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+          ':estado_id' => $estadoResueltaId,
+          ':id' => $id
+        ]);
+
+        // Registrar la acción de resolución con el comentario del usuario
+        $accionesService = new AccionesReclamacionService($this->pdo);
+        $resultadoAccion = $accionesService->crearAccion(
+          $id,
+          $usuarioId,
+          $estadoResueltaId,
+          $comentario
+        );
+
+        if (!$resultadoAccion['success']) {
+          return ['success' => false, 'mensaje' => 'Error al registrar la acción: ' . ($resultadoAccion['mensaje'] ?? '')];
+        }
+
+        return [
+          'success' => true,
+          'mensaje' => 'Reclamación resuelta correctamente.'
+        ];
+      } catch (Exception $e) {
+        return [
+          'success' => false,
+          'mensaje' => 'Error al resolver reclamación: ' . $e->getMessage()
+        ];
+      }
+    }
+
     public function obtenerReclamacionesPendientesAsignacion() {
       try {
         $sql = "SELECT r.id,

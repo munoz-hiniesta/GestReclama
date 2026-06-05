@@ -263,26 +263,59 @@
 
       $respuesta = [];
       if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $nuevoComentario = trim($_POST['nuevo_comentario'] ?? '');
+        $estadoIdRecibido = intval($_POST['estado_id'] ?? 0);
+        $comentario = trim($_POST['nuevo_comentario'] ?? '');
+        $estadoIdActual = intval($reclamacion['estado_id'] ?? 0);
+        $usuarioId = intval($_SESSION['id'] ?? 0);
 
-        if ($nuevoComentario === '') {
-          $respuesta = ['success' => false, 'mensaje' => 'El comentario no puede estar vacío.'];
-        } else {
-          $usuarioId = intval($_SESSION['id'] ?? 0);
-          if ($usuarioId <= 0) {
-            $respuesta = ['success' => false, 'mensaje' => 'Usuario no autenticado.'];
+        // Validar usuario autenticado
+        if ($usuarioId <= 0) {
+          $respuesta = ['success' => false, 'mensaje' => 'Usuario no autenticado.'];
+        }
+        // Validar comentario no vacío
+        elseif ($comentario === '') {
+          $respuesta = ['success' => false, 'mensaje' => 'El comentario es obligatorio.'];
+        }
+        // Validar estado recibido válido
+        elseif ($estadoIdRecibido <= 0) {
+          $respuesta = ['success' => false, 'mensaje' => 'Estado no válido.'];
+        }
+        // Si hay cambio de estado, debe ser transición a RESUELTA
+        elseif ($estadoIdRecibido !== $estadoIdActual) {
+          // Obtener la clave del estado recibido para validar que es RESUELTA
+          $sql = "SELECT clave FROM estados WHERE id = :id LIMIT 1";
+          $stmt = $this->pdo->prepare($sql);
+          $stmt->execute([':id' => $estadoIdRecibido]);
+          $estadoRecibido = $stmt->fetch(PDO::FETCH_ASSOC);
+
+          if (!$estadoRecibido || $estadoRecibido['clave'] !== 'RESUELTA') {
+            $respuesta = ['success' => false, 'mensaje' => 'Transición de estado no permitida.'];
           } else {
-            $estadoId = intval($reclamacion['estado_id'] ?? 0);
-            $accionesService = new AccionesReclamacionService($this->pdo);
-            $resultadoCrear = $accionesService->crearAccion($id, $usuarioId, $estadoId, $nuevoComentario);
-            $respuesta = $resultadoCrear;
+            // Ejecutar resolución
+            $resultado = $this->reclamacionService->resolverReclamacion($id, $usuarioId, $comentario);
+            $respuesta = $resultado;
 
-            if (!empty($resultadoCrear['success'])) {
+            if ($resultado['success']) {
               $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
             }
           }
         }
+        // Si NO hay cambio de estado, solo registrar acción de seguimiento
+        else {
+          $accionesService = new AccionesReclamacionService($this->pdo);
+          $resultado = $accionesService->crearAccion($id, $usuarioId, $estadoIdActual, $comentario);
+          $respuesta = $resultado;
+
+          if ($resultado['success']) {
+            $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+          }
+        }
       }
+
+      $estadoOpciones = $this->reclamacionService->obtenerOpcionesEstadoResolucion(
+        $reclamacion['estado_clave'] ?? '',
+        intval($reclamacion['estado_id'] ?? 0)
+      );
 
       // obtener histórico de acciones para la vista (fase 1: sólo lectura)
       $accionesService = new AccionesReclamacionService($this->pdo);
@@ -294,6 +327,7 @@
         'css' => CSS_PATH . '/reclamacion.index.css',
         'reclamacion' => $reclamacion,
         'acciones_reclamacion' => $acciones,
+        'estado_opciones' => $estadoOpciones,
         'respuesta' => $respuesta
       ];
     }

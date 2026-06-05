@@ -84,6 +84,7 @@
     break;
 
     case 'reclamaciones.show':
+      require_once SERVICES_PATH . '/AccionesReclamacionService.php';
       $reclamacionService = new ReclamacionService($pdo);
       $controller = new ReclamacionController($pdo, $reclamacionService);
       $respuesta = $controller->show();
@@ -92,6 +93,7 @@
       $css = $respuesta['css'];
       $reclamacion = $respuesta['reclamacion'] ?? null;
       $acciones_reclamacion = $respuesta['acciones_reclamacion'] ?? [];
+      $estado_opciones = $respuesta['estado_opciones'] ?? [];
       $error = $respuesta['error'] ?? null;
       $respuesta = $respuesta['respuesta'] ?? [];
     break;

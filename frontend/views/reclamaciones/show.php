@@ -164,15 +164,32 @@
         <?php if (!empty($respuesta) && is_array($respuesta) && array_key_exists('success', $respuesta)): ?>
           <div class="mensaje <?php echo $respuesta['success'] ? 'exito' : 'error'; ?>"><?php echo htmlspecialchars($respuesta['mensaje'] ?? ''); ?></div>
         <?php endif; ?>
-        <form method="POST" action="index.php">
-          <input type="hidden" name="action" value="reclamaciones.show">
-          <input type="hidden" name="id" value="<?php echo htmlspecialchars($reclamacion['id']); ?>">
-          <div class="form-group">
-            <label for="nuevo_comentario">Comentario:</label>
-            <textarea id="nuevo_comentario" name="nuevo_comentario" required></textarea>
-          </div>
-          <button type="submit" class="btn-primary">Registrar acción</button>
-        </form>
+        <?php if (($reclamacion['estado_clave'] ?? '') !== 'RESUELTA'): ?>
+          <form method="POST" action="index.php">
+            <input type="hidden" name="action" value="reclamaciones.show">
+            <input type="hidden" name="id" value="<?php echo htmlspecialchars($reclamacion['id']); ?>">
+            
+            <div class="form-group">
+              <label for="estado_id">Estado de resolución:</label>
+              <select id="estado_id" name="estado_id" required>
+                <?php foreach ($estado_opciones as $estado): ?>
+                  <option value="<?php echo htmlspecialchars($estado['id']); ?>" <?php echo intval($estado['id']) === intval($reclamacion['estado_id']) ? 'selected' : ''; ?>>
+                    <?php echo htmlspecialchars($estado['nombre']); ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="nuevo_comentario">Comentario:</label>
+              <textarea id="nuevo_comentario" name="nuevo_comentario" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn-primary">Registrar acción</button>
+          </form>
+        <?php else: ?>
+          <p class="nota">Esta reclamación está resuelta. No se pueden registrar nuevas acciones.</p>
+        <?php endif; ?>
       </div>
   <?php endif; ?>
 

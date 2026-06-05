@@ -118,7 +118,19 @@ La asignación de responsable provoca la transición: PENDIENTE → EN_TRAMITE
 
 ### RN-014 · Cierre de reclamaciones
 
-Una reclamación puede pasar a estado RESUELTA cuando finaliza su gestión.
+- La transición de una reclamación desde el estado EN_TRAMITE al estado RESUELTA únicamente puede ser realizada por el responsable de tramitación asignado a dicha reclamación.
+- Condiciones necesarias para permitir la transición:
+  - la reclamación debe encontrarse en estado EN_TRAMITE
+  - debe existir al menos una acción de seguimiento registrada en el histórico de la reclamación
+- Durante el proceso de resolución:
+  - el comentario se almacenará como una nueva acción de seguimiento asociada a la reclamación
+  - el sistema registrará la fecha de resolución
+  - el estado de la reclamación pasará a RESUELTA
+- Una reclamación en estado RESUELTA:
+  - no podrá volver a estados anteriores
+  - no admitirá nuevas acciones de seguimiento
+  - permanecerá disponible en modo consulta para usuarios autorizados
+- El objetivo de esta regla es garantizar la trazabilidad completa del proceso de gestión y la existencia de evidencia documental sobre la resolución adoptada.
 
 ### RN-015 · Datos mínimos obligatorios para BORRADOR
 
@@ -184,6 +196,15 @@ Una reclamación puede pasar a estado RESUELTA cuando finaliza su gestión.
   - permitirá corregir los datos necesarios
   - impedirá el cambio de estado hasta completar correctamente la validación
 - Una reclamación con validaciones pendientes o errores de integridad no podrá incorporarse al flujo operativo del sistema.
+
+### RN-018 · Control de estados durante el seguimiento
+
+- El responsable de tramitación únicamente podrá seleccionar estados válidos según la situación actual de la reclamación.
+- Una reclamación en estado EN_TRAMITE podrá mantenerse en dicho estado o pasar a estado RESUELTA.
+- Una reclamación en estado RESUELTA no podrá modificar nuevamente su estado.
+- El sistema deberá impedir transiciones que no respeten el workflow definido:
+  BORRADOR → PENDIENTE → EN_TRAMITE → RESUELTA
+- No se permitirán saltos de estado ni retrocesos dentro del flujo operativo de gestión.
 
 ---
 
