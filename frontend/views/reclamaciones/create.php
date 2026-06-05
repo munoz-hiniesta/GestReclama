@@ -6,12 +6,7 @@
 
 <div class="container-create-reclamacion">
 
-  <?php if (isset($respuesta['mensaje'])): ?>
-    <div class="mensaje <?php echo $respuesta['success'] ? 'exito' : 'error'; ?>">
-      <?php echo htmlspecialchars($respuesta['mensaje']); ?>
-    </div>
-  <?php endif; ?>
-
+  <?php require __DIR__ . '/../partials/mensaje.php'; ?>
   <h1>Crear nueva reclamación</h1>
 
   <form method="POST" action="index.php" enctype="multipart/form-data">
