@@ -15,6 +15,6 @@
   $css = '/css/panel.css';
 
   // renderizar
-  require LAYOUTS_PATH . '/auth.layout.php';
+  require LAYOUTS_PATH . '/app.layout.php';
 
 ?>

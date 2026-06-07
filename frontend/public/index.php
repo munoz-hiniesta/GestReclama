@@ -148,5 +148,9 @@
   }
 
   // cargar layout.php (es quien decide qué vista debe cargar)
-  require_once LAYOUTS_PATH . '/auth.layout.php';
+  $layout = in_array($action, $protectedActions, true)
+    ? 'app.layout.php'
+    : 'auth.layout.php';
+
+  require_once LAYOUTS_PATH . '/' . $layout;
 ?>
