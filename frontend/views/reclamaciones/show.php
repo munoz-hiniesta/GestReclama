@@ -1,6 +1,6 @@
 <?php
 
-  /* vista para mostrar los datos completos de una reclamación */
+  // mostrar datos completos de una reclamación
 
 ?>
 
@@ -119,10 +119,10 @@
       </table>
   
       <div class="acciones-index">
-        <?php if ($reclamacion['estado_id'] == 1 && ($_SESSION['rol'] ?? 'trabajador') === 'encargado'): ?>
+        <?php if (($reclamacion['estado_clave'] ?? '') === 'BORRADOR' && ($_SESSION['rol'] ?? 'trabajador') === 'encargado'): ?>
           <a href="index.php?action=reclamaciones.validar&id=<?php echo htmlspecialchars($reclamacion['id']); ?>" class="btn-primary">Validar reclamación</a>
         <?php endif; ?>
-        <?php if ($reclamacion['estado_id'] == 1): ?>
+        <?php if (($reclamacion['estado_clave'] ?? '') === 'BORRADOR'): ?>
           <a href="index.php?action=reclamaciones.edit&id=<?php echo htmlspecialchars($reclamacion['id']); ?>" class="btn-secondary">Editar</a>
         <?php endif; ?>
         <a href="index.php?action=reclamaciones.index" class="btn-secondary">Volver al listado</a>
@@ -185,7 +185,7 @@
               <textarea id="nuevo_comentario" name="nuevo_comentario" required></textarea>
             </div>
             
-            <button type="submit" class="btn-primary">Registrar acción</button>
+            <button type="submit" class="btn-primary">Guardar acción</button>
           </form>
         <?php else: ?>
           <p class="nota">Esta reclamación está resuelta. No se pueden registrar nuevas acciones.</p>

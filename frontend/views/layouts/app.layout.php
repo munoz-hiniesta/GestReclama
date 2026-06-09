@@ -5,8 +5,9 @@
   <head>
 
     <meta charset="UTF-8">
-    <title><?= $pageTitle ?></title>
-    <link rel="stylesheet" href="<?= $css ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($pageTitle); ?></title>
+    <link rel="stylesheet" href="<?php echo htmlspecialchars($css); ?>">
 
   </head>
 
@@ -15,7 +16,7 @@
     <div class="app-shell">
 
       <header class="app-header">
-        GestReclama
+        <a href="panel.php">GestReclama</a>
       </header>
 
       <?php require_once __DIR__ . '/../partials/sidebar.php'; ?>

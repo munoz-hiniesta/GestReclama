@@ -1,0 +1,150 @@
+/*=========================
+    TABLE
+=========================*/
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 2px;
+  text-align: center;
+}
+.table thead th {
+  padding-top: 16px;
+}
+.table tbody tr {
+  background-color: #EAEAEA;
+}
+.table th {
+  background-color: transparent;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 8px;
+}
+.table td {
+  background-color: #EAEAEA;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+.table tr {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.table tr:hover {
+  background: #f5f7fb;
+}
+.table-empty {
+  text-align: center;
+  padding: 10px;
+}
+
+/*=========================
+    FILTROS (LISTADO)
+=========================*/
+.filtros-card {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 5px 20px 5px;
+}
+.filtros-card .title {
+  margin: 0 0 10px 0;
+}
+.filtros-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 15px;
+  align-items: flex-end;
+}
+.filtros-col {
+  display: flex;
+  flex-direction: column;
+}
+.filtros-col label {
+  margin-bottom: 4px;
+}
+.filtros-fechas-row {
+  display: flex;
+  gap: 10px;
+}
+.filtros-id {
+  max-width: 100px;
+}
+
+/*=========================
+    LISTADO
+=========================*/
+.listado-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 10px 20px 20px;
+  background-color: #F7F7F7;
+}
+.listado-card .title {
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+.td-descripcion {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*=========================
+    DETALLE
+=========================*/
+.detail-card,
+.historial-card,
+.accion-card {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 10px 20px 20px;
+  background-color: #F7F7F7;
+}
+.detail-card .title,
+.historial-card .title,
+.accion-card .title {
+  margin: 0 0 10px 0;
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 20px;
+  margin-top: 5px;
+}
+.detail-inline {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+.detail-inline strong {
+  min-width: 130px;
+}
+.detail-card textarea {
+  width: 100%;
+  min-height: 120px;
+}
+.historial-card .table {
+  margin-top: 10px;
+}
+
+/*=========================
+    ACCIÓN
+=========================*/
+.accion-card textarea {
+  min-height: 120px;
+}
+.accion-card .form__actions {
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+/*=========================
+    TITULOS GENERALES
+=========================*/
+.page-title {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+}

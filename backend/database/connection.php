@@ -23,11 +23,11 @@
     );
 
   } catch (PDOException $e) {
-    // Detener ejecución si falla la conexión
+    // Mostrar error y detener ejecución
     die('Error de conexión: ' . $e->getMessage());
   }
 
-  // Devolver conexión para reutilizar en el proyecto
+  // Devolver instancia PDO
   return $pdo;
 
 ?>

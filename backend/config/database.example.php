@@ -1,10 +1,11 @@
 <?php
 
+  // configuración de conexión a base de datos
   return [
     'host' => 'localhost',
-    'dbname' => 'nombre_DB',
+    'dbname' => 'nombre_base_datos',
     'user' => 'nombre_usuario',
-    'password' => 'contraseña',
+    'password' => 'password_usuario',
     'charset' => 'utf8mb4',
   ];
 

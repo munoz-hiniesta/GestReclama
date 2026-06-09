@@ -7,11 +7,8 @@
     public function __construct(PDO $pdo) {
       $this->pdo = $pdo;
     }
-
-    /**
-     * Obtiene el histórico de acciones para una reclamación
-     * Devuelve array de filas con: id, comentario, fecha, usuario_id, usuario_nombre, estado_id, estado_nombre
-     */
+    
+    // obtener acciones de una reclamación
     public function obtenerAccionesPorReclamacion(int $reclamacionId): array {
       try {
         $sql = "SELECT ar.id,
@@ -57,20 +54,18 @@
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([':id' => $id]);
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row ?: null;
+        $accion = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $accion ?: null;
       } catch (Exception $e) {
         return null;
       }
     }
 
-    /**
-     * Crea una nueva acción para una reclamación.
-     * Retorna ['success'=>bool, 'id'=>int|null, 'mensaje'=>string]
-     */
+    // crear acción de reclamación
     public function crearAccion(int $reclamacionId, int $usuarioId, int $estadoId, string $comentario): array {
       try {
-        $sql = "INSERT INTO acciones_reclamacion (reclamacion_id, usuario_id, estado_id, comentario) VALUES (:reclamacion_id, :usuario_id, :estado_id, :comentario)";
+        $sql = "INSERT INTO acciones_reclamacion (reclamacion_id, usuario_id, estado_id, comentario) 
+                       VALUES (:reclamacion_id, :usuario_id, :estado_id, :comentario)";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
           ':reclamacion_id' => $reclamacionId,

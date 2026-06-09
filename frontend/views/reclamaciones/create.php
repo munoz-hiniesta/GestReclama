@@ -1,6 +1,6 @@
 <?php
 
-  /* formulario para crear borrador de reclamación */
+  /* formulario para registrar una reclamación en estado borrador */
 
 ?>
 
@@ -22,8 +22,9 @@
       <label for="tipo_id">Tipo:</label>
       <select id="tipo_id" name="tipo_id" required>
         <option value="">-- Seleccionar tipo --</option>
-        <option value="1">Tipo 1</option>
-        <option value="2">Tipo 2</option>
+        <option value="1">Servicio</option>
+        <option value="2">Producto</option>
+        <option value="3">Atención al cliente</option>
       </select>
     </div>
 
@@ -71,7 +72,7 @@
         <option value="devolucion">Devolución</option>
         <option value="reparacion">Reparación</option>
         <option value="compensacion">Compensación</option>
-        <option value="informacion">Informacion</option>
+        <option value="informacion">Información</option>
         <option value="otra">Otra</option>
       </select>
     </div>
@@ -127,8 +128,8 @@
     </div>
 
     <div class="form-group">
-      <label for="adjunto">Archivo adjunto:</label>
-      <input type="file" id="adjunto" name="adjunto">
+      <label for="adjunto">Documento firmado:</label>
+      <input type="file" id="adjunto" name="adjunto" required>
     </div>
 
     <button type="submit" class="btn-submit">Guardar borrador</button>

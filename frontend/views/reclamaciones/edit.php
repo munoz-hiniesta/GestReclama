@@ -1,6 +1,6 @@
 <?php
 
-  /* vista para editar un borrador de reclamación */
+  /* formulario para modificar una reclamación en estado borrador */
 
 ?>
 
@@ -86,7 +86,7 @@
           <option value="devolucion" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'devolucion' ? 'selected' : ''; ?>>Devolución</option>
           <option value="reparacion" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'reparacion' ? 'selected' : ''; ?>>Reparación</option>
           <option value="compensacion" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'compensacion' ? 'selected' : ''; ?>>Compensación</option>
-          <option value="informacion" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'informacion' ? 'selected' : ''; ?>>Informacion</option>
+          <option value="informacion" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'informacion' ? 'selected' : ''; ?>>Información</option>
           <option value="otra" <?php echo ($reclamacion['solicitud_cliente'] ?? '') == 'otra' ? 'selected' : ''; ?>>Otra</option>
         </select>
       </div>
@@ -145,7 +145,7 @@
     </form>
 
     <div class="acciones-crear">
-      <?php if (($reclamacion['estado_id'] ?? '') == 1 && ($_SESSION['rol'] ?? 'trabajador') === 'encargado'): ?>
+      <?php if (($reclamacion['estado_clave'] ?? '') === 'BORRADOR' && ($_SESSION['rol'] ?? 'trabajador') === 'encargado'): ?>
         <a href="index.php?action=reclamaciones.validar&id=<?php echo htmlspecialchars($reclamacion['id']); ?>" class="btn-primary">Validar reclamación</a>
       <?php endif; ?>
       <a href="index.php?action=reclamaciones.index" class="btn-secondary">Volver al listado</a>

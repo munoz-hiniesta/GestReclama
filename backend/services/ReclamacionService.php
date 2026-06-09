@@ -167,49 +167,70 @@
 
     public function resolverReclamacion(int $id, int $usuarioId, string $comentario) {
       try {
-        // Obtener reclamación actual
+        // obtener reclamación
         $reclamacion = $this->obtenerReclamacionPorId($id);
         
         if (!$reclamacion) {
           return ['success' => false, 'mensaje' => 'La reclamación no existe.'];
         }
 
-        // Validar que esté en EN_TRAMITE
+        // verificar responsable asignado
+        if ((int)$reclamacion['usuario_responsable_id'] !== $usuarioId) {
+          return [
+            'success' => false,
+            'mensaje' => 'Solo el responsable asignado puede resolver la reclamación.'
+          ];
+        }
+
+        // verificar estado en trámite
         $estadoActual = $reclamacion['estado_clave'] ?? '';
         if ($estadoActual !== 'EN_TRAMITE') {
           return ['success' => false, 'mensaje' => 'Solo se pueden resolver reclamaciones en estado EN_TRÁMITE.'];
         }
 
-        // Obtener ID de estado RESUELTA
+        // verificar acciones de seguimiento previas
+        $accionesService = new AccionesReclamacionService($this->pdo);
+        $acciones = $accionesService->obtenerAccionesPorReclamacion($id);
+
+        if (count($acciones) === 0) {
+          return [
+            'success' => false,
+            'mensaje' => 'Debe existir al menos una acción de seguimiento antes de resolver la reclamación.'
+          ];
+        }
+
+        // obtener estado RESUELTA
         $sql = "SELECT id FROM estados WHERE clave = 'RESUELTA' AND activo = TRUE LIMIT 1";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
-        $estadoResuelta = $stmt->fetch(PDO::FETCH_ASSOC);
+        $estadoResuelto = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$estadoResuelta) {
+        if (!$estadoResuelto) {
           return ['success' => false, 'mensaje' => 'Estado RESUELTA no encontrado.'];
         }
 
-        $estadoResueltaId = intval($estadoResuelta['id']);
+        $estadoResueltoId = intval($estadoResuelto['id']);
 
-        // Actualizar estado y fecha de actualización
+        // actualizar estado y fecha de actualización
         $sql = "UPDATE reclamaciones
-                   SET estado_id = :estado_id,
-                       fecha_actualizacion = NOW()
-                 WHERE id = :id";
+                SET estado_id = :estado_resuelto,
+                    fecha_actualizacion = NOW()
+                WHERE id = :id
+                  AND estado_id = :estado_actual";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
-          ':estado_id' => $estadoResueltaId,
+          ':estado_resuelto' => $estadoResueltoId,
+          ':estado_actual' => $reclamacion['estado_id'],
           ':id' => $id
         ]);
 
-        // Registrar la acción de resolución con el comentario del usuario
+        // registrar acción de resolución
         $accionesService = new AccionesReclamacionService($this->pdo);
         $resultadoAccion = $accionesService->crearAccion(
           $id,
           $usuarioId,
-          $estadoResueltaId,
+          $estadoResueltoId,
           $comentario
         );
 
@@ -389,6 +410,9 @@
 
     public function actualizarBorrador(int $id, array $datos) {
       try {
+
+        $estados = EstadosReclamacion::obtenerReferencias($this->pdo);
+
         $sql = "UPDATE reclamaciones
                    SET descripcion = :descripcion,
                        tipo_id = :tipo_id,
@@ -409,7 +433,7 @@
                        importe = :importe,
                        otros_datos = :otros_datos
                  WHERE id = :id
-                   AND estado_id = 1";
+                   AND estado_id = :estado_borrador";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
@@ -431,7 +455,8 @@
           ':informacion_seguimiento' => $datos['informacion_seguimiento'] ?? null,
           ':importe' => $datos['importe'],
           ':otros_datos' => $datos['otros_datos'],
-          ':id' => $id
+          ':id' => $id,
+          ':estado_borrador' => $estados['BORRADOR']
         ]);
 
         if ($stmt->rowCount() === 0) {
@@ -465,15 +490,17 @@
           ];
         }
 
-        // verificar que está en estado BORRADOR (1)
-        if ($reclamacion['estado_id'] != 1) {
+        $estados = EstadosReclamacion::obtenerReferencias($this->pdo);
+
+        // verificar estado borrador
+        if ($reclamacion['estado_id'] != $estados['BORRADOR']) {
           return [
             'success' => false,
             'mensaje' => 'Solo se pueden validar reclamaciones en estado BORRADOR.'
           ];
         }
 
-        // validar datos obligatorios según RN-016
+        // validar datos obligatorios
         $errores = [];
 
         // validar nombre_apellidos
@@ -481,7 +508,7 @@
           $errores[] = 'Nombre y apellidos es obligatorio.';
         }
 
-        // validar al menos una vía de contacto (teléfono o email)
+        // validar vía de contacto
         if (empty($reclamacion['telefono']) && empty($reclamacion['email'])) {
           $errores[] = 'Debe indicar al menos un teléfono o correo electrónico.';
         }
@@ -508,7 +535,7 @@
           $errores[] = 'Documento adjunto es obligatorio.';
         }
 
-        // si hay errores, devolverlos sin cambiar estado
+        // devolver errores de validación
         if (!empty($errores)) {
           return [
             'success' => false,
@@ -516,15 +543,19 @@
           ];
         }
 
-        // si todas las validaciones son correctas, cambiar estado a PENDIENTE (2)
+        // cambiar estado a pendiente
         $sql = "UPDATE reclamaciones
-                   SET estado_id = 2,
+                   SET estado_id = :estado_pendiente,
                        fecha_actualizacion = NOW()
                  WHERE id = :id
-                   AND estado_id = 1";
+                   AND estado_id = :estado_id";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([':id' => $id]);
+        $stmt->execute([
+          ':id' => $id,
+          ':estado_pendiente' => $estados['PENDIENTE'],
+          ':estado_id' => $estados['BORRADOR']
+        ]);
 
         if ($stmt->rowCount() === 0) {
           return [

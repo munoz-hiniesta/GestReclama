@@ -6,11 +6,11 @@
   require_once MIDDLEWARE_PATH . '/auth.php';
 
   // recuperar datos de sesión (se mantiene activa hasta que se cierra con logout)
-  $id = $_SESSION['id'];
-  $rol_id = $_SESSION['rol_id'];
+  $id = $_SESSION['id'] ?? null;
+  $rol_id = $_SESSION['rol_id'] ?? null;
 
   // preparar para renderizado layout - vista
-  $pageTitle = "panel";
+  $pageTitle = "Panel";
   $vista = '/../panel/panel.php';
   $css = '/css/panel.css';
 

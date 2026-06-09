@@ -1,6 +1,6 @@
 <?php
 
-  /* vista sencilla para listar reclamaciones reales desde la base de datos */
+  /* vista para listar reclamaciones */
 
 ?>
 
@@ -8,7 +8,7 @@
 
   <h1>Listado de reclamaciones</h1>
 
-  <?php if (!empty($respuesta['reclamaciones'])): ?>
+  <?php if (!empty($reclamaciones)): ?>
     <div class="table-wrapper">
       <table class="tabla-reclamaciones">
         <thead>
@@ -18,12 +18,12 @@
               <th>Tipo</th>
               <th>Prioridad</th>
               <th>Estado</th>
-              <th>Fecha creación</th>
+              <th>Fecha de creación</th>
               <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
-          <?php foreach ($respuesta['reclamaciones'] as $reclamacion): ?>
+          <?php foreach ($reclamaciones as $reclamacion): ?>
             <tr>
               <td><?php echo htmlspecialchars($reclamacion['id']); ?></td>
               <td><?php echo htmlspecialchars($reclamacion['descripcion']); ?></td>
@@ -33,7 +33,7 @@
               <td><?php echo htmlspecialchars($reclamacion['fecha_creacion']); ?></td>
               <td>
                 <a href="index.php?action=reclamaciones.show&id=<?php echo urlencode($reclamacion['id']); ?>" class="btn-secondary">Ver</a>
-                <?php if (intval($reclamacion['estado_id']) === 1): ?>
+                <?php if (($reclamacion['estado_clave'] ?? '') === 'BORRADOR'): ?>
                   <a href="index.php?action=reclamaciones.edit&id=<?php echo urlencode($reclamacion['id']); ?>" class="btn-secondary">Editar</a>
                 <?php endif; ?>
               </td>

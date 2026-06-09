@@ -2,29 +2,29 @@
 
   class EstadosReclamacion {
 
-    // generar clave interna (EN_TRAMITE) para nombre introducido por usuario (En trámite)
+    // generar clave interna a partir del nombre del estado
     public static function generarClave($nombre) {
 
-      $nombre = iconv('UTF-8', 'ASCII//TRANSLIT', $nombre); // transliterar caracteres acentuados a ASCII
-      $nombre = trim($nombre); // quitar espacios al principio y final de cadena
-      $nombre = mb_strtoupper($nombre); // convertir todo a mayúsculas
-      $nombre = preg_replace('/[^A-Z0-9]+/', '_', $nombre); // convertir todos los caracteres extraños y espacios internos en guión bajo
-      $nombre = preg_replace('/^_+|_+$/', '', $nombre); // eliminar guiones bajos al comienzo y final de cadena
+      $nombre = iconv('UTF-8', 'ASCII//TRANSLIT', $nombre);
+      $nombre = trim($nombre);
+      $nombre = mb_strtoupper($nombre);
+      $nombre = preg_replace('/[^A-Z0-9]+/', '_', $nombre);
+      $nombre = preg_replace('/^_+|_+$/', '', $nombre);
 
       return $nombre;
 
     }
 
-    // centralizar acceso backend a estados mediante referencias semánticas
+    // obtener referencias de estados
     public static function obtenerReferencias($pdo) {
 
       // obtener estados activos desde modelo
       $estadoModel = new Estado($pdo);
-      $resultado = $estadoModel->obtenerEstados();
+      $listaEstados = $estadoModel->obtenerEstados();
 
       $estados = [];
 
-      foreach ($resultado as $estado) { // estado = estado individual obtenido del resultado (fila actual del resultado)
+      foreach ($listaEstados as $estado) {
         $estados[$estado['clave']] = $estado['id']; // $estados['BORRADOR'] = 1
       }
 

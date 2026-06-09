@@ -38,7 +38,7 @@
       // guarda respuesta devuelta por el controller
       $controller = new AuthController($pdo); 
       $respuesta = $controller->login();
-      $id = $respuesta['id'] ?? '';;
+      $id = $respuesta['id'] ?? '';
       $email = $respuesta['email'] ?? '';
       $mensaje = $respuesta['mensaje']?? '';
       $pageTitle = "login";
@@ -58,6 +58,7 @@
       $vista = $respuesta['vista'];
       $pageTitle = $respuesta['pageTitle'];
       $css = $respuesta['css'];
+      $reclamaciones = $respuesta['reclamaciones'] ?? [];
     break;
 
     case 'reclamaciones.pendientes_asignacion':
@@ -80,11 +81,11 @@
       $reclamacion = $respuesta['reclamacion'] ?? null;
       $responsables = $respuesta['responsables'] ?? [];
       $error = $respuesta['error'] ?? null;
+      $acciones_reclamacion = $respuesta['acciones_reclamacion'] ?? [];
       $respuesta = $respuesta['respuesta'] ?? [];
     break;
 
     case 'reclamaciones.show':
-      require_once SERVICES_PATH . '/AccionesReclamacionService.php';
       $reclamacionService = new ReclamacionService($pdo);
       $controller = new ReclamacionController($pdo, $reclamacionService);
       $respuesta = $controller->show();
@@ -107,6 +108,8 @@
       $css = $respuesta['css'];
       $reclamacion = $respuesta['reclamacion'] ?? null;
       $error = $respuesta['error'] ?? null;
+      $tipos = $respuesta['tipos'] ?? [];
+      $prioridades = $respuesta['prioridades'] ?? [];
       $respuesta = $respuesta['respuesta'] ?? [];
     break;
 

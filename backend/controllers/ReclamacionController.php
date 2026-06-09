@@ -1,19 +1,17 @@
 <?php
 
-  /* coordina las peticiones del módulo reclamaciones, actuando como intermediario entre
-    frontend, services backend y modelos de persistencia.
-  */
-
+  // coordinar peticiones del módulo de reclamaciones
   require_once SERVICES_PATH . '/ReclamacionService.php';
   require_once SERVICES_PATH . '/AuthService.php';
   require_once SERVICES_PATH . '/AccionesReclamacionService.php';
+  require_once SERVICES_PATH . '/EstadosReclamacion.php';
 
   class ReclamacionController {
 
     private PDO $pdo;
     private ReclamacionService $reclamacionService;
 
-    // integrar conexión PDO en la clase (viene de backend/database/connection.php - frontend/index.php)
+    // guardar conexión PDO
     public function __construct(PDO $pdo, ReclamacionService $reclamacionService) {
       $this->pdo = $pdo;
       $this->reclamacionService = $reclamacionService;
@@ -73,9 +71,11 @@
           return ['success' => false, 'mensaje' => 'Error al mover el archivo adjunto'];
         }
       } else {
-        // Según RN-015, para guardar BORRADOR es necesario el documento firmado
+        // exigir documento firmado para guardar borrador
         return ['success' => false, 'mensaje' => 'Debe adjuntar un documento firmado para guardar el borrador'];
       }
+
+      $estados = EstadosReclamacion::obtenerReferencias($this->pdo);
 
       $datos = [
         'descripcion' => $descripcion,
@@ -96,7 +96,7 @@
         'informacion_seguimiento' => $informacion_seguimiento !== '' ? $informacion_seguimiento : null,
         'importe' => $importe !== '' ? $importe : null,
         'otros_datos' => $otros_datos !== '' ? $otros_datos : null,
-        'estado_id' => 1,
+        'estado_id' => $estados['BORRADOR'],
         'franquicia_id' => $franquicia_id,
         'adjunto' => $adjunto_nombre,
         'usuario_creador_id' => $usuario_creador_id
@@ -150,7 +150,7 @@
 
         $respuesta = [];
 
-        // Si se envía un POST para registrar una nueva acción
+        // registrar nueva acción
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
           $nuevoComentario = trim($_POST['nuevo_comentario'] ?? '');
 
@@ -268,19 +268,19 @@
         $estadoIdActual = intval($reclamacion['estado_id'] ?? 0);
         $usuarioId = intval($_SESSION['id'] ?? 0);
 
-        // Validar usuario autenticado
+        // validar usuario autenticado
         if ($usuarioId <= 0) {
           $respuesta = ['success' => false, 'mensaje' => 'Usuario no autenticado.'];
         }
-        // Validar comentario no vacío
+        // Validar comentario
         elseif ($comentario === '') {
           $respuesta = ['success' => false, 'mensaje' => 'El comentario es obligatorio.'];
         }
-        // Validar estado recibido válido
+        // Validar estado recibido
         elseif ($estadoIdRecibido <= 0) {
           $respuesta = ['success' => false, 'mensaje' => 'Estado no válido.'];
         }
-        // Si hay cambio de estado, debe ser transición a RESUELTA
+        // comprobar cambio de estado
         elseif ($estadoIdRecibido !== $estadoIdActual) {
           // Obtener la clave del estado recibido para validar que es RESUELTA
           $sql = "SELECT clave FROM estados WHERE id = :id LIMIT 1";
@@ -355,7 +355,9 @@
         ];
       }
 
-      if ($reclamacion['estado_id'] !== '1' && $reclamacion['estado_id'] !== 1) {
+       $estados = EstadosReclamacion::obtenerReferencias($this->pdo);
+
+      if ($reclamacion['estado_id'] != $estados['BORRADOR']) {
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
           'pageTitle' => 'Editar reclamación',

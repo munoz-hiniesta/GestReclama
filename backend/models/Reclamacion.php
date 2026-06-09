@@ -3,13 +3,13 @@
   class Reclamacion {
     private PDO $pdo;
 
-    // integrar conexión PDO en la clase
+    // guardar conexión PDO
     public function __construct(PDO $pdo) {
       $this->pdo = $pdo;
     }
 
     public function obtenerReclamaciones() {
-      // preparar stmt (PDO)
+      // preparar consulta
        $stmt = $this->pdo->prepare(
         "SELECT *
           FROM reclamaciones"
@@ -18,11 +18,8 @@
       // ejecutar consulta
       $stmt->execute();
 
-      // obtener resultado
-      $result = $stmt->fetchAll();
-
       // devolver resultado
-      return $result;
+      return $stmt->fetchAll();
     }
   }
 

@@ -2,9 +2,9 @@
 
   class AuthService {
 
-    public function getUserByEmail($pdo, $email) {
+    public function obtenerUsuarioPorEmail($pdo, $email) {
 
-      // preparar stmt (PDO)
+      // preparar consulta
       $stmt = $pdo->prepare(
       "SELECT u.*, r.clave AS rol_clave
        FROM usuarios u
@@ -19,7 +19,7 @@
       // obtener usuario
       $user = $stmt->fetch();
 
-      // devolver usuario o null a AuthController.php
+      // devolver usuario encontrado o null
       return $user;
 
     }

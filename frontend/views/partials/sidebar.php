@@ -25,9 +25,11 @@
     </li>
 
     <li>
-      <a href="index.php?action=logout">
-        Cerrar sesión
-      </a>
+      <form method="POST" action="index.php">
+        <button type="submit" name="action" value="logout">
+          Cerrar sesión
+        </button>
+      </form>
     </li>
 
   </ul>

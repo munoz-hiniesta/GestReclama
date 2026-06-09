@@ -10,7 +10,7 @@
     <div class="login-message">
       <!-- mensaje cargado del controller - index -->
       <?php if (isset($mensaje) && $mensaje !== '') : ?>
-        <p><?= htmlspecialchars($mensaje) ?></p>
+        <p><?php echo htmlspecialchars($mensaje); ?></p>
       <?php endif; ?>
     </div>  
 
@@ -23,8 +23,8 @@
           type="email"
           name="email"
           id="email"
-          value="<?= htmlspecialchars($email ?? '') ?>"
-          placeholder="micorreo@gestreclama.es"
+          value="<?php echo htmlspecialchars($email ?? ''); ?>"
+          placeholder="usuario@correo.com"
           required
         >
 

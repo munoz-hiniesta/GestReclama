@@ -3,13 +3,13 @@
   class Estado {
     private PDO $pdo;
 
-    // integrar conexión PDO en la clase (viene de backend/database/connection.php - frontend/index.php)
+    // guardar conexión PDO
     public function __construct(PDO $pdo) {
       $this->pdo = $pdo;
     }
 
     public function obtenerEstados() {
-      // preparar stmt (PDO)
+      // preparar consulta
        $stmt = $this->pdo->prepare(
         "SELECT id, clave
           FROM estados
@@ -19,11 +19,8 @@
       // ejecutar consulta
       $stmt->execute();
 
-      // obtener resultado
-      $result = $stmt->fetchAll();
-
       // devolver resultado
-      return $result;
+      return $stmt->fetchAll();
     }
   }
 

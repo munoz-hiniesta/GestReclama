@@ -6,7 +6,7 @@
     
     private PDO $pdo;
 
-    // integrar conexión PDO en la clase (viene de backend/database/connection.php - frontend/index.php)
+    // guardar conexión PDO
     public function __construct(PDO $pdo) {
       $this->pdo = $pdo;
     }
@@ -29,12 +29,11 @@
         ];
       }
 
-      // llamar a AuthService.php (crear instancia, llamar método)
-
+      // obtener usuario por email
       $authService = new AuthService();
-      $user = $authService->getUserByEmail($this->pdo, $email);
+      $user = $authService->obtenerUsuarioPorEmail($this->pdo, $email);
 
-      // comprobar datos de AuthService.php - usuario inexistente
+      // comprobar que el usuario existe
       if (!$user) {
         $mensaje = "usuario no existe";
         return [
@@ -56,11 +55,10 @@
       $_SESSION['id'] = $user['id'];
       $_SESSION['nombre'] = $user['nombre'];
       $_SESSION['rol_id'] = $user['rol_id'];
-      // rol funcional mínimo para el workflow actual:
-      // encargado puede validar, trabajador no.
+      // rol funcional para el workflow actual encargado puede validar, trabajador no
       $_SESSION['rol'] = ($user['rol_clave'] === 'ENCARGADO') ? 'encargado' : 'trabajador';
 
-      // redirijo
+      // redirigir al panel
       header ('Location: panel.php'); 
       exit;
     }
@@ -71,7 +69,7 @@
       $_SESSION = [];
       session_destroy();
 
-      // // redirigir creando nueva petición (no guarda POST)
+      // redirigir creando nueva petición (no guarda POST)
       header ('Location: index.php');
       exit;
     }

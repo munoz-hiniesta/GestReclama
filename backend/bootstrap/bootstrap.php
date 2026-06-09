@@ -20,7 +20,7 @@
   const VIEWS_PATH = FRONTEND_PATH . '/views';
   const LAYOUTS_PATH = VIEWS_PATH . '/layouts';
 
-  // cargar connection.php (dejar disponible $pdo)
+  // cargar conexión y obtener instancia PDO
   $pdo = require_once DATABASE_PATH . '/connection.php';
 
 ?>
