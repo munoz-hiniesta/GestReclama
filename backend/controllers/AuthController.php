@@ -17,7 +17,7 @@
       $email = '';
       
       // limpiar datos
-      $email    = trim($_POST['email'] ?? '');
+      $email = strtolower(trim($_POST['email'] ?? ''));
       $password = trim($_POST['password'] ?? '');
 
       // comprobar que ningún dato esté vacío
@@ -35,7 +35,15 @@
 
       // comprobar que el usuario existe
       if (!$user) {
-        $mensaje = "usuario no existe";
+        $mensaje = "Credenciales incorrectas";
+        return [
+          'mensaje' => $mensaje,
+          'email' => $email
+        ];
+      }
+
+      if ((int)$user['activo'] !== 1) {
+        $mensaje = "Credenciales incorrectas";
         return [
           'mensaje' => $mensaje,
           'email' => $email
@@ -44,13 +52,16 @@
       
       // verificar password
       if (!password_verify($password, $user['password'])) {
-        $mensaje = "password incorrecto";
+        $mensaje = "Credenciales incorrectas";
         return [
           'mensaje' => $mensaje,
           'email' => $email
         ];
       }
-      
+   
+      // regenerar id de sesión para evitar fijación de sesión
+      session_regenerate_id(true);
+
       // guardar datos en sesión
       $_SESSION['id'] = $user['id'];
       $_SESSION['nombre'] = $user['nombre'];

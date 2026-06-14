@@ -78,7 +78,7 @@
 
         return ['success' => true, 'id' => $id, 'mensaje' => 'Acción registrada correctamente.'];
       } catch (Exception $e) {
-        return ['success' => false, 'id' => null, 'mensaje' => 'Error al registrar la acción: ' . $e->getMessage()];
+        return ['success' => false, 'id' => null, 'mensaje' => 'Error al registrar la acción: '];
       }
     }
 

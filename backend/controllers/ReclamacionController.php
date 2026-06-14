@@ -38,7 +38,7 @@
       $informacion_seguimiento = trim($_POST['informacion_seguimiento'] ?? '');
       $importe = trim($_POST['importe'] ?? '');
       $otros_datos = trim($_POST['otros_datos'] ?? '');
-      $franquicia_id = intval($_POST['franquicia_id'] ?? 0) ?: 1;
+      $franquicia_id = intval($_POST['franquicia_id'] ?? 0);
 
       if ($telefono !== '' && !preg_match('/^[0-9+\s()\-]{6,20}$/', $telefono)) {
         return ['success' => false, 'mensaje' => 'Teléfono no tiene un formato válido.'];
@@ -49,7 +49,16 @@
       }
 
       // usuario creador desde sesión si está disponible
-      $usuario_creador_id = $_SESSION['id'] ?? 1;
+      $usuario_creador_id = intval($_SESSION['id'] ?? 0);
+
+      if ($usuario_creador_id <= 0) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/create.php',
+          'pageTitle' => 'Nueva reclamación',
+          'css' => 'reclamacion.create.css',
+          'error' => 'Usuario no autenticado.'
+        ];
+      }
 
       // procesar archivo adjunto (viene en $_FILES)
       $adjunto_nombre = null;
@@ -333,7 +342,7 @@
     }
 
     public function edit() {
-      $id = intval($_REQUEST['id'] ?? 0);
+      $id = intval($_GET['id'] ?? $_POST['id'] ?? 0);
 
       if ($id <= 0) {
         return [

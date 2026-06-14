@@ -24,7 +24,7 @@
 
   } catch (PDOException $e) {
     // Mostrar error y detener ejecución
-    die('Error de conexión: ' . $e->getMessage());
+    die('Error al conectar con la base de datos');
   }
 
   // Devolver instancia PDO

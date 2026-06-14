@@ -2,7 +2,7 @@
 
   class AuthService {
 
-    public function obtenerUsuarioPorEmail($pdo, $email) {
+    public function obtenerUsuarioPorEmail(PDO $pdo, string $email) {
 
       // preparar consulta
       $stmt = $pdo->prepare(
@@ -24,7 +24,7 @@
 
     }
 
-    public function obtenerUsuariosPorRol($pdo, $rolClave) {
+    public function obtenerUsuariosPorRol(PDO $pdo, string $rolClave) {
       try {
         $stmt = $pdo->prepare(
           "SELECT u.*
@@ -38,12 +38,12 @@
         $stmt->execute(['rol_clave' => $rolClave]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-      } catch (Exception $e) {
+      } catch (PDOException $e) {
         return [];
       }
     }
 
-    public function obtenerResponsablesTramitacion($pdo) {
+    public function obtenerResponsablesTramitacion(PDO $pdo) {
       return $this->obtenerUsuariosPorRol($pdo, 'RESPONSABLE_TRAMITACION');
     }
 

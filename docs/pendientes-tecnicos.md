@@ -1,17 +1,24 @@
 # TAREAS TÉCNICAS PENDIENTES DE HACER / EVALUAR
 
 <!-- TOC -->
+
 - [OBSERVACIONES TÉCNICAS URGENTES](#observaciones-técnicas-urgentes)
   - [1. Sustituir IDs de estados codificados por referencias dinámicas](#1-sustituir-ids-de-estados-codificados-por-referencias-dinámicas)
   - [2. Revisar flujo de asignación de reclamaciones](#2-revisar-flujo-de-asignación-de-reclamaciones)
 - [OBSERVACIONES TÉCNICAS IMPORTANTES](#observaciones-técnicas-importantes)
   - [1. Centralizar acceso a parámetros HTTP](#1-centralizar-acceso-a-parámetros-http)
-  - [2. Definir arquitectura CSS definitiva](#2-definir-arquitectura-css-definitiva)
+  - [2. Migrar frontend a arquitectura CSS modular](#2-migrar-frontend-a-arquitectura-css-modular)
+  - [3. Revisar responsabilidades de ReclamacionController](#3-revisar-responsabilidades-de-reclamacioncontroller)
+  - [4. Revisar estrategia de roles del sistema](#4-revisar-estrategia-de-roles-del-sistema)
+  - [5. Revisar aislamiento por franquicias](#5-revisar-aislamiento-por-franquicias)
 - [OBSERVACIONES TÉCNICAS DE BAJA PRIORIDAD](#observaciones-técnicas-de-baja-prioridad)
   - [1. Revisar estrategia de gestión de rutas CSS](#1-revisar-estrategia-de-gestión-de-rutas-css)
   - [2. Evaluar menú dinámico por rol](#2-evaluar-menú-dinámico-por-rol)
   - [3. Unificar estrategia de resolución de vistas](#3-unificar-estrategia-de-resolución-de-vistas)
-
+  - [4. Revisar consultas SQL residuales en controladores](#4-revisar-consultas-sql-residuales-en-controladores)
+  - [5. Unificar acceso a estados del sistema](#5-unificar-acceso-a-estados-del-sistema)
+  - [6. Revisar permisos sobre acciones de reclamaciones](#6-revisar-permisos-sobre-acciones-de-reclamaciones)
+  - [7. Evaluar trazabilidad completa de cambios de estado](#7-evaluar-trazabilidad-completa-de-cambios-de-estado)
 
 ## OBSERVACIONES TÉCNICAS URGENTES
 
@@ -31,7 +38,7 @@ Objetivos:
 - Permitir cambios en la base de datos sin romper la aplicación.
 - Mantener coherencia con la arquitectura actual del backend.
 
-Estado: Parcialmente implementado. Revisar todas las vistas y controladores para completar la migración.
+Estado: Implementado. Mantener vigilancia en futuras funcionalidades.
 
 ### 2. Revisar flujo de asignación de reclamaciones
 
@@ -45,6 +52,8 @@ Actualmente el método mezcla dos responsabilidades:
 Evaluar si la creación de acciones debe permanecer en este flujo o trasladarse al flujo de seguimiento de reclamaciones (`show()`), dejando `asignar()` dedicado exclusivamente a la asignación de responsables.
 
 Estado: Pendiente de análisis funcional y técnico.
+
+---
 
 ## OBSERVACIONES TÉCNICAS IMPORTANTES
 
@@ -69,38 +78,96 @@ Posible ámbito inicial:
 
 Estado: Mejora de arquitectura a valorar cuando finalice la funcionalidad principal.
 
-### 2. Definir arquitectura CSS definitiva
+### 2. Migrar frontend a arquitectura CSS modular
 
-Actualmente la aplicación utiliza hojas de estilo independientes asociadas a cada pantalla (`login.css`, `panel.css`, `reclamacion.index.css`, `reclamacion.create.css`, etc.).
+Existe un prototipo CSS previo compuesto por:
 
-Existe además una referencia visual procedente de un prototipo anterior que utilizaba una arquitectura CSS basada en:
+- base.css
+- layout.css
+- components.css
+- pages.css
 
-- `base.css`
-- `layout.css`
-- `components.css`
-- `pages.css`
+La estructura es compatible con la mayoría de pantallas actuales de GestReclama.
 
-Una vez finalizada la revisión funcional completa del proyecto, evaluar la migración hacia una arquitectura CSS común.
+Una vez finalizada la revisión funcional del proyecto:
+
+- Migrar las vistas actuales a dicha arquitectura.
+- Reutilizar componentes existentes.
+- Reducir CSS específico por pantalla.
+- Aproximar la interfaz a los wireframes definidos en la memoria.
+
+Estado: Pendiente hasta finalizar la revisión funcional.
+
+### 3. Revisar responsabilidades de ReclamacionController
+
+Actualmente ReclamacionController contiene lógica que debería estar delegada en servicios especializados.
+
+Casos detectados:
+
+- Gestión de archivos adjuntos.
+- Validaciones repetidas entre create() y edit().
+- Consultas SQL ejecutadas directamente desde el controlador.
+- Construcción manual de arrays de datos para servicios.
 
 Objetivos:
 
-- Centralizar estilos compartidos.
-- Evitar duplicación de reglas entre pantallas.
-- Separar claramente estructura, componentes y estilos específicos de página.
-- Facilitar el mantenimiento y la evolución visual de la aplicación.
-- Mejorar la coherencia entre todas las vistas.
+- Reducir tamaño del controlador.
+- Mejorar separación de responsabilidades.
+- Facilitar mantenimiento y pruebas.
 
-Estructura candidata:
+Estado: Pospuesto hasta finalizar la entrega funcional.
 
-assets/css/
-│
-├── base.css
-├── layout.css
-├── components.css
-├── pages.css
-└── main.css
+### 4. Revisar estrategia de roles del sistema
 
-Estado: Pendiente de análisis tras finalizar la revisión funcional completa del proyecto.
+Actualmente la aplicación almacena los roles reales mediante:
+
+- `$_SESSION['rol_id']`
+
+pero simplifica los permisos funcionales mediante:
+
+- `$_SESSION['rol']`
+
+con los valores:
+
+- `encargado`
+- `trabajador`
+
+Esta simplificación es suficiente para el flujo actualmente implementado, pero no aprovecha completamente los roles definidos en la base de datos:
+
+- ADMINISTRADOR
+- RESPONSABLE_GENERAL
+- RESPONSABLE_TRAMITACION
+- ENCARGADO
+- EMPLEADO
+
+Evaluar en el futuro si los permisos deben basarse directamente en `rol_id` o `rol_clave`.
+
+Estado: Pendiente de revisión global de permisos.
+
+### 5. Revisar aislamiento por franquicias
+
+Actualmente el sistema almacena relaciones entre usuarios y franquicias mediante:
+
+- `usuario_franquicia`
+
+Sin embargo, la creación y consulta de reclamaciones todavía no aplica de forma completa el aislamiento por franquicias.
+
+Aspectos a revisar:
+
+- Obtención automática de franquicias del usuario autenticado.
+- Validación de pertenencia mediante `usuario_franquicia`.
+- Restricción de acceso a reclamaciones de otras franquicias.
+- Restricción de listados según franquicia.
+
+Objetivos:
+
+- Garantizar aislamiento entre franquicias.
+- Cumplir las reglas de negocio.
+- Evitar accesos cruzados.
+
+Estado: Pendiente de revisión global de seguridad y permisos.
+
+---
 
 ## OBSERVACIONES TÉCNICAS DE BAJA PRIORIDAD
 
@@ -108,31 +175,27 @@ Estado: Pendiente de análisis tras finalizar la revisión funcional completa de
 
 Actualmente existen dos formas de referenciar hojas de estilo:
 
-- Rutas directas (ej.: `/css/panel.css`)
-- Constantes centralizadas (ej.: `CSS_PATH . '/archivo.css'`)
+- Rutas directas.
+- Constantes centralizadas.
 
-Revisar y unificar el criterio utilizado en todo el proyecto para mejorar la consistencia y facilitar futuros cambios en la estructura de recursos estáticos.
+Revisar y unificar el criterio utilizado en todo el proyecto.
 
-Estado: Mejora de mantenibilidad. Baja prioridad.
+Estado: Baja prioridad.
 
 ### 2. Evaluar menú dinámico por rol
 
-Actualmente el panel principal muestra las mismas opciones a todos los usuarios autenticados.
+Actualmente el panel principal y la navegación muestran las mismas opciones a todos los usuarios autenticados.
 
-Revisar en el futuro si determinadas opciones deben mostrarse u ocultarse según el rol del usuario para mejorar la experiencia de uso y alinearse con el diseño funcional previsto.
+Evaluar en el futuro si determinadas opciones deben mostrarse u ocultarse según el rol.
 
-Objetivos:
+Archivos afectados:
 
-- Adaptar la navegación al rol autenticado.
-- Mostrar únicamente acciones relevantes para cada perfil.
-- Reducir opciones innecesarias en la interfaz.
+- `frontend/views/partials/sidebar.php`
+- `frontend/views/panel/panel.php`
+- `frontend/views/reclamaciones/index.php`
+- `frontend/views/reclamaciones/pendientes_asignacion.php`
 
-Observación:
-
-- Actualmente el menú lateral (sidebar.php) muestra todas las opciones de navegación a todos los usuarios autenticados.
-- Cuando finalice el desarrollo funcional deberá revisarse si cada opción debe mostrarse únicamente a los roles autorizados según las reglas de negocio.
-
-Estado: Pendiente de análisis funcional cuando finalice el desarrollo principal.
+Estado: Pendiente de análisis funcional.
 
 ### 3. Unificar estrategia de resolución de vistas
 
@@ -141,29 +204,78 @@ Actualmente los layouts soportan dos formatos distintos para cargar vistas:
 - Rutas absolutas basadas en `VIEWS_PATH`.
 - Rutas relativas procesadas desde el propio layout.
 
-Ejemplos actuales:
+Objetivos:
 
-    $vista = VIEWS_PATH . '/reclamaciones/index.php';
-    $vista = '/../auth/login.php';
+- Utilizar un único formato de rutas.
+- Simplificar layouts.
+- Reducir lógica de resolución de archivos.
 
-Esta dualidad obliga a mantener lógica adicional en los layouts:
+Estado: Baja prioridad.
 
-    if (file_exists($vista)) {
-    require_once $vista;
-    } else {
-    require_once __DIR__ . $vista;
-    }
+### 4. Revisar consultas SQL residuales en controladores
+
+Durante la revisión de ReclamacionController se detecta una consulta SQL directa en el método `show()`.
 
 Objetivos:
 
-- Utilizar un único formato de rutas para todas las vistas.
-- Simplificar los layouts.
-- Reducir lógica de resolución de archivos.
-- Mejorar la mantenibilidad del sistema.
+- Mantener consultas fuera de los controladores.
+- Centralizar acceso a datos en servicios o modelos.
+- Mejorar coherencia arquitectónica.
 
-Posible estrategia:
+Estado: Baja prioridad.
 
-- Todos los controladores y puntos de entrada devolverán rutas absolutas basadas en VIEWS_PATH.
-- Los layouts se limitarán a ejecutar directamente require_once $vista.
+### 5. Unificar acceso a estados del sistema
 
-Estado: Mejora de arquitectura. Baja prioridad.
+Actualmente conviven dos mecanismos:
+
+- Consultas SQL directas sobre la tabla `estados`.
+- Uso de `EstadosReclamacion::obtenerReferencias()`.
+
+Evaluar la unificación en una única estrategia.
+
+Objetivos:
+
+- Reducir duplicación.
+- Centralizar referencias de estados.
+- Facilitar mantenimiento.
+
+Estado: Baja prioridad.
+
+### 6. Revisar permisos sobre acciones de reclamaciones
+
+Actualmente cualquier usuario autenticado puede acceder al formulario de acciones y registrar comentarios.
+
+Evaluar qué perfiles deben poder:
+
+- Registrar acciones.
+- Resolver reclamaciones.
+- Consultar determinadas reclamaciones.
+
+Archivos afectados:
+
+- `frontend/views/reclamaciones/show.php`
+- `backend/controllers/ReclamacionController.php`
+
+Estado: Pendiente de revisión funcional.
+
+### 7. Evaluar trazabilidad completa de cambios de estado
+
+Actualmente algunos cambios importantes del workflow no generan automáticamente registros en:
+
+```sql
+acciones_reclamacion
+```
+
+Casos a revisar:
+
+- Validación de reclamaciones.
+- Asignación de responsable.
+- Otros cambios automáticos de estado.
+
+Objetivos:
+
+- Mejorar trazabilidad.
+- Mantener histórico completo del proceso.
+- Facilitar auditoría funcional.
+
+Estado: Mejora futura de bajo impacto funcional.

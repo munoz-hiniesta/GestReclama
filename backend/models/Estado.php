@@ -8,7 +8,7 @@
       $this->pdo = $pdo;
     }
 
-    public function obtenerEstados() {
+    public function obtenerEstados(): array {
       // preparar consulta
        $stmt = $this->pdo->prepare(
         "SELECT id, clave
@@ -20,7 +20,7 @@
       $stmt->execute();
 
       // devolver resultado
-      return $stmt->fetchAll();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
   }
 

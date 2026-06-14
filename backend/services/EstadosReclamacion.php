@@ -3,7 +3,7 @@
   class EstadosReclamacion {
 
     // generar clave interna a partir del nombre del estado
-    public static function generarClave($nombre) {
+    public static function generarClave(string $nombre): string {
 
       $nombre = iconv('UTF-8', 'ASCII//TRANSLIT', $nombre);
       $nombre = trim($nombre);
@@ -16,7 +16,7 @@
     }
 
     // obtener referencias de estados
-    public static function obtenerReferencias($pdo) {
+    public static function obtenerReferencias(PDO $pdo): array {
 
       // obtener estados activos desde modelo
       $estadoModel = new Estado($pdo);
