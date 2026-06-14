@@ -96,7 +96,7 @@
       }
     }
 
-    public function obtenerReclamaciones() {
+    public function obtenerReclamaciones(array $filtros = []) {
       try {
         $sql = "SELECT r.id,
                        r.descripcion,
@@ -111,12 +111,40 @@
                   FROM reclamaciones r
                   LEFT JOIN tipos t ON r.tipo_id = t.id
                   LEFT JOIN prioridades p ON r.prioridad_id = p.id
-                  LEFT JOIN estados e ON r.estado_id = e.id
-                 ORDER BY r.id DESC";
+                  LEFT JOIN estados e ON r.estado_id = e.id";
+
+        $where = [];
+        $params = [];
+
+        if (!empty($filtros['id'])) {
+          $where[] = "r.id = :id";
+          $params[':id'] = $filtros['id'];
+        }
+
+        if (!empty($filtros['estado_id'])) {
+          $where[] = "r.estado_id = :estado_id";
+          $params[':estado_id'] = $filtros['estado_id'];
+        }
+
+        if (!empty($where)) {
+          $sql .= " WHERE " . implode(" AND ", $where);
+        }
+
+        $sql .= " ORDER BY r.id DESC";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute();
+        $stmt->execute($params);
 
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+      } catch (Exception $e) {
+        return [];
+      }
+    }
+
+    public function obtenerEstados() {
+      try {
+        $stmt = $this->pdo->prepare("SELECT id, nombre FROM estados WHERE activo = TRUE ORDER BY id ASC");
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
       } catch (Exception $e) {
         return [];

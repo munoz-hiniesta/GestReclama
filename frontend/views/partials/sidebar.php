@@ -1,6 +1,6 @@
-<nav>
+<nav class="app-sidebar">
 
-  <ul>
+  <ul class="sidebar-menu">
 
     <li>
       <a href="panel.php">Panel principal</a>

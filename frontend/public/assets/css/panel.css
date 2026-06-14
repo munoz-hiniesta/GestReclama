@@ -1,0 +1,107 @@
+/* ========= REGISTRO DE FUENTES ========= */
+  @font-face {
+    font-family: 'Inter';
+    src: url('../fonts/inter/Inter-Regular.woff2') format('woff2');
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    src: url('../fonts/inter/Inter-Medium.woff2') format('woff2');
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: 'Inter';
+    src: url('../fonts/inter/Inter-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+  }
+
+
+/* ========= RESET / UNIVERSAL ========= */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+
+/* ========= ETIQUETAS GLOBALES ========= */
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #EDF2F7;
+  }
+
+
+/* ========= PANEL ========= */
+  .panel-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .panel-header {
+    margin-bottom: 1rem;
+  }
+
+  .panel-header h1 {
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+  }
+
+  .panel-welcome {
+    margin: 0;
+  }
+
+  .panel-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  .panel-form {
+    margin: 0;
+  }
+
+
+/* ========= MENSAJES ========= */
+  .mensaje.info {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #bdd7f4;
+    border-radius: 6px;
+    background: #eef6ff;
+    color: #174a80;
+  }
+
+
+/* ========= BOTONES ========= */
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 6px;
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: #1C4293;
+  }
+
+  .btn-primary:hover {
+    background-color: #163574;
+  }
+
+  .btn-secondary {
+    background: #3f4b59;
+  }
+
+  .btn-secondary:hover {
+    background: #2f3740;
+  }

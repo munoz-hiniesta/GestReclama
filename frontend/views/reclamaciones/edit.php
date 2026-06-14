@@ -23,11 +23,11 @@
       <p><strong>Usuario creador:</strong> <?php echo htmlspecialchars($reclamacion['usuario_creador_nombre'] ?? $reclamacion['usuario_creador_id'] ?? '—'); ?></p>
     </div>
 
-    <form method="POST" action="index.php">
+    <form method="POST" action="index.php" class="form-reclamacion">
       <input type="hidden" name="action" value="reclamaciones.edit">
       <input type="hidden" name="id" value="<?php echo htmlspecialchars($reclamacion['id']); ?>">
 
-      <div class="form-group">
+      <div class="form-group form-group-full">
         <label for="descripcion">Descripción:</label>
         <textarea id="descripcion" name="descripcion" required><?php echo htmlspecialchars($reclamacion['descripcion']); ?></textarea>
       </div>
@@ -116,12 +116,12 @@
         <input type="text" id="provincia" name="provincia" value="<?php echo htmlspecialchars($reclamacion['provincia'] ?? ''); ?>">
       </div>
 
-      <div class="form-group">
+      <div class="form-group form-group-full">
         <label for="observaciones_internas">Observaciones internas (opcional):</label>
         <textarea id="observaciones_internas" name="observaciones_internas"><?php echo htmlspecialchars($reclamacion['observaciones_internas'] ?? ''); ?></textarea>
       </div>
 
-      <div class="form-group">
+      <div class="form-group form-group-full">
         <label for="informacion_seguimiento">Información de seguimiento (opcional):</label>
         <textarea id="informacion_seguimiento" name="informacion_seguimiento"><?php echo htmlspecialchars($reclamacion['informacion_seguimiento'] ?? ''); ?></textarea>
       </div>
@@ -136,7 +136,7 @@
         <input type="text" id="importe" name="importe" value="<?php echo htmlspecialchars($reclamacion['importe'] ?? ''); ?>" placeholder="0.00">
       </div>
 
-      <div class="form-group">
+      <div class="form-group form-group-full">
         <label for="otros_datos">Otros datos complementarios (opcional):</label>
         <textarea id="otros_datos" name="otros_datos"><?php echo htmlspecialchars($reclamacion['otros_datos'] ?? ''); ?></textarea>
       </div>

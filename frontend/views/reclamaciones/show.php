@@ -12,7 +12,7 @@
     
     <h1>Reclamación #<?php echo htmlspecialchars($reclamacion['id']); ?></h1>
 
-    <div class="detalle-reclamacion">
+    <div class="detalle-reclamacion bloque-seguimiento">
       <table class="tabla-reclamaciones">
         <tbody>
           <tr>
@@ -130,7 +130,7 @@
       </div>
     </div>
     
-    <div class="historial-seguimiento">
+    <div class="historial-seguimiento bloque-seguimiento">
       <h2>Histórico de acciones</h2>
       <?php $acciones = $acciones_reclamacion ?? []; ?>
       <?php if (empty($acciones)): ?>
@@ -159,13 +159,13 @@
       <?php endif; ?>
       </div>
 
-      <div class="registrar-accion">
+      <div class="registrar-accion bloque-seguimiento">
         <h3>Registrar nueva acción</h3>
         <?php if (!empty($respuesta) && is_array($respuesta) && array_key_exists('success', $respuesta)): ?>
           <div class="mensaje <?php echo $respuesta['success'] ? 'exito' : 'error'; ?>"><?php echo htmlspecialchars($respuesta['mensaje'] ?? ''); ?></div>
         <?php endif; ?>
         <?php if (($reclamacion['estado_clave'] ?? '') !== 'RESUELTA'): ?>
-          <form method="POST" action="index.php">
+          <form method="POST" action="index.php" class="form-seguimiento">
             <input type="hidden" name="action" value="reclamaciones.show">
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($reclamacion['id']); ?>">
             

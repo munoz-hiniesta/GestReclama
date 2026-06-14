@@ -1,5 +1,7 @@
 <?php
 
+  require_once MODELS_PATH . '/Estado.php';
+
   class EstadosReclamacion {
 
     // generar clave interna a partir del nombre del estado

@@ -9,11 +9,11 @@
   <?php require __DIR__ . '/../partials/mensaje.php'; ?>
   <h1>Crear nueva reclamación</h1>
 
-  <form method="POST" action="index.php" enctype="multipart/form-data">
+  <form method="POST" action="index.php" enctype="multipart/form-data" class="form-reclamacion">
     
     <input type="hidden" name="action" value="reclamaciones.create">
 
-    <div class="form-group">
+    <div class="form-group form-group-full">
       <label for="descripcion">Descripción:</label>
       <textarea id="descripcion" name="descripcion" required></textarea>
     </div>
@@ -102,12 +102,12 @@
       <input type="text" id="provincia" name="provincia">
     </div>
 
-    <div class="form-group">
+    <div class="form-group form-group-full">
       <label for="observaciones_internas">Observaciones internas (opcional):</label>
       <textarea id="observaciones_internas" name="observaciones_internas"></textarea>
     </div>
 
-    <div class="form-group">
+    <div class="form-group form-group-full">
       <label for="informacion_seguimiento">Información de seguimiento (opcional):</label>
       <textarea id="informacion_seguimiento" name="informacion_seguimiento"></textarea>
     </div>
@@ -122,12 +122,12 @@
       <input type="text" id="importe" name="importe" placeholder="0.00">
     </div>
 
-    <div class="form-group">
+    <div class="form-group form-group-full">
       <label for="otros_datos">Otros datos complementarios (opcional):</label>
       <textarea id="otros_datos" name="otros_datos"></textarea>
     </div>
 
-    <div class="form-group">
+    <div class="form-group form-group-full">
       <label for="adjunto">Documento firmado:</label>
       <input type="file" id="adjunto" name="adjunto" required>
     </div>

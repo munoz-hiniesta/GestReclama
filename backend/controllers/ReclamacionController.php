@@ -55,7 +55,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/create.php',
           'pageTitle' => 'Nueva reclamación',
-          'css' => 'reclamacion.create.css',
+          'css' => '/assets/css/reclamacion.create.css',
           'error' => 'Usuario no autenticado.'
         ];
       }
@@ -118,13 +118,21 @@
 
     // mostrar reclamaciones en estado borrador (más adelante filtros)
     public function index() {
-      $reclamaciones = $this->reclamacionService->obtenerReclamaciones();
+      $filtros = [
+        'id' => intval($_GET['filtro_id'] ?? 0),
+        'estado_id' => intval($_GET['filtro_estado_id'] ?? 0)
+      ];
+
+      $reclamaciones = $this->reclamacionService->obtenerReclamaciones($filtros);
+      $estados = $this->reclamacionService->obtenerEstados();
 
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/index.php',
         'pageTitle' => 'Índice de reclamaciones',
-        'css' => CSS_PATH . '/reclamacion.index.css',
-        'reclamaciones' => $reclamaciones
+        'css' => '/assets/css/reclamacion.index.css',
+        'reclamaciones' => $reclamaciones,
+        'filtros' => $filtros,
+        'estados' => $estados
       ];
     }
 
@@ -134,7 +142,7 @@
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/pendientes_asignacion.php',
         'pageTitle' => 'Reclamaciones pendientes de asignación',
-        'css' => CSS_PATH . '/reclamacion.index.css',
+        'css' => '/assets/css/reclamacion.index.css',
         'reclamaciones' => $reclamaciones
       ];
     }
@@ -237,7 +245,7 @@
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/asignar.php',
         'pageTitle' => 'Asignar responsable de tramitación',
-        'css' => CSS_PATH . '/reclamacion.index.css',
+        'css' => '/assets/css/reclamacion.index.css',
         'reclamacion' => $reclamacion,
         'responsables' => $responsables,
         'respuesta' => $respuesta,
@@ -254,7 +262,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/show.php',
           'pageTitle' => 'Reclamación no encontrada',
-          'css' => CSS_PATH . '/reclamacion.index.css',
+          'css' => '/assets/css/reclamacion.index.css',
           'error' => 'ID de reclamación no válido.'
         ];
       }
@@ -265,7 +273,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/show.php',
           'pageTitle' => 'Reclamación no encontrada',
-          'css' => CSS_PATH . '/reclamacion.index.css',
+          'css' => '/assets/css/reclamacion.index.css',
           'error' => 'La reclamación solicitada no existe.'
         ];
       }
@@ -333,7 +341,7 @@
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/show.php',
         'pageTitle' => 'Ver reclamación #' . $id,
-        'css' => CSS_PATH . '/reclamacion.index.css',
+        'css' => '/assets/css/reclamacion.index.css',
         'reclamacion' => $reclamacion,
         'acciones_reclamacion' => $acciones,
         'estado_opciones' => $estadoOpciones,
@@ -348,7 +356,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
           'pageTitle' => 'Editar reclamación',
-          'css' => CSS_PATH . '/reclamacion.create.css',
+          'css' => '/assets/css/reclamacion.create.css',
           'error' => 'ID de reclamación no válido.'
         ];
       }
@@ -359,7 +367,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
           'pageTitle' => 'Editar reclamación',
-          'css' => CSS_PATH . '/reclamacion.create.css',
+          'css' => '/assets/css/reclamacion.create.css',
           'error' => 'La reclamación no existe.'
         ];
       }
@@ -370,7 +378,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
           'pageTitle' => 'Editar reclamación',
-          'css' => CSS_PATH . '/reclamacion.create.css',
+          'css' => '/assets/css/reclamacion.create.css',
           'error' => 'Solo se pueden editar reclamaciones en borrador.'
         ];
       }
@@ -399,7 +407,7 @@
           return [
             'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
             'pageTitle' => 'Editar reclamación',
-            'css' => CSS_PATH . '/reclamacion.create.css',
+            'css' => '/assets/css/reclamacion.create.css',
             'reclamacion' => $reclamacion,
             'respuesta' => [
               'success' => false,
@@ -439,7 +447,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
           'pageTitle' => 'Editar reclamación',
-          'css' => CSS_PATH . '/reclamacion.create.css',
+          'css' => '/assets/css/reclamacion.create.css',
           'reclamacion' => $reclamacion,
           'respuesta' => $resultado,
           'tipos' => $tipos,
@@ -453,7 +461,7 @@
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
         'pageTitle' => 'Editar reclamación',
-        'css' => CSS_PATH . '/reclamacion.create.css',
+        'css' => '/assets/css/reclamacion.create.css',
         'reclamacion' => $reclamacion,
         'tipos' => $tipos,
         'prioridades' => $prioridades
@@ -467,7 +475,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/show.php',
           'pageTitle' => 'Reclamación no encontrada',
-          'css' => CSS_PATH . '/reclamacion.index.css',
+          'css' => '/assets/css/reclamacion.index.css',
           'error' => 'ID de reclamación no válido.'
         ];
       }
@@ -479,7 +487,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/show.php',
           'pageTitle' => 'Reclamación no encontrada',
-          'css' => CSS_PATH . '/reclamacion.index.css',
+          'css' => '/assets/css/reclamacion.index.css',
           'error' => 'La reclamación solicitada no existe.'
         ];
       }
@@ -489,7 +497,7 @@
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/show.php',
           'pageTitle' => 'Ver reclamación #' . $id,
-          'css' => CSS_PATH . '/reclamacion.index.css',
+          'css' => '/assets/css/reclamacion.index.css',
           'reclamacion' => $reclamacion,
           'respuesta' => [
             'success' => false,
@@ -509,7 +517,7 @@
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/show.php',
         'pageTitle' => 'Ver reclamación #' . $id,
-        'css' => CSS_PATH . '/reclamacion.index.css',
+        'css' => '/assets/css/reclamacion.index.css',
         'reclamacion' => $reclamacion,
         'respuesta' => $resultado
       ];

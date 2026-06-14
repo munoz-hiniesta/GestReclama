@@ -8,7 +8,7 @@
   // preparar para renderizado layout - vista
   $pageTitle = "Panel";
   $vista = '/../panel/panel.php';
-  $css = '/css/panel.css';
+  $css = '/assets/css/panel.css';
 
   // renderizar
   require LAYOUTS_PATH . '/app.layout.php';

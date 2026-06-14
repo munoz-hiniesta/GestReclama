@@ -8,6 +8,32 @@
 
   <h1>Listado de reclamaciones</h1>
 
+  <form method="GET" action="index.php" class="filtros-reclamaciones">
+    <input type="hidden" name="action" value="reclamaciones.index">
+
+    <div class="filtro-group">
+      <label for="filtro_id">ID reclamación</label>
+      <input type="number" id="filtro_id" name="filtro_id" value="<?php echo htmlspecialchars($filtros['id'] ?? ''); ?>" min="1">
+    </div>
+
+    <div class="filtro-group">
+      <label for="filtro_estado_id">Estado</label>
+      <select id="filtro_estado_id" name="filtro_estado_id">
+        <option value="">Todos</option>
+        <?php foreach (($estados ?? []) as $estado): ?>
+          <option value="<?php echo htmlspecialchars($estado['id']); ?>" <?php echo intval($filtros['estado_id'] ?? 0) === intval($estado['id']) ? 'selected' : ''; ?>>
+            <?php echo htmlspecialchars($estado['nombre']); ?>
+          </option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+
+    <div class="filtro-acciones">
+      <button type="submit" class="btn-secondary">Filtrar</button>
+      <a href="index.php?action=reclamaciones.index" class="btn-secondary">Limpiar</a>
+    </div>
+  </form>
+
   <?php if (!empty($reclamaciones)): ?>
     <div class="table-wrapper">
       <table class="tabla-reclamaciones">
@@ -43,7 +69,7 @@
       </table>
     </div>
   <?php else: ?>
-    <div class="mensaje info">No hay reclamaciones registradas.</div>
+    <div class="mensaje info">No hay reclamaciones registradas para los filtros indicados.</div>
   <?php endif; ?>
 
   <div class="acciones-index">

@@ -59,6 +59,8 @@
       $pageTitle = $respuesta['pageTitle'];
       $css = $respuesta['css'];
       $reclamaciones = $respuesta['reclamaciones'] ?? [];
+      $filtros = $respuesta['filtros'] ?? [];
+      $estados = $respuesta['estados'] ?? [];
     break;
 
     case 'reclamaciones.pendientes_asignacion':
@@ -128,7 +130,7 @@
     case 'reclamaciones.create.view':
       $vista = VIEWS_PATH . '/reclamaciones/create.php';
       $pageTitle = 'Crear reclamación';
-      $css = CSS_PATH . '/reclamacion.create.css';
+      $css = '/assets/css/reclamacion.create.css';
     break;
 
     case 'reclamaciones.create':
@@ -138,7 +140,7 @@
       // mostrar la misma vista de creación con el resultado (mensaje)
       $vista = VIEWS_PATH . '/reclamaciones/create.php';
       $pageTitle = 'Crear reclamación';
-      $css = CSS_PATH . '/reclamacion.create.css';
+      $css = '/assets/css/reclamacion.create.css';
     break;
 
     default:
