@@ -101,6 +101,7 @@
       $reclamacion = $respuesta['reclamacion'] ?? null;
       $acciones_reclamacion = $respuesta['acciones_reclamacion'] ?? [];
       $estado_opciones = $respuesta['estado_opciones'] ?? [];
+      $puede_gestionar_seguimiento = $respuesta['puede_gestionar_seguimiento'] ?? false;
       $error = $respuesta['error'] ?? null;
       $respuesta = $respuesta['respuesta'] ?? [];
     break;
@@ -128,6 +129,7 @@
       $css = $respuesta['css'];
       $reclamacion = $respuesta['reclamacion'] ?? null;
       $error = $respuesta['error'] ?? null;
+      $puede_gestionar_seguimiento = $respuesta['puede_gestionar_seguimiento'] ?? false;
       $respuesta = $respuesta['respuesta'] ?? [];
     break;
 

@@ -151,6 +151,26 @@
       }
     }
 
+    public function obtenerFranquiciaPrincipalUsuario(int $usuarioId): ?int {
+      try {
+        $sql = "SELECT uf.franquicia_id
+                  FROM usuario_franquicia uf
+                  JOIN franquicias f ON f.id = uf.franquicia_id
+                 WHERE uf.usuario_id = :usuario_id
+                   AND f.activo = TRUE
+                 ORDER BY uf.franquicia_id ASC
+                 LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([':usuario_id' => $usuarioId]);
+        $franquiciaId = $stmt->fetchColumn();
+
+        return $franquiciaId ? intval($franquiciaId) : null;
+      } catch (Exception $e) {
+        return null;
+      }
+    }
+
     public function obtenerOpcionesEstadoResolucion(string $estadoClave, int $estadoId) {
       try {
         if ($estadoClave === 'EN_TRAMITE') {
@@ -193,7 +213,7 @@
       }
     }
 
-    public function resolverReclamacion(int $id, int $usuarioId, string $comentario) {
+    public function resolverReclamacion(int $id, int $usuarioId, string $comentario, bool $esAdmin = false) {
       try {
         // obtener reclamación
         $reclamacion = $this->obtenerReclamacionPorId($id);
@@ -203,7 +223,7 @@
         }
 
         // verificar responsable asignado
-        if ((int)$reclamacion['usuario_responsable_id'] !== $usuarioId) {
+        if (!$esAdmin && (int)$reclamacion['usuario_responsable_id'] !== $usuarioId) {
           return [
             'success' => false,
             'mensaje' => 'Solo el responsable asignado puede resolver la reclamación.'

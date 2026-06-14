@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GestReclama - Resolucion</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f4f6f8; color: #1f2937; }
+    .shell { display: grid; grid-template-columns: 230px 1fr; min-height: 100vh; }
+    aside { background: #253244; color: #fff; padding: 24px 18px; }
+    .brand { font-size: 21px; font-weight: 700; margin-bottom: 30px; }
+    nav a { display: block; color: #dbe5f0; text-decoration: none; padding: 11px 12px; border-radius: 6px; margin-bottom: 7px; }
+    nav a.active { background: #3b82f6; color: #fff; }
+    main { padding: 28px 34px; }
+    .topbar { background: #fff; border: 1px solid #dde4ec; border-radius: 8px; padding: 16px 20px; margin-bottom: 22px; display: flex; justify-content: space-between; }
+    h1 { margin: 0; font-size: 25px; }
+    h2 { margin: 0 0 14px; font-size: 18px; }
+    .card { background: #fff; border: 1px solid #dde4ec; border-radius: 8px; padding: 20px; margin-bottom: 18px; }
+    .message { border-radius: 6px; padding: 12px 14px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; font-weight: 700; margin-bottom: 18px; }
+    .badge { display: inline-block; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: #ecfdf5; color: #047857; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; }
+    .label { display: block; color: #64748b; font-size: 12px; font-weight: 700; margin-bottom: 5px; }
+    label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    textarea, select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; font-size: 14px; }
+    textarea { min-height: 86px; resize: none; }
+    button { border: 0; border-radius: 6px; padding: 12px 18px; background: #2563eb; color: #fff; font-weight: 700; margin-top: 12px; cursor: default; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid #e5e7eb; text-align: left; font-size: 14px; }
+    th { background: #f8fafc; color: #475569; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">GestReclama</div>
+      <nav>
+        <a>Panel principal</a>
+        <a class="active">Consulta reclamaciones</a>
+        <a>Pendientes de asignacion</a>
+        <a>Cerrar sesion</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <h1>Resolucion de reclamacion #12</h1>
+        <span>Responsable: nombre_003</span>
+      </div>
+
+      <div class="message">Reclamacion resuelta correctamente.</div>
+
+      <section class="card">
+        <div class="grid">
+          <div class="box"><span class="label">Estado anterior</span>EN TRAMITE</div>
+          <div class="box"><span class="label">Estado actualizado</span><span class="badge">RESUELTA</span></div>
+          <div class="box"><span class="label">Acciones previas</span>2 acciones registradas</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Cambio de estado</h2>
+        <label for="estado">Estado de resolucion</label>
+        <select id="estado">
+          <option>Resuelta</option>
+        </select>
+        <label for="comentario" style="margin-top:12px;">Comentario de cierre</label>
+        <textarea id="comentario">La reclamacion queda resuelta tras revisar la documentacion y confirmar la actuacion realizada.</textarea>
+        <button>Guardar accion</button>
+      </section>
+
+      <section class="card">
+        <h2>Historico de acciones</h2>
+        <table>
+          <thead>
+            <tr><th>Fecha</th><th>Usuario</th><th>Estado</th><th>Comentario</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>14/06/2026 10:45</td><td>nombre_003</td><td>En tramite</td><td>Inicio de la tramitacion.</td></tr>
+            <tr><td>14/06/2026 11:20</td><td>nombre_003</td><td>Resuelta</td><td>La reclamacion queda resuelta tras revisar la documentacion.</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

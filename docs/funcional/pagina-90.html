@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GestReclama - Gestion administrativa</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f4f6f8; color: #1f2937; }
+    .shell { display: grid; grid-template-columns: 230px 1fr; min-height: 100vh; }
+    aside { background: #253244; color: #fff; padding: 24px 18px; }
+    .brand { font-size: 21px; font-weight: 700; margin-bottom: 30px; }
+    nav a { display: block; color: #dbe5f0; text-decoration: none; padding: 11px 12px; border-radius: 6px; margin-bottom: 7px; }
+    nav a.active { background: #3b82f6; color: #fff; }
+    main { padding: 28px 34px; }
+    .topbar { background: #fff; border: 1px solid #dde4ec; border-radius: 8px; padding: 16px 20px; margin-bottom: 22px; display: flex; justify-content: space-between; }
+    h1 { margin: 0; font-size: 25px; }
+    h2 { margin: 0 0 14px; font-size: 18px; }
+    h3 { margin: 18px 0 10px; font-size: 16px; }
+    .card { background: #fff; border: 1px solid #dde4ec; border-radius: 8px; padding: 20px; margin-bottom: 18px; }
+    .message { border-radius: 6px; padding: 12px 14px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; font-weight: 700; margin-bottom: 18px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 11px; border-bottom: 1px solid #e5e7eb; text-align: left; font-size: 14px; }
+    th { background: #f8fafc; color: #475569; }
+    .form-grid { display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 10px; align-items: end; }
+    label { display: block; font-weight: 700; font-size: 13px; margin-bottom: 5px; }
+    input, select { width: 100%; padding: 10px 11px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; font-size: 14px; }
+    button { border: 0; border-radius: 6px; padding: 11px 16px; background: #2563eb; color: #fff; font-weight: 700; cursor: default; white-space: nowrap; }
+    .pill { display: inline-block; padding: 4px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; background: #ecfdf5; color: #047857; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">GestReclama</div>
+      <nav>
+        <a>Panel principal</a>
+        <a>Consulta reclamaciones</a>
+        <a>Pendientes de asignacion</a>
+        <a class="active">Gestion administrativa</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <h1>Gestion administrativa</h1>
+        <span>Administrador</span>
+      </div>
+
+      <div class="message">Usuario actualizado correctamente.</div>
+
+      <section class="card">
+        <h2>Usuarios</h2>
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Nombre</th><th>Email</th><th>Rol</th><th>Activo</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>nombre_001</td><td>email_001@gestreclama.com</td><td>Administrador</td><td><span class="pill">Si</span></td><td>Editar</td></tr>
+            <tr><td>3</td><td>nombre_003</td><td>email_003@gestreclama.com</td><td>Responsable Tramitacion</td><td><span class="pill">Si</span></td><td>Editar</td></tr>
+          </tbody>
+        </table>
+        <h3>Editar usuario</h3>
+        <div class="form-grid">
+          <div><label>Nombre</label><input value="nombre_003"></div>
+          <div><label>Email</label><input value="email_003@gestreclama.com"></div>
+          <div><label>Rol</label><select><option>Responsable Tramitacion</option></select></div>
+          <div><label>Activo</label><select><option>Si</option></select></div>
+          <button>Guardar usuario</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Franquicias</h2>
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Clave</th><th>Nombre</th><th>Ubicacion</th><th>Activo</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>FRANQUICIA_001</td><td>franquicia_001</td><td>ubicacion franquicia_001</td><td><span class="pill">Si</span></td><td>Editar</td></tr>
+            <tr><td>2</td><td>FRANQUICIA_002</td><td>franquicia_002</td><td>ubicacion franquicia_002</td><td><span class="pill">Si</span></td><td>Editar</td></tr>
+          </tbody>
+        </table>
+        <h3>Crear franquicia</h3>
+        <div class="form-grid">
+          <div><label>Clave</label><input value="FRANQUICIA_004"></div>
+          <div><label>Nombre</label><input value="franquicia_004"></div>
+          <div><label>Ubicacion</label><input value="ubicacion franquicia_004"></div>
+          <div><label>Activo</label><select><option>Si</option></select></div>
+          <button>Guardar franquicia</button>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

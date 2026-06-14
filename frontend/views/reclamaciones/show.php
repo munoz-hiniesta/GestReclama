@@ -164,7 +164,7 @@
         <?php if (!empty($respuesta) && is_array($respuesta) && array_key_exists('success', $respuesta)): ?>
           <div class="mensaje <?php echo $respuesta['success'] ? 'exito' : 'error'; ?>"><?php echo htmlspecialchars($respuesta['mensaje'] ?? ''); ?></div>
         <?php endif; ?>
-        <?php if (($reclamacion['estado_clave'] ?? '') !== 'RESUELTA'): ?>
+        <?php if (($reclamacion['estado_clave'] ?? '') !== 'RESUELTA' && !empty($puede_gestionar_seguimiento)): ?>
           <form method="POST" action="index.php" class="form-seguimiento">
             <input type="hidden" name="action" value="reclamaciones.show">
             <input type="hidden" name="id" value="<?php echo htmlspecialchars($reclamacion['id']); ?>">
@@ -188,7 +188,11 @@
             <button type="submit" class="btn-primary">Guardar acción</button>
           </form>
         <?php else: ?>
-          <p class="nota">Esta reclamación está resuelta. No se pueden registrar nuevas acciones.</p>
+          <p class="nota">
+            <?php echo (($reclamacion['estado_clave'] ?? '') === 'RESUELTA')
+              ? 'Esta reclamación está resuelta. No se pueden registrar nuevas acciones.'
+              : 'No tienes permisos para registrar acciones en esta reclamación.'; ?>
+          </p>
         <?php endif; ?>
       </div>
   <?php endif; ?>

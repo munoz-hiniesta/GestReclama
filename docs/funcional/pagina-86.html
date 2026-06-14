@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GestReclama - Asignacion de responsable</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f4f6f8; color: #1f2937; }
+    .shell { display: grid; grid-template-columns: 230px 1fr; min-height: 100vh; }
+    aside { background: #253244; color: #fff; padding: 24px 18px; }
+    .brand { font-size: 21px; font-weight: 700; margin-bottom: 30px; }
+    nav a { display: block; color: #dbe5f0; text-decoration: none; padding: 11px 12px; border-radius: 6px; margin-bottom: 7px; }
+    nav a.active { background: #3b82f6; color: #fff; }
+    main { padding: 28px 34px; }
+    .topbar { background: #fff; border: 1px solid #dde4ec; border-radius: 8px; padding: 16px 20px; margin-bottom: 22px; display: flex; justify-content: space-between; }
+    h1 { margin: 0; font-size: 25px; }
+    .card { background: #fff; border: 1px solid #dde4ec; border-radius: 8px; padding: 20px; margin-bottom: 18px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 22px; }
+    .field-label { font-size: 13px; font-weight: 700; color: #526070; margin-bottom: 4px; }
+    .field-value { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px 12px; min-height: 40px; }
+    .badge { display: inline-block; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: #fff7ed; color: #c2410c; }
+    .form-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: end; }
+    label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; font-size: 14px; }
+    button { border: 0; border-radius: 6px; padding: 12px 18px; background: #2563eb; color: #fff; font-weight: 700; cursor: default; }
+    .message { border-radius: 6px; padding: 12px 14px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; font-weight: 700; margin-bottom: 18px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid #e5e7eb; text-align: left; font-size: 14px; }
+    th { background: #f8fafc; color: #475569; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">GestReclama</div>
+      <nav>
+        <a>Panel principal</a>
+        <a>Consulta reclamaciones</a>
+        <a class="active">Pendientes de asignacion</a>
+        <a>Gestion administrativa</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <h1>Asignar responsable de tramitacion</h1>
+        <span>Responsable general</span>
+      </div>
+
+      <div class="message">Responsable asignado correctamente y estado cambiado a EN TRAMITE.</div>
+
+      <section class="card">
+        <div class="grid">
+          <div>
+            <div class="field-label">ID</div>
+            <div class="field-value">#12</div>
+          </div>
+          <div>
+            <div class="field-label">Estado actual</div>
+            <div class="field-value"><span class="badge">PENDIENTE</span></div>
+          </div>
+          <div>
+            <div class="field-label">Tipo</div>
+            <div class="field-value">Producto</div>
+          </div>
+          <div>
+            <div class="field-label">Prioridad</div>
+            <div class="field-value">Alta</div>
+          </div>
+          <div>
+            <div class="field-label">Franquicia</div>
+            <div class="field-value">Franquicia centro</div>
+          </div>
+          <div>
+            <div class="field-label">Fecha de creacion</div>
+            <div class="field-value">14/06/2026 10:35</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="form-row">
+          <div>
+            <label for="responsable">Responsable de tramitacion</label>
+            <select id="responsable">
+              <option>nombre_003 - Responsable Tramitacion</option>
+            </select>
+          </div>
+          <button>Confirmar asignacion</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Descripcion</th><th>Estado</th><th>Responsable</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>#12</td><td>Incidencia con producto recibido</td><td>EN TRAMITE</td><td>nombre_003</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

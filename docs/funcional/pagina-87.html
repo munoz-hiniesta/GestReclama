@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GestReclama - Registro de acciones</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: #f4f6f8; color: #1f2937; }
+    .shell { display: grid; grid-template-columns: 230px 1fr; min-height: 100vh; }
+    aside { background: #253244; color: #fff; padding: 24px 18px; }
+    .brand { font-size: 21px; font-weight: 700; margin-bottom: 30px; }
+    nav a { display: block; color: #dbe5f0; text-decoration: none; padding: 11px 12px; border-radius: 6px; margin-bottom: 7px; }
+    nav a.active { background: #3b82f6; color: #fff; }
+    main { padding: 28px 34px; }
+    .topbar { background: #fff; border: 1px solid #dde4ec; border-radius: 8px; padding: 16px 20px; margin-bottom: 22px; display: flex; justify-content: space-between; }
+    h1 { margin: 0; font-size: 25px; }
+    h2 { margin: 0 0 14px; font-size: 18px; }
+    .card { background: #fff; border: 1px solid #dde4ec; border-radius: 8px; padding: 20px; margin-bottom: 18px; }
+    .summary { display: grid; grid-template-columns: 120px 1fr 140px 160px; gap: 10px; align-items: center; }
+    .muted { color: #64748b; font-size: 13px; }
+    .badge { display: inline-block; padding: 5px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: #eff6ff; color: #1d4ed8; }
+    label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+    textarea, select { width: 100%; padding: 11px 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; font-size: 14px; }
+    textarea { min-height: 88px; resize: none; }
+    button { border: 0; border-radius: 6px; padding: 12px 18px; background: #2563eb; color: #fff; font-weight: 700; margin-top: 12px; cursor: default; }
+    .message { border-radius: 6px; padding: 12px 14px; background: #ecfdf5; border: 1px solid #a7f3d0; color: #047857; font-weight: 700; margin-bottom: 18px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 11px 12px; border-bottom: 1px solid #e5e7eb; text-align: left; font-size: 14px; vertical-align: top; }
+    th { background: #f8fafc; color: #475569; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside>
+      <div class="brand">GestReclama</div>
+      <nav>
+        <a>Panel principal</a>
+        <a class="active">Consulta reclamaciones</a>
+        <a>Pendientes de asignacion</a>
+        <a>Cerrar sesion</a>
+      </nav>
+    </aside>
+    <main>
+      <div class="topbar">
+        <h1>Reclamacion #12</h1>
+        <span>Responsable de tramitacion</span>
+      </div>
+
+      <div class="message">Accion registrada correctamente.</div>
+
+      <section class="card">
+        <div class="summary">
+          <strong>#12</strong>
+          <div>Incidencia con producto recibido<br><span class="muted">Franquicia centro</span></div>
+          <span class="badge">EN TRAMITE</span>
+          <span>Responsable: nombre_003</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Registrar nueva accion</h2>
+        <label for="estado">Estado de resolucion</label>
+        <select id="estado">
+          <option>En tramite</option>
+          <option>Resuelta</option>
+        </select>
+        <label for="comentario" style="margin-top:12px;">Comentario</label>
+        <textarea id="comentario">Se contacta con la franquicia para revisar la documentacion aportada.</textarea>
+        <button>Guardar accion</button>
+      </section>
+
+      <section class="card">
+        <h2>Historico de acciones</h2>
+        <table>
+          <thead>
+            <tr><th>Fecha</th><th>Usuario</th><th>Estado</th><th>Comentario</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>14/06/2026 10:45</td><td>nombre_003</td><td>En tramite</td><td>Inicio de la tramitacion.</td></tr>
+            <tr><td>14/06/2026 11:05</td><td>nombre_003</td><td>En tramite</td><td>Se contacta con la franquicia para revisar la documentacion aportada.</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

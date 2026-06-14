@@ -17,8 +17,59 @@
       $this->reclamacionService = $reclamacionService;
     }
 
+    private function rolId(): int {
+      return intval($_SESSION['rol_id'] ?? 0);
+    }
+
+    private function usuarioId(): int {
+      return intval($_SESSION['id'] ?? 0);
+    }
+
+    private function esAdmin(): bool {
+      return $this->rolId() === 1;
+    }
+
+    private function esResponsableGeneral(): bool {
+      return $this->rolId() === 2;
+    }
+
+    private function esEncargado(): bool {
+      return $this->rolId() === 4;
+    }
+
+    private function esEmpleado(): bool {
+      return $this->rolId() === 5;
+    }
+
+    private function puedeAsignar(): bool {
+      return $this->esAdmin() || $this->esResponsableGeneral();
+    }
+
+    private function puedeCrearBorrador(): bool {
+      return $this->esAdmin() || $this->esEmpleado();
+    }
+
+    private function puedeValidar(): bool {
+      return $this->esAdmin() || $this->esEncargado();
+    }
+
+    private function puedeEditarBorrador(array $reclamacion): bool {
+      return $this->esAdmin()
+        || $this->esEncargado()
+        || intval($reclamacion['usuario_creador_id'] ?? 0) === $this->usuarioId();
+    }
+
+    private function puedeGestionarSeguimiento(array $reclamacion): bool {
+      return $this->esAdmin()
+        || intval($reclamacion['usuario_responsable_id'] ?? 0) === $this->usuarioId();
+    }
+
     // crear borrador reclamación (más adelante, validar)
     public function create() {
+      if (!$this->puedeCrearBorrador()) {
+        return ['success' => false, 'mensaje' => 'No tienes permisos para crear reclamaciones.'];
+      }
+
       // recoger campos
       $descripcion = trim($_POST['descripcion'] ?? '');
       $tipo_id = intval($_POST['tipo_id'] ?? 0);
@@ -38,7 +89,6 @@
       $informacion_seguimiento = trim($_POST['informacion_seguimiento'] ?? '');
       $importe = trim($_POST['importe'] ?? '');
       $otros_datos = trim($_POST['otros_datos'] ?? '');
-      $franquicia_id = intval($_POST['franquicia_id'] ?? 0);
 
       if ($telefono !== '' && !preg_match('/^[0-9+\s()\-]{6,20}$/', $telefono)) {
         return ['success' => false, 'mensaje' => 'Teléfono no tiene un formato válido.'];
@@ -49,7 +99,7 @@
       }
 
       // usuario creador desde sesión si está disponible
-      $usuario_creador_id = intval($_SESSION['id'] ?? 0);
+      $usuario_creador_id = $this->usuarioId();
 
       if ($usuario_creador_id <= 0) {
         return [
@@ -58,6 +108,12 @@
           'css' => '/assets/css/reclamacion.create.css',
           'error' => 'Usuario no autenticado.'
         ];
+      }
+
+      $franquicia_id = $this->reclamacionService->obtenerFranquiciaPrincipalUsuario($usuario_creador_id);
+
+      if ($franquicia_id === null) {
+        return ['success' => false, 'mensaje' => 'El usuario no tiene una franquicia activa asociada.'];
       }
 
       // procesar archivo adjunto (viene en $_FILES)
@@ -137,6 +193,16 @@
     }
 
     public function pendientesAsignacion() {
+      if (!$this->puedeAsignar()) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/pendientes_asignacion.php',
+          'pageTitle' => 'Reclamaciones pendientes de asignación',
+          'css' => '/assets/css/reclamacion.index.css',
+          'reclamaciones' => [],
+          'respuesta' => ['success' => false, 'mensaje' => 'No tienes permisos para asignar reclamaciones.']
+        ];
+      }
+
       $reclamaciones = $this->reclamacionService->obtenerReclamacionesPendientesAsignacion();
 
       return [
@@ -148,6 +214,19 @@
     }
 
     public function asignar() {
+      if (!$this->puedeAsignar()) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/asignar.php',
+          'pageTitle' => 'Asignar responsable de tramitación',
+          'css' => '/assets/css/reclamacion.index.css',
+          'reclamacion' => null,
+          'responsables' => [],
+          'respuesta' => ['success' => false, 'mensaje' => 'No tienes permisos para asignar reclamaciones.'],
+          'error' => null,
+          'acciones_reclamacion' => []
+        ];
+      }
+
       $id = intval($_GET['id'] ?? $_POST['id'] ?? 0);
       $reclamacion = null;
       $respuesta = [];
@@ -168,7 +247,7 @@
         $respuesta = [];
 
         // registrar nueva acción
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error)) {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($error) && !isset($_POST['usuario_responsable_id'])) {
           $nuevoComentario = trim($_POST['nuevo_comentario'] ?? '');
 
           if (empty($nuevoComentario)) {
@@ -177,6 +256,8 @@
             $usuarioId = intval($_SESSION['id'] ?? 0);
             if ($usuarioId <= 0) {
               $respuesta = ['success' => false, 'mensaje' => 'Usuario no autenticado.'];
+            } elseif (!$this->puedeGestionarSeguimiento($reclamacion)) {
+              $respuesta = ['success' => false, 'mensaje' => 'No tienes permisos para registrar acciones en esta reclamación.'];
             } else {
               $estadoId = intval($reclamacion['estado_id'] ?? 0);
               $accionesService = new AccionesReclamacionService($this->pdo);
@@ -283,11 +364,15 @@
         $estadoIdRecibido = intval($_POST['estado_id'] ?? 0);
         $comentario = trim($_POST['nuevo_comentario'] ?? '');
         $estadoIdActual = intval($reclamacion['estado_id'] ?? 0);
-        $usuarioId = intval($_SESSION['id'] ?? 0);
+        $usuarioId = $this->usuarioId();
 
         // validar usuario autenticado
         if ($usuarioId <= 0) {
           $respuesta = ['success' => false, 'mensaje' => 'Usuario no autenticado.'];
+        }
+        // validar permisos de seguimiento
+        elseif (!$this->puedeGestionarSeguimiento($reclamacion)) {
+          $respuesta = ['success' => false, 'mensaje' => 'No tienes permisos para registrar acciones en esta reclamación.'];
         }
         // Validar comentario
         elseif ($comentario === '') {
@@ -309,7 +394,7 @@
             $respuesta = ['success' => false, 'mensaje' => 'Transición de estado no permitida.'];
           } else {
             // Ejecutar resolución
-            $resultado = $this->reclamacionService->resolverReclamacion($id, $usuarioId, $comentario);
+            $resultado = $this->reclamacionService->resolverReclamacion($id, $usuarioId, $comentario, $this->esAdmin());
             $respuesta = $resultado;
 
             if ($resultado['success']) {
@@ -345,6 +430,7 @@
         'reclamacion' => $reclamacion,
         'acciones_reclamacion' => $acciones,
         'estado_opciones' => $estadoOpciones,
+        'puede_gestionar_seguimiento' => $this->puedeGestionarSeguimiento($reclamacion),
         'respuesta' => $respuesta
       ];
     }
@@ -380,6 +466,15 @@
           'pageTitle' => 'Editar reclamación',
           'css' => '/assets/css/reclamacion.create.css',
           'error' => 'Solo se pueden editar reclamaciones en borrador.'
+        ];
+      }
+
+      if (!$this->puedeEditarBorrador($reclamacion)) {
+        return [
+          'vista' => VIEWS_PATH . '/reclamaciones/edit.php',
+          'pageTitle' => 'Editar reclamación',
+          'css' => '/assets/css/reclamacion.create.css',
+          'error' => 'No tienes permisos para editar esta reclamación.'
         ];
       }
 
@@ -493,12 +588,15 @@
       }
 
       // restringir la validación a encargados funcionales
-      if (($_SESSION['rol'] ?? 'trabajador') !== 'encargado') {
+      if (!$this->puedeValidar()) {
         return [
           'vista' => VIEWS_PATH . '/reclamaciones/show.php',
           'pageTitle' => 'Ver reclamación #' . $id,
           'css' => '/assets/css/reclamacion.index.css',
           'reclamacion' => $reclamacion,
+          'acciones_reclamacion' => [],
+          'estado_opciones' => [],
+          'puede_gestionar_seguimiento' => false,
           'respuesta' => [
             'success' => false,
             'mensaje' => 'Solo el encargado puede validar reclamaciones.'
@@ -514,11 +612,22 @@
         $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
       }
 
+      $estadoOpciones = $this->reclamacionService->obtenerOpcionesEstadoResolucion(
+        $reclamacion['estado_clave'] ?? '',
+        intval($reclamacion['estado_id'] ?? 0)
+      );
+
+      $accionesService = new AccionesReclamacionService($this->pdo);
+      $acciones = $accionesService->obtenerAccionesPorReclamacion($id);
+
       return [
         'vista' => VIEWS_PATH . '/reclamaciones/show.php',
         'pageTitle' => 'Ver reclamación #' . $id,
         'css' => '/assets/css/reclamacion.index.css',
         'reclamacion' => $reclamacion,
+        'acciones_reclamacion' => $acciones,
+        'estado_opciones' => $estadoOpciones,
+        'puede_gestionar_seguimiento' => $this->puedeGestionarSeguimiento($reclamacion),
         'respuesta' => $resultado
       ];
     }
