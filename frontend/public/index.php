@@ -7,6 +7,7 @@
   require_once '../../backend/bootstrap/bootstrap.php';
   require_once CONTROLLERS_PATH . '/AuthController.php';
   require_once CONTROLLERS_PATH . '/ReclamacionController.php';
+  require_once CONTROLLERS_PATH . '/AdminController.php';
 
   // proteger rutas privadas mediante sesión PHP
   $protectedActions = [
@@ -17,7 +18,10 @@
     'reclamaciones.asignar',
     'reclamaciones.create.view',
     'reclamaciones.create',
-    'reclamaciones.validar'
+    'reclamaciones.validar',
+    'admin.index',
+    'admin.usuario.guardar',
+    'admin.franquicia.guardar'
   ];
 
   if (in_array($action, $protectedActions, true)) {
@@ -141,6 +145,51 @@
       $vista = VIEWS_PATH . '/reclamaciones/create.php';
       $pageTitle = 'Crear reclamación';
       $css = '/assets/css/reclamacion.create.css';
+    break;
+
+    case 'admin.index':
+      $adminService = new AdminService($pdo);
+      $controller = new AdminController($adminService);
+      $respuesta = $controller->index();
+      $vista = $respuesta['vista'];
+      $pageTitle = $respuesta['pageTitle'];
+      $css = $respuesta['css'];
+      $usuarios = $respuesta['usuarios'] ?? [];
+      $roles = $respuesta['roles'] ?? [];
+      $franquicias = $respuesta['franquicias'] ?? [];
+      $usuarioEditar = $respuesta['usuarioEditar'] ?? null;
+      $franquiciaEditar = $respuesta['franquiciaEditar'] ?? null;
+      $respuesta = $respuesta['respuesta'] ?? [];
+    break;
+
+    case 'admin.usuario.guardar':
+      $adminService = new AdminService($pdo);
+      $controller = new AdminController($adminService);
+      $respuesta = $controller->guardarUsuario();
+      $vista = $respuesta['vista'];
+      $pageTitle = $respuesta['pageTitle'];
+      $css = $respuesta['css'];
+      $usuarios = $respuesta['usuarios'] ?? [];
+      $roles = $respuesta['roles'] ?? [];
+      $franquicias = $respuesta['franquicias'] ?? [];
+      $usuarioEditar = $respuesta['usuarioEditar'] ?? null;
+      $franquiciaEditar = $respuesta['franquiciaEditar'] ?? null;
+      $respuesta = $respuesta['respuesta'] ?? [];
+    break;
+
+    case 'admin.franquicia.guardar':
+      $adminService = new AdminService($pdo);
+      $controller = new AdminController($adminService);
+      $respuesta = $controller->guardarFranquicia();
+      $vista = $respuesta['vista'];
+      $pageTitle = $respuesta['pageTitle'];
+      $css = $respuesta['css'];
+      $usuarios = $respuesta['usuarios'] ?? [];
+      $roles = $respuesta['roles'] ?? [];
+      $franquicias = $respuesta['franquicias'] ?? [];
+      $usuarioEditar = $respuesta['usuarioEditar'] ?? null;
+      $franquiciaEditar = $respuesta['franquiciaEditar'] ?? null;
+      $respuesta = $respuesta['respuesta'] ?? [];
     break;
 
     default:

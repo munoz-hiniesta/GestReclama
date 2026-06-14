@@ -24,6 +24,14 @@
       </a>
     </li>
 
+    <?php if (intval($_SESSION['rol_id'] ?? 0) === 1): ?>
+      <li>
+        <a href="index.php?action=admin.index">
+          Gestión administrativa
+        </a>
+      </li>
+    <?php endif; ?>
+
     <li>
       <form method="POST" action="index.php">
         <button type="submit" name="action" value="logout">
