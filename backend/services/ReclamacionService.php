@@ -508,6 +508,23 @@
         ]);
 
         if ($stmt->rowCount() === 0) {
+          $sqlExiste = "SELECT COUNT(*) 
+                          FROM reclamaciones 
+                         WHERE id = :id 
+                           AND estado_id = :estado_borrador";
+          $stmtExiste = $this->pdo->prepare($sqlExiste);
+          $stmtExiste->execute([
+            ':id' => $id,
+            ':estado_borrador' => $estados['BORRADOR']
+          ]);
+
+          if (intval($stmtExiste->fetchColumn()) === 1) {
+            return [
+              'success' => true,
+              'mensaje' => 'Reclamación actualizada correctamente.'
+            ];
+          }
+
           return [
             'success' => false,
             'mensaje' => 'No se pudo actualizar la reclamación. Asegúrese de que está en estado borrador.'

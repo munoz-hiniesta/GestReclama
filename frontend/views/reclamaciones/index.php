@@ -13,7 +13,7 @@
 
     <div class="filtro-group">
       <label for="filtro_id">ID reclamación</label>
-      <input type="number" id="filtro_id" name="filtro_id" value="<?php echo htmlspecialchars($filtros['id'] ?? ''); ?>" min="1">
+      <input type="number" id="filtro_id" name="filtro_id" value="<?php echo !empty($filtros['id']) ? htmlspecialchars($filtros['id']) : ''; ?>" min="1">
     </div>
 
     <div class="filtro-group">

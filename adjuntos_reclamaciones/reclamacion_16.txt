@@ -1,1 +1,2 @@
-adjunto reclamación 16
+adjunto reclamación:
+Descripción: Cliente comunica que la PS5 no funciona y está en garantía.

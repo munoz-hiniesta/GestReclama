@@ -1,0 +1,54 @@
+Según la normativa, la carpeta de Google Drive debe contener los entregables finales, no todo el repositorio en bruto.
+Estructura recomendada:
+drive/
+├── GestReclama_memoria.docx
+├── GestReclama_memoria.pdf
+├── GestReclama_presentacion.pptx
+├── GestReclama_presentacion.pdf
+├── GestReclama_video_defensa.mp4
+└── GestReclama_codigo.zip
+Dentro de GestReclama_codigo.zip incluiría:
+GestReclama/
+├── README.md
+├── backend/
+│   ├── bootstrap/
+│   ├── config/
+│   │   └── database.example.php
+│   ├── controllers/
+│   ├── database/
+│   │   ├── schema.sql
+│   │   └── datos.sql
+│   ├── helpers/
+│   ├── middleware/
+│   ├── models/
+│   ├── services/
+│   └── tests/
+├── frontend/
+│   ├── public/
+│   │   ├── assets/
+│   │   ├── index.php
+│   │   ├── panel.php
+│   │   └── uploads/
+│   └── views/
+└── docs/
+    ├── reglas-negocio.md
+    └── tests/
+No incluiría en el ZIP:
+.git/
+.agents/
+.codex/
+backend/config/database.php
+docs/chatgpt.md
+docs/pdfs/Normativa.pdf
+docs/pendientes-tecnicos.md
+docs/nuevos css/
+docs/funcional/
+*.zip
+.env
+vendor/
+node_modules/
+Importante: backend/config/database.php contiene credenciales locales, así que mejor no entregarlo. Entrega database.example.php y que el manual de instalación explique que hay que copiarlo como database.php y editar los datos de conexión.
+En tu repo ya tienes estos documentos útiles:
+docs/memoria-final-14junio.docx
+docs/pdfs/14junio.pdf
+Te faltarían, si no están fuera del repo, la presentación .pptx, su PDF y el vídeo .mp4. La normativa también dice que la memoria en PDF debe subirse en la tarea del campus; el resto debe estar en Drive y la URL de Drive debe aparecer en la portada de la memoria.

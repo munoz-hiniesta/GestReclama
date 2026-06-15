@@ -534,6 +534,41 @@
 
         if ($resultado['success']) {
           $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+
+          if (isset($_POST['validar'])) {
+            if (!$this->puedeValidar()) {
+              $resultado = [
+                'success' => false,
+                'mensaje' => 'Solo el encargado puede validar reclamaciones.'
+              ];
+            } else {
+              $resultadoValidacion = $this->reclamacionService->validarReclamacion($id);
+              $reclamacion = $this->reclamacionService->obtenerReclamacionPorId($id);
+
+              if ($resultadoValidacion['success']) {
+                $estadoOpciones = $this->reclamacionService->obtenerOpcionesEstadoResolucion(
+                  $reclamacion['estado_clave'] ?? '',
+                  intval($reclamacion['estado_id'] ?? 0)
+                );
+
+                $accionesService = new AccionesReclamacionService($this->pdo);
+                $acciones = $accionesService->obtenerAccionesPorReclamacion($id);
+
+                return [
+                  'vista' => VIEWS_PATH . '/reclamaciones/show.php',
+                  'pageTitle' => 'Ver reclamación #' . $id,
+                  'css' => '/assets/css/reclamacion.index.css',
+                  'reclamacion' => $reclamacion,
+                  'acciones_reclamacion' => $acciones,
+                  'estado_opciones' => $estadoOpciones,
+                  'puede_gestionar_seguimiento' => $this->puedeGestionarSeguimiento($reclamacion),
+                  'respuesta' => $resultadoValidacion
+                ];
+              }
+
+              $resultado = $resultadoValidacion;
+            }
+          }
         }
 
         $tipos = $this->reclamacionService->obtenerTipos();

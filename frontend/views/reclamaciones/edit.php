@@ -142,12 +142,13 @@
       </div>
 
       <button type="submit" class="btn-submit">Actualizar borrador</button>
+
+      <?php if (($reclamacion['estado_clave'] ?? '') === 'BORRADOR' && ($_SESSION['rol'] ?? 'trabajador') === 'encargado'): ?>
+        <button type="submit" name="validar" value="1" class="btn-primary">Validar reclamación</button>
+      <?php endif; ?>
     </form>
 
     <div class="acciones-crear">
-      <?php if (($reclamacion['estado_clave'] ?? '') === 'BORRADOR' && ($_SESSION['rol'] ?? 'trabajador') === 'encargado'): ?>
-        <a href="index.php?action=reclamaciones.validar&id=<?php echo htmlspecialchars($reclamacion['id']); ?>" class="btn-primary">Validar reclamación</a>
-      <?php endif; ?>
       <a href="index.php?action=reclamaciones.index" class="btn-secondary">Volver al listado</a>
     </div>
 
